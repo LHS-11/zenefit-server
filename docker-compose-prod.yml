@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  redis:
+    container_name: gifty-redis-prod
+    build:
+      dockerfile: Dockerfile
+      context: ./config/redis/prod
+    image: limhwasup/gifty-redis-prod
+    ports:
+      - "6379:6379"
+
+  backend-prod:
+    image: limhwasup/gifty-server-prod
+    build:
+      dockerfile: Dockerfile.prod
+    container_name: backend-prod
+    hostname: backend-prod
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    restart: always
+
+  nginx:
+    container_name: gifty-nginx-prod
+    image: limhwasup/gifty-nginx-prod
+    build:
+      dockerfile: Dockerfile
+      context: ./config/nginx/prod
+    depends_on:
+      - backend-prod
+    ports:
+      - "80:80"
+      - "443:443" # HTTPS를 위한 포트를 추가합니다.
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro # SSL 인증서를 공유합니다.
+      - /var/lib/letsencrypt:/var/lib/letsencrypt:ro # SSL 인증서를 공유합니다.
+    restart: always

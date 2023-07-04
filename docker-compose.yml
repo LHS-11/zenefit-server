@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  redis:
+    container_name: gifty-redis-dev
+    build:
+      dockerfile: Dockerfile
+      context: ./config/redis/dev
+    image: limhwasup/gifty-redis-dev
+    ports:
+      - "6379:6379"
+
+  backend-prod:
+    image: limhwasup/gifty-server-dev
+    build:
+      dockerfile: Dockerfile
+    container_name: backend-dev
+    hostname: backend-dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+    restart: always
+
+  nginx:
+    container_name: gifty-nginx-dev
+    image: limhwasup/gifty-nginx-dev
+    build:
+      dockerfile: Dockerfile
+      context: ./config/nginx/dev
+    depends_on:
+      - backend-prod
+    ports:
+      - "80:80"
+      - "443:443" # Add port for HTTPS
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro # Share SSL certification
+      - /var/lib/letsencrypt:/var/lib/letsencrypt:ro # Share SSL certification
+    restart: always
