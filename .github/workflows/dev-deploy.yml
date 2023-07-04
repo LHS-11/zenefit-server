@@ -5,7 +5,7 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Deploy to Prod
+name: Deploy to Dev
 
 on:
   push:
@@ -39,7 +39,7 @@ jobs:
       - name: Grant execute permission for gradlew #권한
         run: chmod +x gradlew
 
-      - name: Make application-prod.yml #환경변수 주입
+      - name: Make application-dev.yml #환경변수 주입
         run: |
           touch ./src/main/resources/application-dev.yml
           echo "$PROPERTIES_PROD" > ./src/main/resources/application-dev.yml
@@ -99,7 +99,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.KEY_PROD }}
           script: |
-            sh ~/srv/ubuntu/gifty-prod/config/scripts/deploy.sh
+            sh ~/srv/ubuntu/gifty-dev/config/scripts/deploy.sh
             sudo docker stop backend-dev
             sudo docker stop gifty-nginx-dev
             sudo docker stop gifty-redis-dev
