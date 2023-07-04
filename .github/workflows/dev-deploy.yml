@@ -107,5 +107,5 @@ jobs:
             sudo docker rm gifty-nginx-dev
             sudo docker rm gifty-redis-dev
             sudo docker rmi -f $(sudo docker images -q)
-            sudo docker-compose -f ~/srv/ubuntu/gifty-dev/docker-compose-dev.yml pull
-            sudo docker-compose -f ~/srv/ubuntu/gifty-dev/docker-compose-dev.yml up --build -d
+            sudo docker-compose -f ~/srv/ubuntu/gifty-dev/docker-compose.yml pull
+            sudo docker-compose -f ~/srv/ubuntu/gifty-dev/docker-compose.yml up --build -d
