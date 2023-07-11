@@ -27,6 +27,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -51,6 +52,7 @@ public class SecurityConfig {
                 .and()
                 .exceptionHandling() // 예외 처리 핸들러 설정
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint) // 인증 진입점을 설정
+                .accessDeniedHandler(jwtAccessDeniedHandler) // 권한이 없는 사용자 접근 거부 설정
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT 를 사용할 것이기 때문에 세션 사용 X
