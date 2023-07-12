@@ -28,6 +28,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -59,12 +60,13 @@ public class SecurityConfig {
                 .and()
                 //권한이 필요한 요청에 대한 설정
                 .authorizeRequests()
-                .antMatchers("/test/**").permitAll()
+//                .antMatchers("/test/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
 //                .headers().frameOptions().sameOrigin() // 같은 출처의 페이지만 현재 페이지를 프레임으로 사용할 수 있게 허용하는 설정 ( clickjacking 방지 )
 //                .and()
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
