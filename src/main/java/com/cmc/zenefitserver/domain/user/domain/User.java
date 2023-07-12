@@ -4,16 +4,14 @@ package com.cmc.zenefitserver.domain.user.domain;
 import com.cmc.zenefitserver.domain.job.domain.Job;
 import com.cmc.zenefitserver.global.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 @Entity
 @Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,7 +20,7 @@ public class User extends BaseEntity {
     @Id
     @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private Long userId;
 
     @Column(name="nickname",unique = true)
     @NotNull
