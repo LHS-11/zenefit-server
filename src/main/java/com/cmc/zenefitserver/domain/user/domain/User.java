@@ -22,6 +22,9 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long userId;
 
+    @Column(name = "email",unique = true)
+    private String email;
+
     @Column(name="nickname",unique = true)
     @NotNull
     private String nickname;
@@ -65,5 +68,7 @@ public class User extends BaseEntity {
     @Column(name = "app_notification_status")
     private boolean appNotificationStatus;
 
+    @Column(name = "provider")
+    private String provider;
 
 }

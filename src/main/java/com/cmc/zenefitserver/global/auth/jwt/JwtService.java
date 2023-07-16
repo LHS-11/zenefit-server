@@ -133,7 +133,7 @@ public class JwtService {
             UserDetails principal = userDetailsService.loadUserByUsername(claims.getSubject());
             return new UsernamePasswordAuthenticationToken(principal, "", principal.getAuthorities());
         } catch (Exception e) {
-            request.setAttribute("exception", ErrorCode.INVALID_USER.getCode());
+            request.setAttribute("exception", ErrorCode.NOT_FOUND_USER.getCode());
             throw e;
         }
     }
