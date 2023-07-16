@@ -23,7 +23,7 @@ public class AuthRequestDto {
     @NotNull
     private ProviderType providerType;
 
-    @ApiModelProperty(notes = "소셜 토큰", example = "p1b3M_ikmtHivvFJqwY5bXAYg-ilCq4E7DnJwlT5CisM0wAAAYOPy1oR")
+    @ApiModelProperty(notes = "소셜 토큰 (kakao는 code)", example = "p1b3M_ikmtHivvFJqwY5bXAYg-ilCq4E7DnJwlT5CisM0wAAAYOPy1oR")
     @NotNull
     private String token;
 }
