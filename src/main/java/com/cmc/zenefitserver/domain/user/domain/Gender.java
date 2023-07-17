@@ -1,8 +1,8 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
 public enum Gender {
-    MAN("M"),
-    WOMAN("W");
+    MALE("M"),
+    FEMALE("W");
 
     private String code;
 
