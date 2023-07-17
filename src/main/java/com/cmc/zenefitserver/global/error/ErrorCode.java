@@ -20,6 +20,12 @@ public enum ErrorCode {
     MISMATCH_REFRESH_TOKEN("AUTH_007","데이터베이스에 있는 리프레시 토큰과 다릅니다.",UNAUTHORIZED),
     EXPIRED_REFRESH_TOKEN("AUTH_008","리프레시 토큰 기한이 만료되었습니다.",UNAUTHORIZED),
     FORBIDDEN_USER("AUTH_009", "권한이 없는 유저입니다.", UNAUTHORIZED),
+    FAIL_TO_MAKE_APPLE_PUBLIC_KEY("AUTH_010","애플 공개키 생성에 실패했습니다.",UNAUTHORIZED),
+    MISMATCH_APPLE_KEY("AUTH_011","애플 공개키와 맞지 않습니다.",UNAUTHORIZED),
+    MISMATCH_ISSUER("AUTH_012","애플에서 제공한 발행처와 맞지 않습니다.",UNAUTHORIZED),
+    MISMATCH_AUDIENCE("AUTH_013","애플에서 제공한 수신자와 맞지 않습니다.",UNAUTHORIZED),
+
+
 
     /**
      * USER 관련 오류
