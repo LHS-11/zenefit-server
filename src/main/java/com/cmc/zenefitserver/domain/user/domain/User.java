@@ -76,5 +76,22 @@ public class User extends BaseEntity {
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    
+
+    @Builder
+    public User(String email, String nickname, Integer age, Address address, int lastYearIncome, EducationType educationType, Set<Job> jobs, int policyCnt, UserDetail userDetail, String fcmToken, boolean pushNotificationStatus, boolean appNotificationStatus, ProviderType provider, Gender gender) {
+        this.email = email;
+        this.nickname = nickname;
+        this.age = age;
+        this.address = address;
+        this.lastYearIncome = lastYearIncome;
+        this.educationType = educationType;
+        this.jobs = jobs;
+        this.policyCnt = policyCnt;
+        this.userDetail = userDetail;
+        this.fcmToken = fcmToken;
+        this.pushNotificationStatus = pushNotificationStatus;
+        this.appNotificationStatus = appNotificationStatus;
+        this.provider = provider;
+        this.gender = gender;
+    }
 }
