@@ -20,7 +20,13 @@ public enum ErrorCode {
     MISMATCH_REFRESH_TOKEN("AUTH_007","데이터베이스에 있는 리프레시 토큰과 다릅니다.",UNAUTHORIZED),
     EXPIRED_REFRESH_TOKEN("AUTH_008","리프레시 토큰 기한이 만료되었습니다.",UNAUTHORIZED),
     FORBIDDEN_USER("AUTH_009", "권한이 없는 유저입니다.", UNAUTHORIZED),
-    NOT_FOUND_USER("AUTH_010", "데이터베이스에 없는 유저입니다.", UNAUTHORIZED);
+
+    /**
+     * USER 관련 오류
+     */
+    NOT_FOUND_USER("USER_001", "데이터베이스에 없는 유저입니다.", UNAUTHORIZED),
+    DUPLICATE_NICKNAME("USER_002", "중복된 닉네임 입니다.", UNAUTHORIZED),
+    DUPLICATE_EMAIL_PROVIDER("USER_002", "중복된 이메일과 소셜 타입입니다.", UNAUTHORIZED);
 
 
     private final String code;
