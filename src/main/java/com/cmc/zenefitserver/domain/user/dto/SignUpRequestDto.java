@@ -6,15 +6,13 @@ import com.cmc.zenefitserver.domain.user.domain.EducationType;
 import com.cmc.zenefitserver.domain.user.domain.Gender;
 import com.cmc.zenefitserver.global.auth.ProviderType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Set;
 
 
+@Getter
 @NoArgsConstructor
 @Validated
 @Schema(description = "회원가입 API request")
