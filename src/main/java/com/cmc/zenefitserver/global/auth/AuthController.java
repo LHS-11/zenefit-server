@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Slf4j
-@Tag(name = "oauth",description = "oauth login API")
+@Tag(name = "1. oauth",description = "oauth login API")
 @RequestMapping("/auth/login")
 @RequiredArgsConstructor
 @RestController
