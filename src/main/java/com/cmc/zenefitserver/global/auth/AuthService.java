@@ -29,10 +29,10 @@ public class AuthService {
         KakaoAccount kakaoAccount = kakaoLoginService.getInfo(code).getKakaoAccount();
 
         // 이메일로 회원 조회시 없으면 이메일과 함께 오류 반환
-        User findUser = userRepository.findByEmail(kakaoAccount.getEmail())
+        User findUser = userRepository.findByEmailAndProvider(kakaoAccount.getEmail(), ProviderType.KAKAO)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER,
                         Map.of("email", kakaoAccount.getEmail(),
-                                "gender",kakaoAccount.getGender())
+                                "gender", kakaoAccount.getGender())
                 ));
 
         // 이메일로 회원 조회시 있으면 로그인하고 자체 JWT 만들어서 Access Token 과 Refresh Token 반환

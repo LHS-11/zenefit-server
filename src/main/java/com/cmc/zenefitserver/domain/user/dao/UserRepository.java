@@ -1,9 +1,8 @@
 package com.cmc.zenefitserver.domain.user.dao;
 
 import com.cmc.zenefitserver.domain.user.domain.User;
+import com.cmc.zenefitserver.global.auth.ProviderType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
@@ -12,6 +11,8 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     Optional<User> findByUserId(Long userId);
 
-    Optional<User> findByEmail(String email);
+    Optional<User> findByEmailAndProvider(String email, ProviderType provider);
+
+    Optional<User> findByNickname(String nickname);
 
 }
