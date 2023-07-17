@@ -2,6 +2,7 @@ package com.cmc.zenefitserver.domain.user.domain;
 
 
 import com.cmc.zenefitserver.domain.job.domain.Job;
+import com.cmc.zenefitserver.global.auth.ProviderType;
 import com.cmc.zenefitserver.global.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -69,6 +70,11 @@ public class User extends BaseEntity {
     private boolean appNotificationStatus;
 
     @Column(name = "provider")
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    private ProviderType provider;
 
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+    
 }
