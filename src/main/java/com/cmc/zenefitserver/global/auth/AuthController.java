@@ -29,7 +29,10 @@ public class AuthController {
         if(providerType==ProviderType.KAKAO){
             result = authService.kakaoLogin(authRequestDto);
         }
-        log.info("============================================================");
+        if(providerType==ProviderType.APPLE){
+            result = authService.appleLogin(authRequestDto);
+        }
+        log.info("==========================login end=4======================");
         return CommonResponse.success(result);
     }
 
