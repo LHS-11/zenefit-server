@@ -1,12 +1,14 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
+import java.util.Arrays;
+
 public enum Gender {
-    MALE("M"),
-    FEMALE("W");
+    MALE("MALE"),
+    FEMALE("FEMALE");
 
-    private String code;
+    private String value;
 
-    Gender(String code) {
-        this.code = code;
+    Gender(String value) {
+        this.value = value;
     }
 }
