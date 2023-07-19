@@ -1,26 +1,24 @@
 package com.cmc.zenefitserver.global.config.feign.kakao;
 
 import feign.Client;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableFeignClients(basePackages = {"com.cmc"})
 public class KakaoFeignConfig {
 
     @Bean
-    public Client feignClient() {
+    public Client kakaoFeignClient() {
         return new Client.Default(null, null);
     }
 
     @Bean
-    public KakaoFeignInterceptor feignInterceptor(){
+    public KakaoFeignInterceptor kakaoFeignInterceptor() {
         return KakaoFeignInterceptor.of();
     }
 
     @Bean
-    public KakaoFeignErrorDecoder feignErrorDecoder(){
+    public KakaoFeignErrorDecoder kakaoFeignErrorDecoder() {
         return KakaoFeignErrorDecoder.of();
     }
 }
