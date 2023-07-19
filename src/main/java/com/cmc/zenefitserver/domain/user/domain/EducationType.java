@@ -1,8 +1,12 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
 
+import com.cmc.zenefitserver.global.error.ErrorCode;
+import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Arrays;
 
 public enum EducationType {
     BELOW_HIGH_SCHOOL("고졸 미만"), // 고졸 미만
@@ -23,12 +27,10 @@ public enum EducationType {
 
     @JsonCreator
     public static EducationType fromString(String value) {
-        for (EducationType educationType : EducationType.values()) {
-            if (educationType.description.equalsIgnoreCase(value)) {
-                return educationType;
-            }
-        }
-        throw new IllegalArgumentException("Invalid EducationType value: " + value);
+        return Arrays.stream(EducationType.values())
+                .filter(v -> v.description.equalsIgnoreCase(value))
+                .findFirst()
+                .orElseThrow(()->new BusinessException(ErrorCode.NOT_FOUND_EDUCATION_ENUM_VALUE));
     }
 
     @JsonValue
