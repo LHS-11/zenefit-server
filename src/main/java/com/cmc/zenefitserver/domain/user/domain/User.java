@@ -1,15 +1,12 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
 
-import com.cmc.zenefitserver.domain.job.domain.Job;
 import com.cmc.zenefitserver.global.auth.ProviderType;
 import com.cmc.zenefitserver.global.common.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -45,10 +42,10 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private EducationType educationType; // 학력 요건 내용
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    @ToString.Exclude
-    private Set<Job> jobs = new HashSet<>();
+    @ElementCollection
+    @CollectionTable(name = "jobs", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<JobType> jobs;
 
     @Column(name = "policy_cnt")
     private int policyCnt;
@@ -77,8 +74,9 @@ public class User extends BaseEntity {
         this.userDetail = userDetail;
     }
 
+
     @Builder
-    public User(String email, String nickname, Integer age, Address address, int lastYearIncome, EducationType educationType, Set<Job> jobs, int policyCnt, UserDetail userDetail, String fcmToken, boolean pushNotificationStatus, boolean appNotificationStatus, ProviderType provider) {
+    public User(String email, String nickname, Integer age, Address address, int lastYearIncome, EducationType educationType, Set<JobType> jobs, int policyCnt, UserDetail userDetail, String fcmToken, boolean pushNotificationStatus, boolean appNotificationStatus, ProviderType provider) {
         this.email = email;
         this.nickname = nickname;
         this.age = age;

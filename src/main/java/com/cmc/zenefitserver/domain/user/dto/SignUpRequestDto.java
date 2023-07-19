@@ -1,13 +1,12 @@
 package com.cmc.zenefitserver.domain.user.dto;
 
-import com.cmc.zenefitserver.domain.job.domain.Job;
 import com.cmc.zenefitserver.domain.user.domain.Address;
 import com.cmc.zenefitserver.domain.user.domain.EducationType;
 import com.cmc.zenefitserver.domain.user.domain.Gender;
+import com.cmc.zenefitserver.domain.user.domain.JobType;
 import com.cmc.zenefitserver.global.auth.ProviderType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
@@ -42,13 +41,13 @@ public class SignUpRequestDto {
     private EducationType educationType;
 
     @ApiModelProperty(notes = "직업",example = "재직자")
-    private Set<Job> jobs;
+    private Set<JobType> jobs;
 
     @ApiModelProperty(notes = "성별",example = "MALE")
     private Gender gender;
 
     @Builder
-    public SignUpRequestDto(String email, ProviderType provider, String nickname, int age, Address address, int lastYearIncome, EducationType educationType, Set<Job> jobs, Gender gender) {
+    public SignUpRequestDto(String email, ProviderType provider, String nickname, int age, Address address, int lastYearIncome, EducationType educationType, Set<JobType> jobs, Gender gender) {
         this.email = email;
         this.provider = provider;
         this.nickname = nickname;
