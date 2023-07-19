@@ -1,12 +1,11 @@
 package com.cmc.zenefitserver.domain.user.api;
 
-import antlr.Token;
 import com.cmc.zenefitserver.domain.user.application.UserService;
-import com.cmc.zenefitserver.domain.user.domain.Address;
 import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
 import com.cmc.zenefitserver.global.common.CommonResponse;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @Slf4j
-@Tag(name = "2. user",description = "user API")
+@Api(tags = "2. user",description = "user API")
 @RequestMapping("/user")
 @RequiredArgsConstructor
 @RestController
@@ -26,6 +25,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
+    @Operation(summary = "회원가입 API",description = "회원가입을 진행합니다. \n 로그인 실패시 이메일과 필요한 정보들을 반환하여 해당 값을 이용해서 회원가입")
     public CommonResponse<TokenResponseDto> signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto){
         log.info("==========================signup start=======================");
         TokenResponseDto tokenResponseDto = userService.signUp(signUpRequestDto);
