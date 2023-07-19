@@ -1,6 +1,5 @@
 package com.cmc.zenefitserver.domain.user.application;
 
-import com.cmc.zenefitserver.domain.user.dao.UserDetailRepository;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.domain.UserDetail;
@@ -11,7 +10,6 @@ import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import static com.cmc.zenefitserver.global.error.ErrorCode.DUPLICATE_EMAIL_PROVIDER;
 import static com.cmc.zenefitserver.global.error.ErrorCode.DUPLICATE_NICKNAME;
@@ -21,7 +19,6 @@ import static com.cmc.zenefitserver.global.error.ErrorCode.DUPLICATE_NICKNAME;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserDetailRepository userDetailRepository;
     private final JwtService jwtService;
 
     public TokenResponseDto signUp(SignUpRequestDto signUpRequestDto){
