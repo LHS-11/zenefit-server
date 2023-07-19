@@ -3,7 +3,9 @@ package com.cmc.zenefitserver.domain.user.domain;
 import com.cmc.zenefitserver.global.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -19,6 +21,7 @@ public class UserDetail extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @MapsId
     @JsonIgnore
+    @ToString.Exclude
     @JoinColumn(name="user_id")
     private User user;
 
@@ -46,5 +49,20 @@ public class UserDetail extends BaseEntity {
     // 제한 없음
     private boolean isNoLimit;
 
+    public void setUser(User user){
+        this.user=user;
+    }
 
+    @Builder
+    public UserDetail(User user, Gender gender, boolean isSmallBusiness, boolean isSoldier, boolean isLowIncome, boolean isDisabled, boolean isLocalTalent, boolean isFarmer, boolean isNoLimit) {
+        this.user = user;
+        this.gender = gender;
+        this.isSmallBusiness = isSmallBusiness;
+        this.isSoldier = isSoldier;
+        this.isLowIncome = isLowIncome;
+        this.isDisabled = isDisabled;
+        this.isLocalTalent = isLocalTalent;
+        this.isFarmer = isFarmer;
+        this.isNoLimit = isNoLimit;
+    }
 }

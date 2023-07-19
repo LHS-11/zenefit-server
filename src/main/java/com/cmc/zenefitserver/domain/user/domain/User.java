@@ -53,7 +53,7 @@ public class User extends BaseEntity {
     @Column(name = "policy_cnt")
     private int policyCnt;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     @JoinColumn(name = "user_detail")
     private UserDetail userDetail;
 
@@ -73,12 +73,12 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
 
-    @Column(name = "gender")
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    public void setUserDetail(UserDetail userDetail){
+        this.userDetail = userDetail;
+    }
 
     @Builder
-    public User(String email, String nickname, Integer age, Address address, int lastYearIncome, EducationType educationType, Set<Job> jobs, int policyCnt, UserDetail userDetail, String fcmToken, boolean pushNotificationStatus, boolean appNotificationStatus, ProviderType provider, Gender gender) {
+    public User(String email, String nickname, Integer age, Address address, int lastYearIncome, EducationType educationType, Set<Job> jobs, int policyCnt, UserDetail userDetail, String fcmToken, boolean pushNotificationStatus, boolean appNotificationStatus, ProviderType provider) {
         this.email = email;
         this.nickname = nickname;
         this.age = age;
@@ -92,6 +92,5 @@ public class User extends BaseEntity {
         this.pushNotificationStatus = pushNotificationStatus;
         this.appNotificationStatus = appNotificationStatus;
         this.provider = provider;
-        this.gender = gender;
     }
 }

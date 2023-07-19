@@ -1,7 +1,9 @@
 package com.cmc.zenefitserver.domain.user.application;
 
+import com.cmc.zenefitserver.domain.user.dao.UserDetailRepository;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
+import com.cmc.zenefitserver.domain.user.domain.UserDetail;
 import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
 import com.cmc.zenefitserver.global.auth.jwt.JwtService;
 import com.cmc.zenefitserver.global.common.request.TokenRequestDto;
@@ -19,6 +21,7 @@ import static com.cmc.zenefitserver.global.error.ErrorCode.DUPLICATE_NICKNAME;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserDetailRepository userDetailRepository;
     private final JwtService jwtService;
 
     public TokenResponseDto signUp(SignUpRequestDto signUpRequestDto){
@@ -44,11 +47,16 @@ public class UserService {
                 .educationType(signUpRequestDto.getEducationType())
                 .jobs(signUpRequestDto.getJobs())
                 .provider(signUpRequestDto.getProvider())
+                .build();
+
+        UserDetail userDetail = UserDetail.builder()
                 .gender(signUpRequestDto.getGender())
                 .build();
 
-        User savedUser = userRepository.save(user);
+        user.setUserDetail(userDetail);
+        userDetail.setUser(user);
 
+        User savedUser = userRepository.save(user);
         return jwtService.createToken(new TokenRequestDto(savedUser));
     }
 }
