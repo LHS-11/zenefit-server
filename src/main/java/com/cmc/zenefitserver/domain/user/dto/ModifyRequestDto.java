@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 @ToString
@@ -18,6 +19,7 @@ import java.util.Set;
 public class ModifyRequestDto {
 
     @ApiModelProperty(notes ="닉네임",example = "paul")
+    @Pattern(regexp = "^[a-zA-Z0-9가-힣]{1,7}$", message = "닉네임은 1~7자의 영문 대소문자, 숫자, 한글로만 입력해주세요.")
     private String nickname;
 
     @ApiModelProperty(notes = "나이",example = "25")
