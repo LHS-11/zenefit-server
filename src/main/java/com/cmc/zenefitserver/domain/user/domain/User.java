@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
 
+import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
 import com.cmc.zenefitserver.global.auth.ProviderType;
 import com.cmc.zenefitserver.global.common.BaseEntity;
 import lombok.*;
@@ -73,6 +74,15 @@ public class User extends BaseEntity {
     public void setUserDetail(UserDetail userDetail){
         this.userDetail = userDetail;
     }
+    public void update(ModifyRequestDto modifyRequestDto) {
+        this.nickname=modifyRequestDto.getNickname();
+        this.age=modifyRequestDto.getAge();
+        this.address=modifyRequestDto.getAddress();
+        this.lastYearIncome=modifyRequestDto.getLastYearIncome();
+        this.educationType=modifyRequestDto.getEducationType();
+        this.jobs=modifyRequestDto.getJobs();
+        this.userDetail.modify(modifyRequestDto.getUserDetail());
+    }
 
 
     @Builder
@@ -91,4 +101,5 @@ public class User extends BaseEntity {
         this.appNotificationStatus = appNotificationStatus;
         this.provider = provider;
     }
+
 }

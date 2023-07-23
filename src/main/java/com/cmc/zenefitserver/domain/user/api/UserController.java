@@ -1,7 +1,10 @@
 package com.cmc.zenefitserver.domain.user.api;
 
 import com.cmc.zenefitserver.domain.user.application.UserService;
+import com.cmc.zenefitserver.domain.user.domain.User;
+import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
 import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
+import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
 import io.swagger.annotations.Api;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -30,6 +34,14 @@ public class UserController {
         log.info("==========================signup start=======================");
         TokenResponseDto tokenResponseDto = userService.signUp(signUpRequestDto);
         return CommonResponse.success(tokenResponseDto);
+    }
+
+    @PostMapping("/modify")
+    @Operation(summary = "회원정보수정 API",description = "회원정보를 수정합니다.")
+    public CommonResponse<User> modify(@Valid @RequestBody ModifyRequestDto modifyRequestDto,
+                                   @ApiIgnore @AuthUser User user){
+        User result = userService.modify(modifyRequestDto, user);
+        return CommonResponse.success(result);
     }
 
 }
