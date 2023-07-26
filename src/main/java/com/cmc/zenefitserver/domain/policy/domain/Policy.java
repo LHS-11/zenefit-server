@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.domain.policy.domain;
 
 
+import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
@@ -67,20 +68,28 @@ public class Policy {
     @JsonIgnore
     private User user;
 
-    @Builder.Default
-    private int minAge=0; // 최소 나이
+    private int minAge; // 최소 나이
 
-    @Builder.Default
-    private int maxAge=120; // 최대 나이
+    private int maxAge; // 최대 나이
 
     private String regionCode; // 지역 코드
-    private String policyType; // 정책 유형
+
+    @Enumerated(EnumType.STRING)
+    private PolicyCode policyCode; // 정책 유형
 
     private String supportType; // 지원 유형 -> GPT?
     private int benefitAmount; // 수혜 금액
 
+    public void updateAgeInfo(int minAge, int maxAge) {
+        this.minAge=minAge;
+        this.maxAge = maxAge;
+    }
+
+    public void updatePolicyCode(PolicyCode policyCode){
+        this.policyCode = policyCode;
+    }
     @Builder
-    public Policy(String policyId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, User user, int minAge, int maxAge, String regionCode, String policyType, String supportType, int benefitAmount) {
+    public Policy(String policyId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, User user, int minAge, int maxAge, String regionCode, PolicyCode policyCode, String supportType, int benefitAmount) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
@@ -104,7 +113,7 @@ public class Policy {
         this.minAge = minAge;
         this.maxAge = maxAge;
         this.regionCode = regionCode;
-        this.policyType = policyType;
+        this.policyCode = policyCode;
         this.supportType = supportType;
         this.benefitAmount = benefitAmount;
     }
