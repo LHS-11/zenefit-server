@@ -1,13 +1,16 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
 
+import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
 import com.cmc.zenefitserver.global.auth.ProviderType;
 import com.cmc.zenefitserver.global.common.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -56,6 +59,10 @@ public class User extends BaseEntity {
     private UserDetail userDetail;
 
     // 정책
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @JsonIgnore
+    private Set<Policy> policies = new HashSet<>();
 
     @Column(name = "fcm_token")
     private String fcmToken;
