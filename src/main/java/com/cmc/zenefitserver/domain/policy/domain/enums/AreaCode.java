@@ -126,7 +126,7 @@ public enum AreaCode {
         return cities;
     }
 
-    public static AreaCode getByCode(String code) {
+    public static AreaCode findAreaCode(String code) {
         return Arrays.stream(AreaCode.values())
                 .filter(a -> a.getCode().equals(code))
                 .findFirst()

@@ -285,7 +285,7 @@ public enum CityCode {
         return name;
     }
 
-    public static CityCode getByCode(String code) {
+    public static CityCode findCityCode(String code) {
         return Arrays.stream(CityCode.values())
                 .filter(c -> c.getCode().equals(code))
                 .findFirst()
