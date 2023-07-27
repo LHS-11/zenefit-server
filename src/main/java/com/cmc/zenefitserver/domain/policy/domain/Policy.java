@@ -1,27 +1,35 @@
 package com.cmc.zenefitserver.domain.policy.domain;
 
 
+import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
+@ToString
 @Getter
 @Entity
-@Table(name = "policy")
+@Table(name = "policy", indexes = {
+        @Index(name ="idx_policy_biz_id", columnList = "bizId")
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Policy {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(
+            name = "POLICY_SEQ_GENERATOR",
+            sequenceName = "POLICY_SEQ",
+            initialValue = 1, allocationSize = 100
+    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "POLICY_SEQ_GENERATOR")
     private Long id;
 
-    private String policyId; // 1. 정책 ID
+    private String bizId; // 1. 정책 ID
     private String policyName; // 2. 정책명
     @Column(columnDefinition = "TEXT")
     private String policyIntroduction; // 3. 정책 소개
@@ -72,7 +80,15 @@ public class Policy {
 
     private int maxAge; // 최대 나이
 
-    private String regionCode; // 지역 코드
+    @ElementCollection
+    @CollectionTable(name = "area_code_list", joinColumns = @JoinColumn(name = "biz_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<AreaCode> areaCodes; // 지역 코드 - 시,도
+
+    @ElementCollection
+    @CollectionTable(name = "city_code_list", joinColumns = @JoinColumn(name = "biz_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<CityCode> cityCodes; // 지역 코드 - 구
 
     @Enumerated(EnumType.STRING)
     private PolicyCode policyCode; // 정책 유형
@@ -85,12 +101,16 @@ public class Policy {
         this.maxAge = maxAge;
     }
 
-    public void updatePolicyCode(PolicyCode policyCode){
-        this.policyCode = policyCode;
+    public void updateAreaCode(AreaCode areaCode){
+        this.areaCodes.add(areaCode);
     }
+    public void updateCityCode(CityCode cityCode){
+        this.cityCodes.add(cityCode);
+    }
+
     @Builder
-    public Policy(String policyId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, User user, int minAge, int maxAge, String regionCode, PolicyCode policyCode, String supportType, int benefitAmount) {
-        this.policyId = policyId;
+    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, User user, int minAge, int maxAge, Set<AreaCode> areaCodes, Set<CityCode> cityCodes, PolicyCode policyCode, String supportType, int benefitAmount) {
+        this.bizId = bizId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
         this.operatingAgencyName = operatingAgencyName;
@@ -112,7 +132,8 @@ public class Policy {
         this.user = user;
         this.minAge = minAge;
         this.maxAge = maxAge;
-        this.regionCode = regionCode;
+        this.areaCodes = areaCodes;
+        this.cityCodes = cityCodes;
         this.policyCode = policyCode;
         this.supportType = supportType;
         this.benefitAmount = benefitAmount;
