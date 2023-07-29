@@ -4,8 +4,6 @@ package com.cmc.zenefitserver.domain.policy.domain;
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
-import com.cmc.zenefitserver.domain.user.domain.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -73,11 +71,6 @@ public class Policy implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String submissionDocumentContent; // 19. 제출서류 내용
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private User user;
-
     private int minAge; // 최소 나이
 
     private int maxAge; // 최대 나이
@@ -111,7 +104,7 @@ public class Policy implements Serializable {
     }
 
     @Builder
-    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, User user, int minAge, int maxAge, Set<AreaCode> areaCodes, Set<CityCode> cityCodes, PolicyCode policyCode, String supportType, int benefitAmount) {
+    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, Set<AreaCode> areaCodes, Set<CityCode> cityCodes, PolicyCode policyCode, String supportType, int benefitAmount) {
         this.bizId = bizId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
@@ -131,7 +124,6 @@ public class Policy implements Serializable {
         this.referenceSiteUrlAddress = referenceSiteUrlAddress;
         this.applicationProcedureContent = applicationProcedureContent;
         this.submissionDocumentContent = submissionDocumentContent;
-        this.user = user;
         this.minAge = minAge;
         this.maxAge = maxAge;
         this.areaCodes = areaCodes;
