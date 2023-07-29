@@ -59,10 +59,16 @@ public class User extends BaseEntity {
     private UserDetail userDetail;
 
     // 정책
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     @ToString.Exclude
     @JsonIgnore
     private Set<Policy> policies = new HashSet<>();
+
+    // 관심 있는 정책
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonIgnore
+    private Set<Policy> favoritePolicies = new HashSet<>();
 
     @Column(name = "fcm_token")
     private String fcmToken;
