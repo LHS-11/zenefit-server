@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @ToString
@@ -18,7 +20,7 @@ import java.util.Set;
         @Index(name ="idx_policy_biz_id", columnList = "bizId")
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Policy {
+public class Policy implements Serializable {
 
     @Id
     @SequenceGenerator(
@@ -81,14 +83,14 @@ public class Policy {
     private int maxAge; // 최대 나이
 
     @ElementCollection
-    @CollectionTable(name = "area_code_list", joinColumns = @JoinColumn(name = "biz_id"))
+    @CollectionTable(name = "area_code_list", joinColumns = @JoinColumn(name = "biz_id",referencedColumnName = "bizId"))
     @Enumerated(EnumType.STRING)
-    private Set<AreaCode> areaCodes; // 지역 코드 - 시,도
+    private Set<AreaCode> areaCodes=new HashSet<>(); // 지역 코드 - 시,도
 
     @ElementCollection
-    @CollectionTable(name = "city_code_list", joinColumns = @JoinColumn(name = "biz_id"))
+    @CollectionTable(name = "city_code_list", joinColumns = @JoinColumn(name = "biz_id",referencedColumnName = "bizId"))
     @Enumerated(EnumType.STRING)
-    private Set<CityCode> cityCodes; // 지역 코드 - 구
+    private Set<CityCode> cityCodes=new HashSet<>(); // 지역 코드 - 구
 
     @Enumerated(EnumType.STRING)
     private PolicyCode policyCode; // 정책 유형
