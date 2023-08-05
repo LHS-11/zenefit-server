@@ -16,7 +16,7 @@ public enum EducationType {
     COLLEGE_STUDENT("대학 재학"), // 대학 재학
     COLLEGE_GRADUATION_EXPECTED("대졸 예정"), // 대졸 예정
     COLLEGE_GRADUATE("대학 졸업"), // 대학 졸업
-    POSTGRADUATE("석_박사"), // 석·박사
+    POSTGRADUATE("석박사"), // 석·박사
     UNLIMITED("제한없음"); // 제한없음
 
     private final String description;
