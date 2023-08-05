@@ -6,6 +6,7 @@ import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
 import com.cmc.zenefitserver.domain.user.domain.EducationType;
 import com.cmc.zenefitserver.domain.user.domain.JobType;
+import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import lombok.*;
 
 import javax.persistence.*;
@@ -99,6 +100,9 @@ public class Policy implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private PolicyCode policyCode; // 정책 유형
+
+    @OneToMany(mappedBy = "policy", fetch = FetchType.LAZY)
+    private Set<UserPolicy> userPolicies = new HashSet<>();
 
 
     private String supportType; // 지원 유형 -> GPT?

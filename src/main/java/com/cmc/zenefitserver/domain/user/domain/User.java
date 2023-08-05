@@ -3,6 +3,7 @@ package com.cmc.zenefitserver.domain.user.domain;
 
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
+import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import com.cmc.zenefitserver.global.auth.ProviderType;
 import com.cmc.zenefitserver.global.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -49,7 +50,7 @@ public class User extends BaseEntity {
     @ElementCollection
     @CollectionTable(name = "jobs", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<JobType> jobs;
+    private Set<JobType> jobs = new HashSet<>();
 
     @Column(name = "policy_cnt")
     private int policyCnt;
@@ -62,13 +63,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     @ToString.Exclude
     @JsonIgnore
-    private Set<Policy> policies = new HashSet<>();
-
-    // 관심 있는 정책
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
-    @ToString.Exclude
-    @JsonIgnore
-    private Set<Policy> favoritePolicies = new HashSet<>();
+    private Set<UserPolicy> userPolicies = new HashSet<>();
 
     @Column(name = "fcm_token")
     private String fcmToken;
@@ -83,6 +78,10 @@ public class User extends BaseEntity {
     @Column(name = "provider")
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
+
+    public void updateUserPolicy(UserPolicy userPolicy){
+        this.userPolicies.add(userPolicy);
+    }
 
     public void setUserDetail(UserDetail userDetail){
         this.userDetail = userDetail;
