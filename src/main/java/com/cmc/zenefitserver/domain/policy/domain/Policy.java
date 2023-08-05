@@ -4,21 +4,25 @@ package com.cmc.zenefitserver.domain.policy.domain;
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
-import com.cmc.zenefitserver.domain.user.domain.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.cmc.zenefitserver.domain.policy.domain.enums.PolicySplzType;
+import com.cmc.zenefitserver.domain.user.domain.EducationType;
+import com.cmc.zenefitserver.domain.user.domain.JobType;
+import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @ToString
 @Getter
 @Entity
 @Table(name = "policy", indexes = {
-        @Index(name ="idx_policy_biz_id", columnList = "bizId")
+        @Index(name = "idx_policy_biz_id", columnList = "bizId")
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Policy {
+public class Policy implements Serializable {
 
     @Id
     @SequenceGenerator(
@@ -44,12 +48,12 @@ public class Policy {
     private String ageInfo; // 9. 참여요건 - 나이
 
     @Column(columnDefinition = "TEXT")
-    private String employmentStatusContent; // 10. 취업상태내용
+    private String employmentStatusContent; // 10. 취업상태내용 - empmSttsCn
     @Column(columnDefinition = "TEXT")
-    private String specializedFieldContent; // 11. 특화분야내용
+    private String specializedFieldContent; // 11. 특화분야내용 - splzRlmRqisCn
 
     @Column(columnDefinition = "TEXT")
-    private String educationalRequirementContent; // 12. 학력요건내용
+    private String educationalRequirementContent; // 12. 학력요건내용 - accrRqisCn
 
     @Column(columnDefinition = "TEXT")
     private String residentialAndIncomeRequirementContent; // 13. 거주지 및 소득 조건 내용
@@ -71,45 +75,72 @@ public class Policy {
     @Column(columnDefinition = "TEXT")
     private String submissionDocumentContent; // 19. 제출서류 내용
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private User user;
-
     private int minAge; // 최소 나이
 
     private int maxAge; // 최대 나이
 
     @ElementCollection
-    @CollectionTable(name = "area_code_list", joinColumns = @JoinColumn(name = "biz_id"))
+    @CollectionTable(name = "policy_area_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
     @Enumerated(EnumType.STRING)
-    private Set<AreaCode> areaCodes; // 지역 코드 - 시,도
+    private Set<AreaCode> areaCodes = new HashSet<>(); // 지역 코드 - 시,도
 
     @ElementCollection
-    @CollectionTable(name = "city_code_list", joinColumns = @JoinColumn(name = "biz_id"))
+    @CollectionTable(name = "policy_city_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
     @Enumerated(EnumType.STRING)
-    private Set<CityCode> cityCodes; // 지역 코드 - 구
+    private Set<CityCode> cityCodes = new HashSet<>(); // 지역 코드 - 구
+
+    @ElementCollection
+    @CollectionTable(name = "policy_job_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
+    @Enumerated(EnumType.STRING)
+    private Set<JobType> jobTypes = new HashSet<>(); // 직업 유형
+
+    @ElementCollection
+    @CollectionTable(name = "policy_education_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
+    @Enumerated(EnumType.STRING)
+    private Set<EducationType> educationTypes = new HashSet<>(); // 학력 유형
+
+    @ElementCollection
+    @CollectionTable(name = "policy_splz_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
+    @Enumerated(EnumType.STRING)
+    private Set<PolicySplzType> policySplzTypes = new HashSet<>(); // 특화 분야 유형
 
     @Enumerated(EnumType.STRING)
     private PolicyCode policyCode; // 정책 유형
+
+    @OneToMany(mappedBy = "policy", fetch = FetchType.LAZY)
+    private Set<UserPolicy> userPolicies = new HashSet<>();
+
 
     private String supportType; // 지원 유형 -> GPT?
     private int benefitAmount; // 수혜 금액
 
     public void updateAgeInfo(int minAge, int maxAge) {
-        this.minAge=minAge;
+        this.minAge = minAge;
         this.maxAge = maxAge;
     }
 
-    public void updateAreaCode(AreaCode areaCode){
+    public void updateJobTypes(Set<JobType> jobTypes) {
+        this.jobTypes.addAll(jobTypes);
+    }
+
+    public void updateEducationTypes(Set<EducationType> educationTypes) {
+        this.educationTypes.addAll(educationTypes);
+    }
+
+    public void updateSplzTypes(Set<PolicySplzType> policySplzTypes){
+        this.policySplzTypes.addAll(policySplzTypes);
+    }
+
+    public void updateAreaCode(AreaCode areaCode) {
         this.areaCodes.add(areaCode);
     }
-    public void updateCityCode(CityCode cityCode){
+
+    public void updateCityCode(CityCode cityCode) {
         this.cityCodes.add(cityCode);
     }
 
     @Builder
-    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, User user, int minAge, int maxAge, Set<AreaCode> areaCodes, Set<CityCode> cityCodes, PolicyCode policyCode, String supportType, int benefitAmount) {
+    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, Set<AreaCode> areaCodes, Set<CityCode> cityCodes, PolicyCode policyCode, String supportType, int benefitAmount) {
         this.bizId = bizId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
@@ -129,7 +160,6 @@ public class Policy {
         this.referenceSiteUrlAddress = referenceSiteUrlAddress;
         this.applicationProcedureContent = applicationProcedureContent;
         this.submissionDocumentContent = submissionDocumentContent;
-        this.user = user;
         this.minAge = minAge;
         this.maxAge = maxAge;
         this.areaCodes = areaCodes;

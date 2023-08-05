@@ -16,7 +16,8 @@ public enum JobType {
     ENTREPRENEUR("창업자"), // (예비) 창업자
     SHORT_TERM_WORKER("단기근로자"), // 단기근로자
     FARMER("영농종사자"), // 영농종사자
-    UNLIMITED("제한없음"); // 제한없음
+    UNLIMITED("제한없음"), // 제한없음
+    ETC("기타");
 
     private final String description;
 
