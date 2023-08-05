@@ -4,6 +4,7 @@ package com.cmc.zenefitserver.domain.policy.domain;
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.PolicySplzType;
 import com.cmc.zenefitserver.domain.user.domain.EducationType;
 import com.cmc.zenefitserver.domain.user.domain.JobType;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
@@ -91,12 +92,17 @@ public class Policy implements Serializable {
     @ElementCollection
     @CollectionTable(name = "policy_job_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
     @Enumerated(EnumType.STRING)
-    private Set<JobType> jobTypes = new HashSet<>();
+    private Set<JobType> jobTypes = new HashSet<>(); // 직업 유형
 
     @ElementCollection
     @CollectionTable(name = "policy_education_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
     @Enumerated(EnumType.STRING)
-    private Set<EducationType> educationTypes = new HashSet<>();
+    private Set<EducationType> educationTypes = new HashSet<>(); // 학력 유형
+
+    @ElementCollection
+    @CollectionTable(name = "policy_splz_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
+    @Enumerated(EnumType.STRING)
+    private Set<PolicySplzType> policySplzTypes = new HashSet<>(); // 특화 분야 유형
 
     @Enumerated(EnumType.STRING)
     private PolicyCode policyCode; // 정책 유형
@@ -119,6 +125,10 @@ public class Policy implements Serializable {
 
     public void updateEducationTypes(Set<EducationType> educationTypes) {
         this.educationTypes.addAll(educationTypes);
+    }
+
+    public void updateSplzTypes(Set<PolicySplzType> policySplzTypes){
+        this.policySplzTypes.addAll(policySplzTypes);
     }
 
     public void updateAreaCode(AreaCode areaCode) {
