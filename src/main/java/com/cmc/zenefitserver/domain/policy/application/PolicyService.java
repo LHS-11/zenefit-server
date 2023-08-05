@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.HttpEntity;
 
-import javax.persistence.EntityManager;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
@@ -38,13 +37,14 @@ public class PolicyService {
     private String KEY;
 
     private final PolicyRepository policyRepository;
-    private final EntityManager em;
-    private final TimeExecutor timeExecutor;
     private final PolicyAgeClassifier policyAgeClassifier;
+    private final PolicyEmpmClassifier policyEmpmClassifier;
+    private final PolicyEduClassifier policyEduClassifier;
+    private final PolicySplzClassifier policySplzClassifier;
     private final RestTemplate restTemplate;
 
     @Transactional
-    public void savePolicyInfo(String url) {
+    public void savePolicyInfo() {
 
         try {
             List<Policy> getpolicies = getpolicies(URL, 50);
@@ -57,7 +57,7 @@ public class PolicyService {
 
     public List<Policy> getpolicies(String apiUrl, int limit) throws Exception {
         List<Policy> list = new ArrayList<>();
-        for (int pageIndex=1; pageIndex <= limit; pageIndex++) {
+        for (int pageIndex = 1; pageIndex <= limit; pageIndex++) {
             String xmlData = getXmlDataFromApi(apiUrl, String.valueOf(pageIndex));
             xmlData = removeInvalidCharacters(xmlData);
 
@@ -73,7 +73,6 @@ public class PolicyService {
             }
             List<Policy> policies = mapYouthPoliciesToPolicyList(youthPolicies);
             list.addAll(policies);
-//            System.out.println("pageIndex = " + pageIndex);
         }
         return list;
     }
@@ -103,6 +102,9 @@ public class PolicyService {
                                     .policyCode(PolicyCode.findPolicyCode(p.getPolyRlmCd()))
                                     .build();
 
+                            policy.updateJobTypes(policyEmpmClassifier.mapToJobTypesFromEmpmContent(p.getEmpmSttsCn()));
+                            policy.updateEducationTypes(policyEduClassifier.mapToEducationTypeFromEduContent(p.getAccrRqisCn()));
+                            policy.updateSplzTypes(policySplzClassifier.mapToSplzCodeFromSplzContent(p.getSplzRlmRqisCn()));
                             policyAgeClassifier.setMaxAgeAndMinAge(policy);
                             return policy;
                         }
@@ -119,21 +121,19 @@ public class PolicyService {
                 .queryParam("openApiVlak", KEY)
                 .queryParam("display", DISPLAY_CNT)
                 .queryParam("pageIndex", pageIndex);
-//        System.out.println("builder.toUriString() = " + builder.toUriString());
-
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
 
             String body = response.getBody();
-            if(body.contains("error")){
+            if (body.contains("error")) {
                 System.out.println("error 발생");
                 throw new RestClientException("error 발생");
             }
             return response.getBody();
 
-        }catch (RestClientException e){
+        } catch (RestClientException e) {
             return getXmlDataFromApi(apiUrl, pageIndex);
         }
 
