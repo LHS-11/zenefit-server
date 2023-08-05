@@ -1,10 +1,15 @@
 package com.cmc.zenefitserver.domain.user.application;
 
+import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
+import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.domain.UserDetail;
 import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
 import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
+import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
+import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
+import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicyType;
 import com.cmc.zenefitserver.global.auth.jwt.JwtService;
 import com.cmc.zenefitserver.global.common.request.TokenRequestDto;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
@@ -13,16 +18,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.cmc.zenefitserver.global.error.ErrorCode.DUPLICATE_EMAIL_PROVIDER;
-import static com.cmc.zenefitserver.global.error.ErrorCode.DUPLICATE_NICKNAME;
+import java.util.Set;
+
+import static com.cmc.zenefitserver.global.error.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PolicyRepository policyRepository;
+    private final UserPolicyRepository userPolicyRepository;
     private final JwtService jwtService;
 
+    // 회원가입
     public TokenResponseDto signUp(SignUpRequestDto signUpRequestDto) {
 
         // 닉네임 중복 여부 확인
@@ -59,6 +68,7 @@ public class UserService {
         return jwtService.createToken(new TokenRequestDto(savedUser));
     }
 
+    // 회원정보 수정
     @Transactional
     public User modify(ModifyRequestDto modifyRequestDto, User user) {
 
@@ -74,5 +84,23 @@ public class UserService {
         }
         findUser.update(modifyRequestDto);
         return findUser;
+    }
+
+    // 관심 정책 및 정책 추가하기
+    @Transactional
+    public void addPolicy(Long userId, Long policyId,UserPolicyType userPolicyType){
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
+
+        Policy policy = policyRepository.findById(policyId)
+                .orElseThrow(() -> new BusinessException(NOT_FOUND_POLICY));
+
+        UserPolicy userPolicy = UserPolicy.builder()
+                .user(user)
+                .policy(policy)
+                .userPolicyType(userPolicyType)
+                .build();
+
+        userPolicyRepository.save(userPolicy);
     }
 }
