@@ -32,14 +32,14 @@ public class AuthController {
         if(providerType==ProviderType.APPLE){
             result = authService.appleLogin(authRequestDto);
         }
-        log.info("==========================login end=4======================");
+        log.info("==========================login end=======================");
         return CommonResponse.success(result);
     }
 
-    @GetMapping
-    public String test(@RequestParam("code") String code){
-        return code;
-    }
+//    @GetMapping
+//    public String test(@RequestParam("code") String code){
+//        return code;
+//    }
 
 
 

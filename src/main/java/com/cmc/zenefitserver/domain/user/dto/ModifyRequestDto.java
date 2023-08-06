@@ -25,7 +25,7 @@ public class ModifyRequestDto {
     @ApiModelProperty(notes = "나이",example = "25")
     private Integer age;
 
-    @ApiModelProperty(notes = "주소",example = "서울시/강서구")
+    @ApiModelProperty(notes = "주소")
     private Address address;
 
     @ApiModelProperty(notes = "작년 소득",example = "50000000")

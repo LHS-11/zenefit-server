@@ -63,6 +63,8 @@ public class SecurityConfig {
 //                .antMatchers("/test/**").permitAll()
                 .antMatchers("/policy/**").permitAll()
                 .antMatchers("/user/signup").permitAll()
+                .antMatchers("/user/city").permitAll()
+                .antMatchers("/user/area").permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
