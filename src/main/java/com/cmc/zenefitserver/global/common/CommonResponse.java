@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.global.common;
 
+import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
@@ -36,5 +37,15 @@ public class CommonResponse<T> {
 
     public static <T> CommonResponse<T> failure(String code, String message, T data) {
         return new CommonResponse<>(code, false, message, data);
+    }
+
+    public static <T> CommonResponse<T> failure(ErrorCode errorCode) {
+        return new CommonResponse<>(errorCode.getCode(), false, errorCode.getMessage());
+    }
+
+    public CommonResponse(String code, boolean success, String message) {
+        this.code = code;
+        this.success = success;
+        this.message = message;
     }
 }
