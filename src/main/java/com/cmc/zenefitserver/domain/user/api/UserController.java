@@ -50,4 +50,18 @@ public class UserController {
         return CommonResponse.success(result);
     }
 
+    @GetMapping("/area")
+    @Operation(summary = "시/도 조회 API ",description = "회원가입시 지역 설정에서 시/도를 가져옵니다.")
+    public CommonResponse<List<String>> getAreaCode(){
+        List<String> result = userService.getAreaCodes();
+        return CommonResponse.success(result);
+    }
+
+    @GetMapping("/city")
+    @Operation(summary = "시/군/구 조회 API ",description = "회원가입시 지역 설정에서 시/군/구를 가져옵니다.")
+    public CommonResponse<List<String>> getCityCode(@RequestParam String area){
+        List<String> result = userService.getCityCodes(area);
+        return CommonResponse.success(result);
+    }
+
 }

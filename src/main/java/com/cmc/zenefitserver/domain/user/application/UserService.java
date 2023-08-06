@@ -2,6 +2,8 @@ package com.cmc.zenefitserver.domain.user.application;
 
 import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
+import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.domain.UserDetail;
@@ -18,7 +20,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.cmc.zenefitserver.global.error.ErrorCode.*;
 
@@ -102,5 +107,15 @@ public class UserService {
                 .build();
 
         userPolicyRepository.save(userPolicy);
+    }
+
+    // AreaCode 가져오기
+    public List<String> getAreaCodes(){
+        return Arrays.stream(AreaCode.values()).map(areaCode -> areaCode.getName()).collect(Collectors.toList());
+    }
+
+    // CityCode 가져오기
+    public List<String> getCityCodes(String areaCode){
+        return AreaCode.findCityCodes(areaCode);
     }
 }
