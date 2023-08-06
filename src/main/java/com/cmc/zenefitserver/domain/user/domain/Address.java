@@ -1,9 +1,9 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -15,10 +15,12 @@ import javax.validation.constraints.NotNull;
 public class Address {
 
     @NotNull
+    @ApiModelProperty(notes = "도시", example = "서울시")
     @Column(name = "city")
     private String city;
 
     @NotNull
+    @ApiModelProperty(notes = "구/군", example = "강서구")
     @Column(name = "district")
     private String district;
 
