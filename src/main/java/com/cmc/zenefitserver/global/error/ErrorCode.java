@@ -32,6 +32,7 @@ public enum ErrorCode {
     NOT_FOUND_USER("USER_001", "데이터베이스에 없는 유저입니다.", UNAUTHORIZED),
     DUPLICATE_NICKNAME("USER_002", "중복된 닉네임 입니다.", UNAUTHORIZED),
     DUPLICATE_EMAIL_PROVIDER("USER_003", "중복된 이메일과 소셜 타입입니다.", UNAUTHORIZED),
+    INVALID_NICKNAME("USER_004", "닉네임은 1~7자의 영문 대소문자, 숫자, 한글로만 입력해주세요.", UNAUTHORIZED),
 
     /**
      * POLICY 관련 오류
@@ -44,7 +45,9 @@ public enum ErrorCode {
     NOT_FOUND_GENDER_ENUM_VALUE("COMMON_001", "GENDER 가 올바르지 않은 값입니다.", UNAUTHORIZED),
     NOT_FOUND_EDUCATION_ENUM_VALUE("COMMON_002", "EDUCATION 이 올바르지 않은 값입니다.", UNAUTHORIZED),
     NOT_FOUND_JOB_ENUM_VALUE("COMMON_003", "JOB 이 올바르지 않은 값입니다.", UNAUTHORIZED),
-    NOT_FOUND_SPLZ_ENUM_VALUE("COMMON_003", "splzRlmRqisCn 이 올바르지 않은 값입니다.", UNAUTHORIZED);
+    NOT_FOUND_SPLZ_ENUM_VALUE("COMMON_003", "splzRlmRqisCn 이 올바르지 않은 값입니다.", UNAUTHORIZED),
+    NOT_FOUND_CITY_ENUM_VALUE("COMMON_004", "area 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
+    NOT_FOUND_PROVIDER_ENUM_VALUE("COMMON_005", "provider 값이 올바르지 않은 값입니다.", UNAUTHORIZED);
 
 
     private final String code;

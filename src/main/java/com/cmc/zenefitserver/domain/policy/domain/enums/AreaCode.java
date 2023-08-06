@@ -1,9 +1,13 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
+import com.cmc.zenefitserver.global.error.exception.BusinessException;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.cmc.zenefitserver.domain.policy.domain.enums.CityCode.*;
+import static com.cmc.zenefitserver.global.error.ErrorCode.NOT_FOUND_CITY_ENUM_VALUE;
 
 public enum AreaCode {
     SEOUL("003002001", "서울", Arrays.asList(
@@ -49,19 +53,19 @@ public enum AreaCode {
             GYEONGGI_UIWANG, GYEONGGI_HANAM, GYEONGGI_YONGIN, GYEONGGI_PAJU,
             GYEONGGI_ICHEON, GYEONGGI_ANSEONG, GYEONGGI_GIMPO, GYEONGGI_HWASEONG,
             GYEONGGI_GWANGJU, GYEONGGI_YANGJU, GYEONGGI_POCHUN, GYEONGGI_YEOJU,
-            GYEONGGI_YEONCHEON,GYEONGGI_GAPYEONG, GYEONGGI_YANGPYEONG
+            GYEONGGI_YEONCHEON, GYEONGGI_GAPYEONG, GYEONGGI_YANGPYEONG
     )),
     GANGWON("003002009", "강원", Arrays.asList(
             GANGWON_CHUNCHEON, GANGWON_WONJU, GANGWON_GANGNEUNG, GANGWON_DONGHAE,
             GANGWON_TAEBACK, GANGWON_SOCKCHO, GANGWON_SAMCHEOK, GANGWON_HONGCHEON,
             GANGWON_HOENGSEONG, GANGWON_YEONGWOL, GANGWON_PYOUNGCHANG, GANGWON_JEONGSEON,
             GANGWON_CHEORWON, GANGWON_HWACHEON, GANGWON_YANGGU, GANGWON_INJE,
-            GANGWON_GOSEONG,GANGWON_YANGYANG
+            GANGWON_GOSEONG, GANGWON_YANGYANG
     )),
     CHUNGBUK("003002010", "충북", Arrays.asList(
             CHUNGBUK_CHEONGJU, CHUNGBUK_CHUNGJU, CHUNGBUK_JECHEON, CHUNGBUK_BOEUN,
             CHUNGBUK_OKCHEON, CHUNGBUK_YEONGDONG, CHUNGBUK_JEUNGPYEONG, CHUNGBUK_JINCHEON,
-            CHUNGBUK_GOESAN,CHUNGBUK_EUMSEONG,CHUNGBUK_DANYANG
+            CHUNGBUK_GOESAN, CHUNGBUK_EUMSEONG, CHUNGBUK_DANYANG
     )),
     CHUNGNAM("003002011", "충남", Arrays.asList(
             CHUNGNAM_CHEONAN, CHUNGNAM_GONGJU, CHUNGNAM_BORYEONG, CHUNGNAM_ASAN,
@@ -80,13 +84,13 @@ public enum AreaCode {
             JEONNAM_GWANGYANG, JEONNAM_DAMYANG, JEONNAM_GOKSEONG, JEONNAM_GURYE,
             JEONNAM_GOHEUNG, JEONNAM_BOSEONG, JEONNAM_HWASUN, JEONNAM_JANGHEUNG,
             JEONNAM_GANGJIN, JEONNAM_HAENAM, JEONNAM_YEONGAM, JEONNAM_MUAN,
-            JEONNAM_HAMPYEONG, JEONNAM_YEONGGWANG,JEONNAM_JANGSEONG, JEONNAM_WANDO,
+            JEONNAM_HAMPYEONG, JEONNAM_YEONGGWANG, JEONNAM_JANGSEONG, JEONNAM_WANDO,
             JEONNAM_JINDO, JEONNAM_SINAN
     )),
     GYEONGBUK("003002014", "경북", Arrays.asList(
             GYEONGBUK_POHANG, GYEONGBUK_GYEONGJU, GYEONGBUK_GIMCHEON, GYEONGBUK_ANDONG,
             GYEONGBUK_GUMI, GYEONGBUK_YEONGJU, GYEONGBUK_YEONGCHUN, GYEONGBUK_SANGJU,
-            GYEONGBUK_MUNGYEONG, GYEONGBUK_GYEONGSAN,GYEONGBUK_UISEONG, GYEONGBUK_CHEONGSONG,
+            GYEONGBUK_MUNGYEONG, GYEONGBUK_GYEONGSAN, GYEONGBUK_UISEONG, GYEONGBUK_CHEONGSONG,
             GYEONGBUK_YEONGYANG, GYEONGBUK_YEONGDEOK, GYEONGBUK_CHEONGDO, GYEONGBUK_GORYEONG,
             GYEONGBUK_SEONGJU, GYEONGBUK_CHILGOK, GYEONGBUK_YECHEON, GYEONGBUK_BONGHWA,
             GYEONGBUK_ULJIN, GYEONGBUK_ULLEUNG
@@ -133,5 +137,15 @@ public enum AreaCode {
                 .filter(a -> a.getCode().equals(code))
                 .findFirst()
                 .orElseGet(null);
+    }
+
+    public static List<String> findCityCodes(String name) {
+        return Arrays.stream(AreaCode.values())
+                .filter(code -> code.getName().equals(name))
+                .findFirst()
+                .map(code -> code.getCities().stream()
+                        .map(cityCode -> cityCode.getName())
+                        .collect(Collectors.toList()))
+                .orElseThrow(() -> new BusinessException(NOT_FOUND_CITY_ENUM_VALUE));
     }
 }

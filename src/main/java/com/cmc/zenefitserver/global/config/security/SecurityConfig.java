@@ -61,7 +61,10 @@ public class SecurityConfig {
                 //권한이 필요한 요청에 대한 설정
                 .authorizeRequests()
 //                .antMatchers("/test/**").permitAll()
-                .antMatchers(("/user/signup")).permitAll()
+                .antMatchers("/policy/**").permitAll()
+                .antMatchers("/user/signup").permitAll()
+                .antMatchers("/user/city").permitAll()
+                .antMatchers("/user/area").permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
