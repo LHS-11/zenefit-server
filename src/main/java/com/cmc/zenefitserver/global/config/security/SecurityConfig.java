@@ -66,6 +66,7 @@ public class SecurityConfig {
                 .antMatchers("/user/city").permitAll()
                 .antMatchers("/user/area").permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/auth/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
 //                .headers().frameOptions().sameOrigin() // 같은 출처의 페이지만 현재 페이지를 프레임으로 사용할 수 있게 허용하는 설정 ( clickjacking 방지 )

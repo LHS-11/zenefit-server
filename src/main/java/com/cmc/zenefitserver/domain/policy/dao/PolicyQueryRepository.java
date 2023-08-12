@@ -30,7 +30,7 @@ public class PolicyQueryRepository {
     private final EntityManager em;
 
     public Slice<PolicyListResponseDto> searchBySlice(User user, Long lastPolicyId, SupportPolicyType supportPolicyType, PolicyCode policyCode, Pageable pageable) {
-        List<PolicyListResponseDto> results = jpaQueryFactory.select(
+        JPAQuery<PolicyListResponseDto> query = jpaQueryFactory.select(
                         Projections.constructor(PolicyListResponseDto.class,
                                 policy.id,
                                 policy.policyName,
@@ -48,15 +48,58 @@ public class PolicyQueryRepository {
                 .leftJoin(userPolicy)
                 .on(policy.id.eq(userPolicy.policy.id).and(userPolicy.user.userId.eq(user.getUserId())))
                 .where(
-                        ltPolicyId(lastPolicyId),
+                        ltPolicyId(lastPolicyId)
                         // 조건
 //                        policy.supportPolicyType.eq(supportPolicyType),
-                        policy.policyCode.eq(policyCode)
-                )
-                .orderBy(policySort(pageable))
+//                        policy.policyCode.eq(policyCode)
+                );
+
+        if (PolicyCode.NONE.getName() != policyCode.getName()) {
+            query.where(policy.policyCode.eq(policyCode));
+        }
+
+        List<PolicyListResponseDto> results = query.orderBy(policySort(pageable))
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
 
+        return checkLastPage(pageable, results);
+    }
+
+    public Slice<PolicyListResponseDto> searchBySlice(User user, Long lastPolicyId, SupportPolicyType supportPolicyType, PolicyCode policyCode, String keyword, Pageable pageable) {
+        JPAQuery<PolicyListResponseDto> query = jpaQueryFactory.select(
+                        Projections.constructor(PolicyListResponseDto.class,
+                                policy.id,
+                                policy.policyName,
+                                policy.policyApplyDenialReason,
+                                policy.agency,
+                                policy.agencyLogo,
+                                policy.policyIntroduction,
+                                policy.applyStatus,
+                                policy.benefit,
+                                ExpressionUtils.as(Expressions.constant(false), "applyFlag"),
+                                ExpressionUtils.as(Expressions.constant(false), "interestFlag")
+                        )
+                )
+                .from(policy)
+                .leftJoin(userPolicy)
+                .on(policy.id.eq(userPolicy.policy.id).and(userPolicy.user.userId.eq(user.getUserId())))
+                .where(
+                        ltPolicyId(lastPolicyId)
+                        // 조건
+//                        policy.supportPolicyType.eq(supportPolicyType),
+//                        policy.policyCode.eq(policyCode)
+                );
+
+        if (PolicyCode.NONE.getName() != policyCode.getName()) {
+            query.where(policy.policyCode.eq(policyCode));
+        }
+
+        if (keyword != null && !keyword.isBlank()) {
+            query.where(policy.policyName.containsIgnoreCase(keyword));
+        }
+        List<PolicyListResponseDto> results = query.orderBy(policySort(pageable))
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
         return checkLastPage(pageable, results);
     }
 

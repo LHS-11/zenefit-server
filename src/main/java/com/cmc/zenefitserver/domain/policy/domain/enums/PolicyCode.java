@@ -13,7 +13,8 @@ public enum PolicyCode {
     RESIDENCE("023020", "주거 분야"),
     EDUCATION("023030", "교육 분야"),
     WELFARE_CULTURE("023040", "복지.문화 분야"),
-    PARTICIPATION_RIGHT("023050", "참여.권리 분야");
+    PARTICIPATION_RIGHT("023050", "참여.권리 분야"),
+    NONE("", "전체 분야");
 
     private final String code;
     private final String name;
