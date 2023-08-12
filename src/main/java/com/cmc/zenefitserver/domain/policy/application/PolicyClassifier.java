@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class PolicyService {
+public class PolicyClassifier {
 
     public static final String URL = "https://www.youthcenter.go.kr/opi/youthPlcyList.do";
     public static final int DISPLAY_CNT = 100;
