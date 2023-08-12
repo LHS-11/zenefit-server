@@ -27,6 +27,10 @@ public class UserPolicy {
     @JoinColumn(name = "policy_id")
     private Policy policy;
 
+    private boolean applyFlag;
+
+    private boolean interestFlag;
+
     @Enumerated(EnumType.STRING)
     private UserPolicyType userPolicyType;
 
