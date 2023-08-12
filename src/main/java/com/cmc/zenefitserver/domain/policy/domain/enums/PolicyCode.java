@@ -1,5 +1,8 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
+import com.cmc.zenefitserver.global.error.ErrorCode;
+import com.cmc.zenefitserver.global.error.exception.BusinessException;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import java.util.Arrays;
 
@@ -25,6 +28,14 @@ public enum PolicyCode {
                 .filter(p -> p.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("정책 유형을 찾을 수 없습니다."));
+    }
+
+    @JsonCreator
+    public static PolicyCode fromString(String value){
+        return Arrays.stream(PolicyCode.values())
+                .filter(p -> p.name().equals(value))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_POLICY_TYPE_ENUM_VALUE));
     }
 
 }
