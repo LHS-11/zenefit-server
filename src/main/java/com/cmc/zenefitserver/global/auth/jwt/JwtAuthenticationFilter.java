@@ -36,11 +36,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
 
                 if(StringUtils.isNotBlank(jwt) && jwtService.validateToken(jwt)){
+                    System.out.println("validateToken = " + jwt);
                     Authentication authentication= jwtService.getAuthentication(request,jwt);
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
-                if(StringUtils.isNotBlank(jwt)){
+                } else if(StringUtils.isNotBlank(jwt)){
                     request.setAttribute("exception", ErrorCode.NOT_FOUND_TOKEN.getCode());
                     filterChain.doFilter(request, response);
                     return;
