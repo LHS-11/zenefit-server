@@ -75,4 +75,10 @@ public class UserPolicy {
             this.applyFlag = true;
         }
     }
+
+    public void setApplyFlagToFalse() {
+        if (this.applyFlag) {
+            this.applyFlag = false;
+        }
+    }
 }

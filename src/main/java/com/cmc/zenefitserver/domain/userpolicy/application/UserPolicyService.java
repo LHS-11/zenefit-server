@@ -132,4 +132,21 @@ public class UserPolicyService {
         }
 
     }
+
+    @Transactional
+    public void deleteApplyPolicy(User user, Long policyId) {
+        UserPolicy findUserPolicy = userPolicyRepository.findByUser_userIdAndPolicy_Id(user.getUserId(), policyId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER_POLICY));
+
+        // 관심 정책 X
+        if(!findUserPolicy.isInterestFlag()){
+            userPolicyRepository.delete(findUserPolicy);
+        }
+
+        // 관심 정책 O -> 수정
+        if(findUserPolicy.isInterestFlag()){
+            findUserPolicy.setApplyFlagToFalse();
+        }
+
+    }
 }
