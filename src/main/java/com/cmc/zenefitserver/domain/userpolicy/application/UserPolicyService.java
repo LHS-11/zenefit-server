@@ -6,7 +6,7 @@ import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
-import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListInfoResponse;
+import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListResponseDto;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -79,12 +79,12 @@ public class UserPolicyService {
         userPolicyRepository.save(findUserPolicy);
     }
 
-    public List<InterestPolicyListInfoResponse> getInterestPolicyList(User user) {
+    public List<InterestPolicyListResponseDto> getInterestPolicyList(User user) {
         return userPolicyRepository.findAllByUser_userIdAndInterestFlag(user.getUserId(), true)
                 .stream()
                 .map(entity -> {
                     Policy policy = entity.getPolicy();
-                    InterestPolicyListInfoResponse dto = InterestPolicyListInfoResponse.builder()
+                    InterestPolicyListResponseDto dto = InterestPolicyListResponseDto.builder()
                             .policyId(policy.getId())
                             .policyName(policy.getPolicyName())
                             .policyIntroduction(policy.getPolicyIntroduction())

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @ApiModel(description = "관심 정책 리스트 정보 조회 API response")
-public class InterestPolicyListInfoResponse {
+public class InterestPolicyListResponseDto {
 
     @ApiModelProperty(notes = "정책 ID",example = "12")
     private Long policyId;
@@ -34,7 +34,7 @@ public class InterestPolicyListInfoResponse {
     private String agencyLogo;
 
     @Builder
-    public InterestPolicyListInfoResponse(Long policyId, String policyName, String policyIntroduction, LocalDate policyEndDate, String agency, String agencyLogo) {
+    public InterestPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, LocalDate policyEndDate, String agency, String agencyLogo) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
