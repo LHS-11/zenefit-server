@@ -1,17 +1,11 @@
 package com.cmc.zenefitserver.domain.user.application;
 
-import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
-import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
-import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.domain.UserDetail;
 import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
 import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
-import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
-import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
-import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicyType;
 import com.cmc.zenefitserver.global.auth.jwt.JwtService;
 import com.cmc.zenefitserver.global.common.request.TokenRequestDto;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
@@ -22,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.cmc.zenefitserver.global.error.ErrorCode.*;
@@ -32,8 +25,6 @@ import static com.cmc.zenefitserver.global.error.ErrorCode.*;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PolicyRepository policyRepository;
-    private final UserPolicyRepository userPolicyRepository;
     private final JwtService jwtService;
 
     // 회원가입
@@ -92,30 +83,30 @@ public class UserService {
     }
 
     // 관심 정책 및 정책 추가하기
-    @Transactional
-    public void addPolicy(Long userId, Long policyId,UserPolicyType userPolicyType){
-        User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
-
-        Policy policy = policyRepository.findById(policyId)
-                .orElseThrow(() -> new BusinessException(NOT_FOUND_POLICY));
-
-        UserPolicy userPolicy = UserPolicy.builder()
-                .user(user)
-                .policy(policy)
-                .userPolicyType(userPolicyType)
-                .build();
-
-        userPolicyRepository.save(userPolicy);
-    }
+//    @Transactional
+//    public void addPolicy(Long userId, Long policyId,UserPolicyType userPolicyType){
+//        User user = userRepository.findByUserId(userId)
+//                .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
+//
+//        Policy policy = policyRepository.findById(policyId)
+//                .orElseThrow(() -> new BusinessException(NOT_FOUND_POLICY));
+//
+//        UserPolicy userPolicy = UserPolicy.builder()
+//                .user(user)
+//                .policy(policy)
+//                .userPolicyType(userPolicyType)
+//                .build();
+//
+//        userPolicyRepository.save(userPolicy);
+//    }
 
     // AreaCode 가져오기
-    public List<String> getAreaCodes(){
+    public List<String> getAreaCodes() {
         return Arrays.stream(AreaCode.values()).map(areaCode -> areaCode.getName()).collect(Collectors.toList());
     }
 
     // CityCode 가져오기
-    public List<String> getCityCodes(String areaCode){
+    public List<String> getCityCodes(String areaCode) {
         return AreaCode.findCityCodes(areaCode);
     }
 }
