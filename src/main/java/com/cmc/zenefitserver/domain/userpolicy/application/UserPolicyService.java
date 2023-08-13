@@ -6,6 +6,7 @@ import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
+import com.cmc.zenefitserver.domain.userpolicy.dto.ApplyPolicyListResponseDto;
 import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListResponseDto;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -95,5 +97,24 @@ public class UserPolicyService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    public List<ApplyPolicyListResponseDto> getApplyPolicyList(User user) {
+        return userPolicyRepository.findAllByUser_userIdAndApplyFlag(user.getUserId(), true)
+                .stream()
+                .map(entity -> {
+                    Policy policy = entity.getPolicy();
+                    ApplyPolicyListResponseDto dto = ApplyPolicyListResponseDto.builder()
+                            .policyId(policy.getId())
+                            .policyName(policy.getPolicyName())
+                            .policyIntroduction(policy.getPolicyIntroduction())
+                            .policyBenefit(policy.getBenefit())
+                            .policyAgency(policy.getAgency())
+                            .policyAgencyLogo(policy.getAgencyLogo())
+                            .build();
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
     }
 }
