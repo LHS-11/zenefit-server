@@ -40,14 +40,24 @@ public enum ErrorCode {
     NOT_FOUND_POLICY("POLICY_001", "데이터베이스에 없는 정책입니다.", UNAUTHORIZED),
 
     /**
+     * USER POLICY 관련 오류
+     */
+    NOT_FOUND_USER_POLICY("USER_POLICY_001", "데이터베이스에 없는 유저 정책입니다.", UNAUTHORIZED),
+
+
+
+    /**
      * Common 관련 오류
      */
-    NOT_FOUND_GENDER_ENUM_VALUE("COMMON_001", "GENDER 가 올바르지 않은 값입니다.", UNAUTHORIZED),
-    NOT_FOUND_EDUCATION_ENUM_VALUE("COMMON_002", "EDUCATION 이 올바르지 않은 값입니다.", UNAUTHORIZED),
-    NOT_FOUND_JOB_ENUM_VALUE("COMMON_003", "JOB 이 올바르지 않은 값입니다.", UNAUTHORIZED),
-    NOT_FOUND_SPLZ_ENUM_VALUE("COMMON_003", "splzRlmRqisCn 이 올바르지 않은 값입니다.", UNAUTHORIZED),
-    NOT_FOUND_CITY_ENUM_VALUE("COMMON_004", "area 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
-    NOT_FOUND_PROVIDER_ENUM_VALUE("COMMON_005", "provider 값이 올바르지 않은 값입니다.", UNAUTHORIZED);
+    NOT_FOUND_GENDER_ENUM_VALUE("COMMON_001", "gender 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
+    NOT_FOUND_EDUCATION_ENUM_VALUE("COMMON_002", "education 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
+    NOT_FOUND_JOB_ENUM_VALUE("COMMON_003", "job 이 올바르지 않은 값입니다.", UNAUTHORIZED),
+    NOT_FOUND_SPLZ_ENUM_VALUE("COMMON_004", "splzRlmRqisCn 이 올바르지 않은 값입니다.", UNAUTHORIZED),
+    NOT_FOUND_AREA_ENUM_VALUE("COMMON_005", "area 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
+    NOT_FOUND_PROVIDER_TYPE_ENUM_VALUE("COMMON_006", "providerType 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
+    NOT_FOUND_SUPPORT_POLICY_TYPE_ENUM_VALUE("COMMON_007", "supportPolicyType 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
+    NOT_FOUND_POLICY_TYPE_ENUM_VALUE("COMMON_008", "policyType 값이 올바르지 않은 값입니다.", UNAUTHORIZED);;
+
 
 
     private final String code;

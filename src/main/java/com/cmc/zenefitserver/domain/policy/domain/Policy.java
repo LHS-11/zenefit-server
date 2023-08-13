@@ -1,10 +1,7 @@
 package com.cmc.zenefitserver.domain.policy.domain;
 
 
-import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
-import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
-import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
-import com.cmc.zenefitserver.domain.policy.domain.enums.PolicySplzType;
+import com.cmc.zenefitserver.domain.policy.domain.enums.*;
 import com.cmc.zenefitserver.domain.user.domain.EducationType;
 import com.cmc.zenefitserver.domain.user.domain.JobType;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
@@ -107,12 +104,22 @@ public class Policy implements Serializable {
     @Enumerated(EnumType.STRING)
     private PolicyCode policyCode; // 정책 유형
 
+    @Enumerated(EnumType.STRING)
+    private SupportPolicyType supportPolicyType; // 지원 정책 유형
+
+    private String agency; // 기관
+
+    private String agencyLogo; // 임시 기관 로고
+
+    private String policyApplyDenialReason; // 신청 불가 사유
+
+    private String applyStatus; // 신청 가능 상태
+
+
     @OneToMany(mappedBy = "policy", fetch = FetchType.LAZY)
     private Set<UserPolicy> userPolicies = new HashSet<>();
 
-
-    private String supportType; // 지원 유형 -> GPT?
-    private int benefitAmount; // 수혜 금액
+    private int benefit; // 수혜 금액
 
     public void updateAgeInfo(int minAge, int maxAge) {
         this.minAge = minAge;
@@ -140,7 +147,7 @@ public class Policy implements Serializable {
     }
 
     @Builder
-    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, Set<AreaCode> areaCodes, Set<CityCode> cityCodes, PolicyCode policyCode, String supportType, int benefitAmount) {
+    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, Set<AreaCode> areaCodes, Set<CityCode> cityCodes, PolicyCode policyCode, SupportPolicyType supportPolicyType, int benefit, String agency) {
         this.bizId = bizId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
@@ -165,7 +172,8 @@ public class Policy implements Serializable {
         this.areaCodes = areaCodes;
         this.cityCodes = cityCodes;
         this.policyCode = policyCode;
-        this.supportType = supportType;
-        this.benefitAmount = benefitAmount;
+        this.supportPolicyType = supportPolicyType;
+        this.benefit = benefit;
+        this.agency = agency;
     }
 }

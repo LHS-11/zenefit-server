@@ -2,10 +2,7 @@ package com.cmc.zenefitserver.domain.userpolicy.domain;
 
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.user.domain.User;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -27,31 +24,61 @@ public class UserPolicy {
     @JoinColumn(name = "policy_id")
     private Policy policy;
 
+    private boolean applyFlag;
+
+    private boolean interestFlag;
+
     @Enumerated(EnumType.STRING)
     private UserPolicyType userPolicyType;
 
     @Builder
-    public UserPolicy(User user, Policy policy,UserPolicyType userPolicyType){
+    public UserPolicy(User user, Policy policy, boolean applyFlag, boolean interestFlag, UserPolicyType userPolicyType) {
         this.user = user;
         this.policy = policy;
+        this.applyFlag = applyFlag;
+        this.interestFlag = interestFlag;
         this.userPolicyType = userPolicyType;
     }
 
-    public void updateUserPolicy(User user, Policy policy){
+    public void updateUserPolicy(User user, Policy policy) {
         updateUser(user);
         updatePolicy(policy);
     }
-    public void updateUser(User user){
+
+    public void updateUser(User user) {
         this.user = user;
     }
 
-    public void updatePolicy(Policy policy){
+    public void updatePolicy(Policy policy) {
         this.policy = policy;
     }
 
-    public void updatePolicyType(UserPolicyType userPolicyType){
+    public void updatePolicyType(UserPolicyType userPolicyType) {
         this.userPolicyType = userPolicyType;
     }
 
 
+    public void setInterestFlagToTrue() {
+        if (!this.interestFlag) {
+            this.interestFlag = true;
+        }
+    }
+
+    public void setInterestFlagToFalse() {
+        if (this.interestFlag) {
+            this.interestFlag = false;
+        }
+    }
+
+    public void setApplyFlagToTrue() {
+        if (!this.applyFlag) {
+            this.applyFlag = true;
+        }
+    }
+
+    public void setApplyFlagToFalse() {
+        if (this.applyFlag) {
+            this.applyFlag = false;
+        }
+    }
 }

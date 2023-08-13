@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.cmc.zenefitserver.domain.policy.domain.enums.CityCode.*;
-import static com.cmc.zenefitserver.global.error.ErrorCode.NOT_FOUND_CITY_ENUM_VALUE;
+import static com.cmc.zenefitserver.global.error.ErrorCode.NOT_FOUND_AREA_ENUM_VALUE;
 
 public enum AreaCode {
     SEOUL("003002001", "서울", Arrays.asList(
@@ -146,6 +146,6 @@ public enum AreaCode {
                 .map(code -> code.getCities().stream()
                         .map(cityCode -> cityCode.getName())
                         .collect(Collectors.toList()))
-                .orElseThrow(() -> new BusinessException(NOT_FOUND_CITY_ENUM_VALUE));
+                .orElseThrow(() -> new BusinessException(NOT_FOUND_AREA_ENUM_VALUE));
     }
 }

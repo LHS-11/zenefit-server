@@ -1,150 +1,70 @@
 package com.cmc.zenefitserver.domain.policy.application;
 
+import com.cmc.zenefitserver.domain.policy.dao.PolicyQueryRepository;
 import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
-import com.cmc.zenefitserver.domain.policy.domain.YouthPolicyList;
-import com.cmc.zenefitserver.domain.policy.domain.YouthPolicy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
+import com.cmc.zenefitserver.domain.policy.dto.PolicyInfoResponseDto;
+import com.cmc.zenefitserver.domain.policy.dto.PolicyListRequestDto;
+import com.cmc.zenefitserver.domain.policy.dto.PolicyListResponseDto;
+import com.cmc.zenefitserver.domain.policy.dto.SearchPolicyListRequestDto;
+import com.cmc.zenefitserver.domain.user.domain.User;
+import com.cmc.zenefitserver.global.error.ErrorCode;
+import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.http.HttpEntity;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class PolicyService {
 
-    public static final String URL = "https://www.youthcenter.go.kr/opi/youthPlcyList.do";
-    public static final int DISPLAY_CNT = 100;
-
-    @Value("${policy.api-key}")
-    private String KEY;
-
+    private final PolicyQueryRepository policyQueryRepository;
     private final PolicyRepository policyRepository;
-    private final PolicyAgeClassifier policyAgeClassifier;
-    private final PolicyEmpmClassifier policyEmpmClassifier;
-    private final PolicyEduClassifier policyEduClassifier;
-    private final PolicySplzClassifier policySplzClassifier;
-    private final RestTemplate restTemplate;
 
-    @Transactional
-    public void savePolicyInfo() {
-
-        try {
-            List<Policy> getpolicies = getpolicies(URL, 50);
-            policyRepository.saveAll(getpolicies);
-        } catch (Exception e) {
-            System.out.println("e.getMessage() = " + e.getMessage());
-            e.printStackTrace();
-        }
+    // 정책 리스트 조회 비즈니스 로직
+    public Slice<PolicyListResponseDto> getPolicyList(User user, PolicyListRequestDto policyListRequestDto, Pageable pageable) {
+        return policyQueryRepository.searchBySlice(
+                user,
+                policyListRequestDto.getLastPolicyId(),
+                SupportPolicyType.fromString(policyListRequestDto.getSupportPolicyType()),
+                PolicyCode.fromString(policyListRequestDto.getPolicyType()),
+                pageable);
     }
 
-    public List<Policy> getpolicies(String apiUrl, int limit) throws Exception {
-        List<Policy> list = new ArrayList<>();
-        for (int pageIndex = 1; pageIndex <= limit; pageIndex++) {
-            String xmlData = getXmlDataFromApi(apiUrl, String.valueOf(pageIndex));
-            xmlData = removeInvalidCharacters(xmlData);
-
-            JAXBContext jaxbContext = JAXBContext.newInstance(YouthPolicyList.class);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-
-            InputStream inputStream = new ByteArrayInputStream(xmlData.getBytes(StandardCharsets.UTF_8));
-            YouthPolicyList youthPolicyList = (YouthPolicyList) unmarshaller.unmarshal(inputStream);
-            YouthPolicy[] youthPolicies = youthPolicyList.getYouthPolicies();
-
-            if (youthPolicies == null) {
-                break;
-            }
-            List<Policy> policies = mapYouthPoliciesToPolicyList(youthPolicies);
-            list.addAll(policies);
-        }
-        return list;
+    public Slice<PolicyListResponseDto> getSearchPolicyList(User user, SearchPolicyListRequestDto searchPolicyDto, Pageable pageable) {
+        return policyQueryRepository.searchBySlice(
+                user,
+                searchPolicyDto.getLastPolicyId(),
+                SupportPolicyType.fromString(searchPolicyDto.getSupportPolicyType()),
+                PolicyCode.fromString(searchPolicyDto.getPolicyType()),
+                searchPolicyDto.getKeyword(),
+                pageable);
     }
 
-    private List<Policy> mapYouthPoliciesToPolicyList(YouthPolicy[] youthPolicies) {
-        List<Policy> policies = Arrays.stream(youthPolicies)
-                .map(p -> {
-                            Policy policy = Policy.builder()
-                                    .bizId(p.getBizId())
-                                    .policyName(p.getPolyBizSjnm())
-                                    .policyIntroduction(p.getPolyItcnCn())
-                                    .operatingAgencyName(p.getCnsgNmor())
-                                    .applicationPeriodContent(p.getRqutPrdCn())
-                                    .organizationType(p.getPolyBizTy())
-                                    .supportContent(p.getSporCn())
-                                    .ageInfo(p.getAgeInfo())
-                                    .employmentStatusContent(p.getEmpmSttsCn())
-                                    .specializedFieldContent(p.getSplzRlmRqisCn())
-                                    .educationalRequirementContent(p.getAccrRqisCn())
-                                    .residentialAndIncomeRequirementContent(p.getPrcpCn())
-                                    .additionalClauseContent(p.getAditRscn())
-                                    .eligibilityTargetContent(p.getPrcpLmttTrgtCn())
-                                    .applicationSiteAddress(p.getJdgnPresCn())
-                                    .referenceSiteUrlAddress(p.getRfcSiteUrla1())
-                                    .applicationProcedureContent(p.getRqutProcCn())
-                                    .submissionDocumentContent(p.getPstnPaprCn())
-                                    .policyCode(PolicyCode.findPolicyCode(p.getPolyRlmCd()))
-                                    .build();
+    public PolicyInfoResponseDto getPolicy(User user,Long policyId){
+        Policy policy = policyRepository.findById(policyId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_POLICY));
 
-                            policy.updateJobTypes(policyEmpmClassifier.mapToJobTypesFromEmpmContent(p.getEmpmSttsCn()));
-                            policy.updateEducationTypes(policyEduClassifier.mapToEducationTypeFromEduContent(p.getAccrRqisCn()));
-                            policy.updateSplzTypes(policySplzClassifier.mapToSplzCodeFromSplzContent(p.getSplzRlmRqisCn()));
-                            policyAgeClassifier.setMaxAgeAndMinAge(policy);
-                            return policy;
-                        }
-                )
-                .collect(Collectors.toList());
-        return policies;
+        // 신청 불가 사유 로직
+        String denialReason = "null";
+
+
+        PolicyInfoResponseDto dto = PolicyInfoResponseDto.builder()
+                .policyId(policy.getId())
+                .policyName(policy.getPolicyName())
+                .policyIntroduction(policy.getPolicyIntroduction())
+                .policyApplyDenialReason(denialReason)
+                .policyApplyDocument(policy.getSubmissionDocumentContent())
+                .policyApplyMethod(policy.getApplicationProcedureContent())
+                .policyApplyDate(policy.getApplicationPeriodContent())
+                .applicationSite(policy.getApplicationSiteAddress())
+                .referenceSite(policy.getReferenceSiteUrlAddress())
+                .build();
+
+        return dto;
     }
-
-    public String getXmlDataFromApi(String apiUrl, String pageIndex) throws IOException {
-
-        HttpHeaders headers = new HttpHeaders();
-
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(apiUrl)
-                .queryParam("openApiVlak", KEY)
-                .queryParam("display", DISPLAY_CNT)
-                .queryParam("pageIndex", pageIndex);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
-
-            String body = response.getBody();
-            if (body.contains("error")) {
-                System.out.println("error 발생");
-                throw new RestClientException("error 발생");
-            }
-            return response.getBody();
-
-        } catch (RestClientException e) {
-            return getXmlDataFromApi(apiUrl, pageIndex);
-        }
-
-    }
-
-    private static String removeInvalidCharacters(String xmlData) {
-        if (xmlData == null) {
-            return null;
-        }
-        // 유효하지 않은 문자(범위 [0x00-0x08], [0x0B-0x0C], [0x0E-0x1F])를 삭제
-        return xmlData.replaceAll("[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]", "");
-    }
-
 }
+
