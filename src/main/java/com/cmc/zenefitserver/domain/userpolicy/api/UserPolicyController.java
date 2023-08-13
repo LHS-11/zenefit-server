@@ -42,4 +42,10 @@ public class UserPolicyController {
         List<ApplyPolicyListResponseDto> result= userPolicyService.getApplyPolicyList(user);
         return CommonResponse.success(result);
     }
+
+    @DeleteMapping("{policyId}")
+    public CommonResponse<String> deleteInterestPolicy(@AuthUser User user,@PathVariable Long policyId){
+        userPolicyService.deleteInterestPolicy(user, policyId);
+        return CommonResponse.success(null);
+    }
 }

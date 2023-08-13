@@ -40,6 +40,13 @@ public enum ErrorCode {
     NOT_FOUND_POLICY("POLICY_001", "데이터베이스에 없는 정책입니다.", UNAUTHORIZED),
 
     /**
+     * USER POLICY 관련 오류
+     */
+    NOT_FOUND_USER_POLICY("USER_POLICY_001", "데이터베이스에 없는 유저 정책입니다.", UNAUTHORIZED),
+
+
+
+    /**
      * Common 관련 오류
      */
     NOT_FOUND_GENDER_ENUM_VALUE("COMMON_001", "gender 값이 올바르지 않은 값입니다.", UNAUTHORIZED),

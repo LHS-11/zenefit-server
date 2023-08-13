@@ -51,7 +51,6 @@ public class UserPolicyService {
             findUserPolicy.setInterestFlagToTrue();
         }
 
-        System.out.println("findUserPolicy = " + findUserPolicy);
         userPolicyRepository.save(findUserPolicy);
     }
 
@@ -77,7 +76,6 @@ public class UserPolicyService {
             findUserPolicy.setApplyFlagToTrue();
         }
 
-        System.out.println("findUserPolicy = " + findUserPolicy);
         userPolicyRepository.save(findUserPolicy);
     }
 
@@ -115,6 +113,23 @@ public class UserPolicyService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+
+    }
+
+    @Transactional
+    public void deleteInterestPolicy(User user, Long policyId) {
+        UserPolicy findUserPolicy = userPolicyRepository.findByUser_userIdAndPolicy_Id(user.getUserId(), policyId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER_POLICY));
+
+        // 수혜 정책 X -> delete
+        if(!findUserPolicy.isApplyFlag()){
+            userPolicyRepository.delete(findUserPolicy);
+        }
+
+        // 수혜 정책 O -> 수정
+        if(findUserPolicy.isApplyFlag()){
+            findUserPolicy.setInterestFlagToFalse();
+        }
 
     }
 }

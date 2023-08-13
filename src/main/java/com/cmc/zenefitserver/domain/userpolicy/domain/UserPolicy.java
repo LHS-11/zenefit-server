@@ -64,6 +64,12 @@ public class UserPolicy {
         }
     }
 
+    public void setInterestFlagToFalse() {
+        if (this.interestFlag) {
+            this.interestFlag = false;
+        }
+    }
+
     public void setApplyFlagToTrue() {
         if (!this.applyFlag) {
             this.applyFlag = true;
