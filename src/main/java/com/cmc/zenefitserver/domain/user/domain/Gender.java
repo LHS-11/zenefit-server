@@ -4,12 +4,14 @@ import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 
 import java.util.Arrays;
 
+@Getter
 public enum Gender {
-    MALE("MALE"),
-    FEMALE("FEMALE");
+    MALE("남성"),
+    FEMALE("여성");
 
     private String description;
 

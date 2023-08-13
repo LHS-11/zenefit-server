@@ -7,6 +7,7 @@ import com.cmc.zenefitserver.domain.user.domain.UserDetail;
 import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
 import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
 import com.cmc.zenefitserver.domain.user.dto.SocialInfoResponseDto;
+import com.cmc.zenefitserver.domain.user.dto.UserInfoResponseDto;
 import com.cmc.zenefitserver.global.auth.jwt.JwtService;
 import com.cmc.zenefitserver.global.common.request.TokenRequestDto;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
@@ -115,6 +116,25 @@ public class UserService {
         return SocialInfoResponseDto.builder()
                 .email(user.getEmail())
                 .provider(user.getProvider())
+                .build();
+    }
+
+    public UserInfoResponseDto getUserInfo(User user) {
+        return UserInfoResponseDto.builder()
+                .nickname(user.getNickname())
+                .age(user.getAge())
+                .area(user.getAddress().getCity())
+                .city(user.getAddress().getDistrict())
+                .lastYearIncome(user.getLastYearIncome())
+                .educationType(user.getEducationType().getDescription())
+                .jobs(user.getJobs().stream().map(jobType -> jobType.getDescription()).collect(Collectors.toSet()))
+                .gender(user.getUserDetail().getGender().getDescription())
+                .smallBusiness(user.getUserDetail().isSmallBusiness())
+                .soldier(user.getUserDetail().isSoldier())
+                .lowIncome(user.getUserDetail().isLowIncome())
+                .disabled(user.getUserDetail().isDisabled())
+                .localTalent(user.getUserDetail().isLocalTalent())
+                .farmer(user.getUserDetail().isFarmer())
                 .build();
     }
 }

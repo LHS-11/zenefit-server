@@ -12,8 +12,7 @@ import org.springframework.validation.annotation.Validated;
 @ToString
 @Getter
 @NoArgsConstructor
-@Validated
-@ApiModel(description = "이메일 (소셜 로그인 정보) 조회 API")
+@ApiModel(description = "소셜 로그인 정보 (이메일) 조회 API response")
 public class SocialInfoResponseDto {
 
     @ApiModelProperty(notes = "소셜 로그인 이메일",example = "adwada@naver.com")
