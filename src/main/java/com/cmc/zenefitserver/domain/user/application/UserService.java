@@ -6,6 +6,7 @@ import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.domain.UserDetail;
 import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
 import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
+import com.cmc.zenefitserver.domain.user.dto.SocialInfoResponseDto;
 import com.cmc.zenefitserver.global.auth.jwt.JwtService;
 import com.cmc.zenefitserver.global.common.request.TokenRequestDto;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
@@ -108,5 +109,12 @@ public class UserService {
     // CityCode 가져오기
     public List<String> getCityCodes(String areaCode) {
         return AreaCode.findCityCodes(areaCode);
+    }
+
+    public SocialInfoResponseDto getSocialInfo(User user) {
+        return SocialInfoResponseDto.builder()
+                .email(user.getEmail())
+                .provider(user.getProvider())
+                .build();
     }
 }

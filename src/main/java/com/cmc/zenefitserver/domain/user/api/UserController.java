@@ -2,6 +2,7 @@ package com.cmc.zenefitserver.domain.user.api;
 
 import com.cmc.zenefitserver.domain.user.application.UserService;
 import com.cmc.zenefitserver.domain.user.domain.User;
+import com.cmc.zenefitserver.domain.user.dto.SocialInfoResponseDto;
 import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
 import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
@@ -61,6 +62,12 @@ public class UserController {
     @Operation(summary = "시/군/구 조회 API ",description = "회원가입시 지역 설정에서 시/군/구를 가져옵니다.")
     public CommonResponse<List<String>> getCityCode(@RequestParam String area){
         List<String> result = userService.getCityCodes(area);
+        return CommonResponse.success(result);
+    }
+
+    @GetMapping("/social")
+    public CommonResponse<SocialInfoResponseDto> getSocialInfo(@AuthUser User user){
+        SocialInfoResponseDto result = userService.getSocialInfo(user);
         return CommonResponse.success(result);
     }
 
