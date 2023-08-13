@@ -22,4 +22,11 @@ public class UserPolicyController {
         userPolicyService.saveInterestPolicy(user,policyId);
         return CommonResponse.success(null);
     }
+
+    @PostMapping("/apply/{policyId}")
+    public CommonResponse<String> saveApplyPolicy(@AuthUser User user,@PathVariable Long policyId){
+        userPolicyService.saveApplyPolicy(user, policyId);
+        return CommonResponse.success(null);
+    }
+
 }

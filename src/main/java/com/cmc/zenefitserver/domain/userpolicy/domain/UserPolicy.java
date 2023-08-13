@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserPolicy {
 
@@ -62,6 +61,12 @@ public class UserPolicy {
     public void setInterestFlagToTrue() {
         if (!this.interestFlag) {
             this.interestFlag = true;
+        }
+    }
+
+    public void setApplyFlagToTrue() {
+        if (!this.applyFlag) {
+            this.applyFlag = true;
         }
     }
 }

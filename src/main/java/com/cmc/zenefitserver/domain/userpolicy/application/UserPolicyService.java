@@ -48,4 +48,29 @@ public class UserPolicyService {
         userPolicyRepository.save(findUserPolicy);
     }
 
+    public void saveApplyPolicy(User user, Long policyId) {
+        User findUser = userRepository.findByUserId(user.getUserId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER));
+
+        Policy findPolicy = policyRepository.findById(policyId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_POLICY));
+
+        UserPolicy findUserPolicy = userPolicyRepository.findByUser_userIdAndPolicy_Id(findUser.getUserId(), findPolicy.getId())
+                .orElse(null);
+
+        if (findUserPolicy == null) {
+            findUserPolicy = UserPolicy.builder()
+                    .user(findUser)
+                    .policy(findPolicy)
+                    .applyFlag(true)
+                    .build();
+        }
+
+        if(findUserPolicy != null){
+            findUserPolicy.setApplyFlagToTrue();
+        }
+
+        System.out.println("findUserPolicy = " + findUserPolicy);
+        userPolicyRepository.save(findUserPolicy);
+    }
 }
