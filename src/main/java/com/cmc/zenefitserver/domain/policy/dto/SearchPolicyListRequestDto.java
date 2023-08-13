@@ -12,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
 @Getter
 @NoArgsConstructor
 @Validated
-@ApiModel(description = "정책 리스트 조회 API request")
+@ApiModel(description = "정책 리스트 검색 API request")
 public class SearchPolicyListRequestDto {
 
     @ApiModelProperty(notes = "페이징처리 마지막 정책 ID",example = "20")
