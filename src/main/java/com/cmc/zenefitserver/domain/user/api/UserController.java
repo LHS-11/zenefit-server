@@ -2,8 +2,10 @@ package com.cmc.zenefitserver.domain.user.api;
 
 import com.cmc.zenefitserver.domain.user.application.UserService;
 import com.cmc.zenefitserver.domain.user.domain.User;
+import com.cmc.zenefitserver.domain.user.dto.SocialInfoResponseDto;
 import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
 import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
+import com.cmc.zenefitserver.domain.user.dto.UserInfoResponseDto;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
@@ -64,4 +66,17 @@ public class UserController {
         return CommonResponse.success(result);
     }
 
+    @GetMapping("/social")
+    @Operation(summary = "소셜 로그인 정보 (이메일) 조회 API",description = "설정에서 로그인 정보를 조회할 때 사용합니다.")
+    public CommonResponse<SocialInfoResponseDto> getSocialInfo(@AuthUser User user){
+        SocialInfoResponseDto result = userService.getSocialInfo(user);
+        return CommonResponse.success(result);
+    }
+
+    @GetMapping
+    @Operation(summary = "개인 유저 정보 조회 API",description = "설정에서 개인정보 조회시 해당 유저 정보를 가져옵니다.")
+    public CommonResponse<UserInfoResponseDto> getUserInfo(@AuthUser User user){
+        UserInfoResponseDto result= userService.getUserInfo(user);
+        return CommonResponse.success(result);
+    }
 }

@@ -11,7 +11,6 @@ import org.springframework.validation.annotation.Validated;
 @ToString
 @Getter
 @NoArgsConstructor
-@Validated
 @ApiModel(description = "정책 리스트 검색 API request")
 public class SearchPolicyListRequestDto {
 
