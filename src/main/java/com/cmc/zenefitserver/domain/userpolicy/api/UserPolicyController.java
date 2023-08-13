@@ -2,13 +2,13 @@ package com.cmc.zenefitserver.domain.userpolicy.api;
 
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.userpolicy.application.UserPolicyService;
+import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListInfoResponse;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/user/policy")
@@ -29,4 +29,9 @@ public class UserPolicyController {
         return CommonResponse.success(null);
     }
 
+    @GetMapping
+    public CommonResponse<List<InterestPolicyListInfoResponse>> getInterestPolices(@AuthUser User user){
+        List<InterestPolicyListInfoResponse> result= userPolicyService.getInterestPolicyList(user);
+        return CommonResponse.success(result);
+    }
 }

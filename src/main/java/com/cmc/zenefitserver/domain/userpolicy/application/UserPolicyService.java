@@ -6,11 +6,16 @@ import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
+import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListInfoResponse;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -72,5 +77,23 @@ public class UserPolicyService {
 
         System.out.println("findUserPolicy = " + findUserPolicy);
         userPolicyRepository.save(findUserPolicy);
+    }
+
+    public List<InterestPolicyListInfoResponse> getInterestPolicyList(User user) {
+        return userPolicyRepository.findAllByUser_userIdAndInterestFlag(user.getUserId(), true)
+                .stream()
+                .map(entity -> {
+                    Policy policy = entity.getPolicy();
+                    InterestPolicyListInfoResponse dto = InterestPolicyListInfoResponse.builder()
+                            .policyId(policy.getId())
+                            .policyName(policy.getPolicyName())
+                            .policyIntroduction(policy.getPolicyIntroduction())
+                            .policyEndDate(LocalDate.of(2023,2,12))
+                            .agency("임시 기관")
+                            .agencyLogo("임시 기관 로고")
+                            .build();
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 }
