@@ -9,6 +9,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -115,6 +116,10 @@ public class Policy implements Serializable {
 
     private String applyStatus; // 신청 가능 상태
 
+    private LocalDate sttDate; // 신청 시작일
+
+    private LocalDate endDate; // 신청 종료일
+
 
     @OneToMany(mappedBy = "policy", fetch = FetchType.LAZY)
     private Set<UserPolicy> userPolicies = new HashSet<>();
@@ -134,7 +139,7 @@ public class Policy implements Serializable {
         this.educationTypes.addAll(educationTypes);
     }
 
-    public void updateSplzTypes(Set<PolicySplzType> policySplzTypes){
+    public void updateSplzTypes(Set<PolicySplzType> policySplzTypes) {
         this.policySplzTypes.addAll(policySplzTypes);
     }
 
@@ -147,7 +152,7 @@ public class Policy implements Serializable {
     }
 
     @Builder
-    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, Set<AreaCode> areaCodes, Set<CityCode> cityCodes, PolicyCode policyCode, SupportPolicyType supportPolicyType, int benefit, String agency) {
+    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, Set<AreaCode> areaCodes, Set<CityCode> cityCodes, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, SupportPolicyType supportPolicyType, String agency, String agencyLogo, String policyApplyDenialReason, String applyStatus, LocalDate sttDate, LocalDate endDate, Set<UserPolicy> userPolicies, int benefit) {
         this.bizId = bizId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
@@ -173,7 +178,13 @@ public class Policy implements Serializable {
         this.cityCodes = cityCodes;
         this.policyCode = policyCode;
         this.supportPolicyType = supportPolicyType;
-        this.benefit = benefit;
         this.agency = agency;
+        this.agencyLogo = agencyLogo;
+        this.policyApplyDenialReason = policyApplyDenialReason;
+        this.applyStatus = applyStatus;
+        this.sttDate = sttDate;
+        this.endDate = endDate;
+        this.userPolicies = userPolicies;
+        this.benefit = benefit;
     }
 }
