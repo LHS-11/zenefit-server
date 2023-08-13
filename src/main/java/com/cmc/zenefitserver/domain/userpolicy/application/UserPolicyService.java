@@ -89,8 +89,8 @@ public class UserPolicyService {
                             .policyName(policy.getPolicyName())
                             .policyIntroduction(policy.getPolicyIntroduction())
                             .policyEndDate(LocalDate.of(2023,2,12))
-                            .agency("임시 기관")
-                            .agencyLogo("임시 기관 로고")
+                            .policyAgency("임시 기관")
+                            .policyAgencyLogo("임시 기관 로고")
                             .build();
                     return dto;
                 })

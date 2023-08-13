@@ -28,18 +28,18 @@ public class InterestPolicyListResponseDto {
     private LocalDate policyEndDate;
 
     @ApiModelProperty(notes = "기관",example = "기관정보")
-    private String agency;
+    private String policyAgency;
 
     @ApiModelProperty(notes = "기관 로고",example = "기관 로고 url")
-    private String agencyLogo;
+    private String policyAgencyLogo;
 
     @Builder
-    public InterestPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, LocalDate policyEndDate, String agency, String agencyLogo) {
+    public InterestPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, LocalDate policyEndDate, String policyAgency, String policyAgencyLogo) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
         this.policyEndDate = policyEndDate;
-        this.agency = agency;
-        this.agencyLogo = agencyLogo;
+        this.policyAgency = policyAgency;
+        this.policyAgencyLogo = policyAgencyLogo;
     }
 }
