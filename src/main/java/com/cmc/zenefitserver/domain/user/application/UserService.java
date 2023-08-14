@@ -1,21 +1,24 @@
 package com.cmc.zenefitserver.domain.user.application;
 
+import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
+import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.domain.UserDetail;
-import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
-import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
-import com.cmc.zenefitserver.domain.user.dto.SocialInfoResponseDto;
-import com.cmc.zenefitserver.domain.user.dto.UserInfoResponseDto;
+import com.cmc.zenefitserver.domain.user.dto.*;
+import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
 import com.cmc.zenefitserver.global.auth.jwt.JwtService;
 import com.cmc.zenefitserver.global.common.request.TokenRequestDto;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +30,8 @@ import static com.cmc.zenefitserver.global.error.ErrorCode.*;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PolicyRepository policyRepository;
+    private final UserPolicyRepository userPolicyRepository;
     private final JwtService jwtService;
 
     // 회원가입
@@ -135,6 +140,41 @@ public class UserService {
                 .disabled(user.getUserDetail().isDisabled())
                 .localTalent(user.getUserDetail().isLocalTalent())
                 .farmer(user.getUserDetail().isFarmer())
+                .build();
+    }
+
+    public HomeInfoResponseDto getHomeInfo(User user) {
+
+        // 추천 정책 조회
+
+        // 수혜 정도에 따른 유저 이미지 조회 및 알고리즘
+
+        // 지원 정책 유형에 따른 신청 마감일에 임박한 정책 조회
+        LocalDate currentTime = LocalDate.now();
+        List<HomeInfoResponseDto.HomePolicyInfo> endDateHomePolicyInfoList = Arrays.stream(SupportPolicyType.values())
+                .map(type -> {
+                    Policy findPolicy = policyRepository.findMostImminentNonAppliedPolicy(user.getUserId(), type, currentTime, PageRequest.of(0, 1)).get(0);
+                    HomeInfoResponseDto.HomePolicyInfo homePolicyInfo = HomeInfoResponseDto.HomePolicyInfo.builder()
+                            .policyName(findPolicy.getPolicyName())
+                            .supportPolicyType(findPolicy.getSupportPolicyType())
+                            .supportPolicyTypeName(findPolicy.getSupportPolicyType().getDescription())
+                            .endDate(findPolicy.getEndDate())
+                            .build();
+                    return homePolicyInfo;
+                })
+                .collect(Collectors.toList());
+
+        int interestPolicyCount = userPolicyRepository.getInterestPolicyCount(user.getUserId());
+        int applyPolicyCount = userPolicyRepository.getApplyPolicyCount(user.getUserId());
+
+        return HomeInfoResponseDto.builder()
+                .nickname(user.getNickname())
+                .userImage("임시 이미지")
+                .benefit(user.getBenefit())
+                .interestPolicyCnt(interestPolicyCount)
+                .applyPolicyCnt(applyPolicyCount)
+                .recommendPolicy(null)
+                .endDatePolicy(endDateHomePolicyInfoList)
                 .build();
     }
 }

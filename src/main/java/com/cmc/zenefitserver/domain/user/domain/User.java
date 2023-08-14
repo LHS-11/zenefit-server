@@ -21,14 +21,14 @@ import java.util.Set;
 public class User extends BaseEntity {
 
     @Id
-    @Column(name="user_id")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long userId;
 
-    @Column(name = "email",unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name="nickname",unique = true)
+    @Column(name = "nickname", unique = true)
     @NotNull
     private String nickname;
 
@@ -55,12 +55,12 @@ public class User extends BaseEntity {
     @Column(name = "policy_cnt")
     private int policyCnt;
 
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JoinColumn(name = "user_detail")
     private UserDetail userDetail;
 
     // 정책
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @ToString.Exclude
     @JsonIgnore
     private Set<UserPolicy> userPolicies = new HashSet<>();
@@ -79,26 +79,28 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProviderType provider;
 
-    public void updateUserPolicy(UserPolicy userPolicy){
+    private int benefit; // 유저 수혜 금액
+
+    public void updateUserPolicy(UserPolicy userPolicy) {
         this.userPolicies.add(userPolicy);
     }
 
-    public void setUserDetail(UserDetail userDetail){
+    public void setUserDetail(UserDetail userDetail) {
         this.userDetail = userDetail;
     }
+
     public void update(ModifyRequestDto modifyRequestDto) {
-        this.nickname=modifyRequestDto.getNickname();
-        this.age=modifyRequestDto.getAge();
-        this.address=modifyRequestDto.getAddress();
-        this.lastYearIncome=modifyRequestDto.getLastYearIncome();
-        this.educationType=modifyRequestDto.getEducationType();
-        this.jobs=modifyRequestDto.getJobs();
+        this.nickname = modifyRequestDto.getNickname();
+        this.age = modifyRequestDto.getAge();
+        this.address = modifyRequestDto.getAddress();
+        this.lastYearIncome = modifyRequestDto.getLastYearIncome();
+        this.educationType = modifyRequestDto.getEducationType();
+        this.jobs = modifyRequestDto.getJobs();
         this.userDetail.modify(modifyRequestDto.getUserDetail());
     }
 
-
     @Builder
-    public User(String email, String nickname, Integer age, Address address, int lastYearIncome, EducationType educationType, Set<JobType> jobs, int policyCnt, UserDetail userDetail, String fcmToken, boolean pushNotificationStatus, boolean appNotificationStatus, ProviderType provider) {
+    public User(String email, String nickname, Integer age, Address address, int lastYearIncome, EducationType educationType, Set<JobType> jobs, int policyCnt, UserDetail userDetail, String fcmToken, boolean pushNotificationStatus, boolean appNotificationStatus, ProviderType provider, int benefit) {
         this.email = email;
         this.nickname = nickname;
         this.age = age;
@@ -112,6 +114,7 @@ public class User extends BaseEntity {
         this.pushNotificationStatus = pushNotificationStatus;
         this.appNotificationStatus = appNotificationStatus;
         this.provider = provider;
+        this.benefit = benefit;
     }
 
 }
