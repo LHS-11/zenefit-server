@@ -8,6 +8,8 @@ import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,17 +36,33 @@ public class UserPolicyController {
         return CommonResponse.success(null);
     }
 
+//    @GetMapping
+//    @Operation(summary = "관심 정책 리스트 조회 API",description = "유저의 관심 정책 리스트를 보여줄 때 사용합니다.")
+//    public CommonResponse<List<InterestPolicyListResponseDto>> getInterestPolices(@AuthUser User user){
+//        List<InterestPolicyListResponseDto> result= userPolicyService.getInterestPolicyList(user);
+//        return CommonResponse.success(result);
+//    }
+
+//    @GetMapping("/apply")
+//    @Operation(summary = "수혜(신청) 정책 리스트 조회 API",description = "유저의 수혜(신청) 정책 리스트를 보여줄 때 사용합니다.")
+//    public CommonResponse<List<ApplyPolicyListResponseDto>> getApplyPolices(@AuthUser User user){
+//        List<ApplyPolicyListResponseDto> result= userPolicyService.getApplyPolicyList(user);
+//        return CommonResponse.success(result);
+//    }
+
     @GetMapping
     @Operation(summary = "관심 정책 리스트 조회 API",description = "유저의 관심 정책 리스트를 보여줄 때 사용합니다.")
-    public CommonResponse<List<InterestPolicyListResponseDto>> getInterestPolices(@AuthUser User user){
-        List<InterestPolicyListResponseDto> result= userPolicyService.getInterestPolicyList(user);
+    public CommonResponse<Slice<InterestPolicyListResponseDto>> getInterestPolicesByPaging(@AuthUser User user, @RequestParam(required = false) Long lastPolicyId, Pageable pageable){
+        System.out.println("lastPolicyId = " + lastPolicyId);
+        Slice<InterestPolicyListResponseDto> result= userPolicyService.getInterestPolicyListByPaging(user,lastPolicyId,pageable);
         return CommonResponse.success(result);
     }
 
     @GetMapping("/apply")
     @Operation(summary = "수혜(신청) 정책 리스트 조회 API",description = "유저의 수혜(신청) 정책 리스트를 보여줄 때 사용합니다.")
-    public CommonResponse<List<ApplyPolicyListResponseDto>> getApplyPolices(@AuthUser User user){
-        List<ApplyPolicyListResponseDto> result= userPolicyService.getApplyPolicyList(user);
+    public CommonResponse<Slice<ApplyPolicyListResponseDto>> getApplyPolicesByPaging(@AuthUser User user, @RequestParam(required = false) Long lastPolicyId, Pageable pageable){
+        System.out.println("lastPolicyId = " + lastPolicyId);
+        Slice<ApplyPolicyListResponseDto> result= userPolicyService.getApplyPolicyListByPaging(user,lastPolicyId,pageable);
         return CommonResponse.success(result);
     }
 
