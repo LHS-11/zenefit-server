@@ -51,9 +51,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
+	implementation 'com.amazonaws:aws-java-sdk-s3'
 
-//	// xml
-//	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	// 엑셀
+	implementation 'org.apache.poi:poi:3.15'
+	implementation 'org.apache.poi:poi-ooxml:3.15'
 
 	// json
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
