@@ -4,6 +4,7 @@ import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
+import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyQueryRepository;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import com.cmc.zenefitserver.domain.userpolicy.dto.ApplyPolicyListResponseDto;
@@ -11,6 +12,8 @@ import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListResponseDto
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,7 @@ public class UserPolicyService {
     private final UserRepository userRepository;
     private final PolicyRepository policyRepository;
     private final UserPolicyRepository userPolicyRepository;
+    private final UserPolicyQueryRepository userPolicyQueryRepository;
 
     @Transactional
     public void saveInterestPolicy(User user, Long policyId) {
@@ -77,6 +81,14 @@ public class UserPolicyService {
         }
 
         userPolicyRepository.save(findUserPolicy);
+    }
+
+    public Slice<InterestPolicyListResponseDto> getInterestPolicyListByPaging(User user, Long lastPolicyId, Pageable pageable){
+        return userPolicyQueryRepository.searchInterestPolicyBySlice(user, lastPolicyId, pageable);
+    }
+
+    public Slice<ApplyPolicyListResponseDto> getApplyPolicyListByPaging(User user, Long lastPolicyId, Pageable pageable){
+        return userPolicyQueryRepository.searchApplyPolicyBySlice(user, lastPolicyId, pageable);
     }
 
     public List<InterestPolicyListResponseDto> getInterestPolicyList(User user) {
