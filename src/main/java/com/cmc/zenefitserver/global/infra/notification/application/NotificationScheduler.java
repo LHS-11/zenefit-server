@@ -9,6 +9,8 @@ import com.cmc.zenefitserver.domain.user.domain.Gender;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
 import com.cmc.zenefitserver.global.infra.fcm.FCMService;
+import com.cmc.zenefitserver.global.infra.notification.dao.NotificationRepository;
+import com.cmc.zenefitserver.global.infra.notification.domain.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ public class NotificationScheduler {
     private final UserPolicyRepository userPolicyRepository;
     private final AmazonS3Client amazonS3Client;
     private final FCMService fcmService;
+    private final NotificationRepository notificationRepository;
 
 
     @Scheduled(cron = "0 0 0 * * *") // 매일 오전 12시에 실행
@@ -121,14 +124,26 @@ public class NotificationScheduler {
         for (Policy policy : policies) {
             String policyName = policy.getPolicyName();
             String title = "[" + policyName + "] " + titlePrefix;
-            List<String> userFcmTokens = userPolicyRepository.findAllByPolicy_idAndInterestFlag(policy.getId(), true)
+            List<User> users = userPolicyRepository.findAllByPolicy_idAndInterestFlag(policy.getId(), true)
                     .stream()
                     .filter(up -> up.getUser().isPushNotificationStatus())
-                    .map(up -> up.getUser().getFcmToken())
-                    .filter(Objects::nonNull)
+                    .map(up -> up.getUser())
                     .collect(Collectors.toList());
 
-            fcmService.sendFCMNotificationMulticast(userFcmTokens, title, content, imageUrl);
+            fcmService.sendFCMNotificationMulticast(users, title, content, imageUrl);
+
+            List<Notification> notifications = users.stream()
+                    .map(user ->
+                            Notification.builder()
+                                    .user(user)
+                                    .title(title)
+                                    .content(content)
+                                    .image(imageUrl)
+                                    .build()
+                    )
+                    .collect(Collectors.toList());
+
+            notificationRepository.saveAll(notifications);
         }
     }
 

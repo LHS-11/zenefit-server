@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +39,8 @@ public class FCMService {
                         .build())
                 .build();
     }
-    public void sendFCMNotificationMulticast(List<String> userFcmTokens, String title, String body,String image) {
+
+    public void sendFCMNotificationMulticast(List<User> users, String title, String body, String image) {
         Notification notification = Notification.builder()
                 .setTitle(title)
                 .setBody(body)
@@ -48,11 +51,17 @@ public class FCMService {
                 .setNotification(notification)
                 .setAndroidConfig(androidConfig(title, body))
                 .setApnsConfig(apnsConfig(title, body))
-                .addAllTokens(userFcmTokens)
+                .addAllTokens(
+                        users.stream()
+                                .map(User::getFcmToken)
+                                .filter(Objects::nonNull)
+                                .collect(Collectors.toList())
+                )
                 .build();
 
         firebaseMessaging.sendMulticastAsync(multicastMessage);
     }
+
     public void sendFCMNotificationSingle(User user, String title, String body) {
         Notification notification = Notification.builder()
                 .setTitle(title).setBody(body).build();
