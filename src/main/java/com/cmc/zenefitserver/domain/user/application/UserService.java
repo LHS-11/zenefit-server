@@ -225,4 +225,10 @@ public class UserService {
         }
         return bucketImageUrl;
     }
+
+    public void updateFcmToken(User user, String fcmToken) {
+        user.updateFcmToken(fcmToken);
+        userRepository.save(user);
+    }
+
 }

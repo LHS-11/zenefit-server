@@ -1,13 +1,13 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
 
-import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import com.cmc.zenefitserver.global.auth.ProviderType;
 import com.cmc.zenefitserver.global.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -69,6 +69,7 @@ public class User extends BaseEntity {
     private String fcmToken;
 
     // 알림 관련
+    @ColumnDefault("true")
     @Column(name = "push_notification_status")
     private boolean pushNotificationStatus;
 
@@ -87,6 +88,10 @@ public class User extends BaseEntity {
 
     public void setUserDetail(UserDetail userDetail) {
         this.userDetail = userDetail;
+    }
+
+    public void updateFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     public void update(ModifyRequestDto modifyRequestDto) {
