@@ -54,6 +54,12 @@ dependencies {
 	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
 	implementation 'com.amazonaws:aws-java-sdk-s3'
 
+	// batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+	// scheduler
+	implementation 'org.springframework.boot:spring-boot-starter-quartz'
+
 	// 엑셀
 	implementation 'org.apache.poi:poi:3.15'
 	implementation 'org.apache.poi:poi-ooxml:3.15'

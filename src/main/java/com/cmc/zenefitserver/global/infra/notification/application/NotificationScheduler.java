@@ -1,0 +1,153 @@
+package com.cmc.zenefitserver.global.infra.notification.application;
+
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
+import com.cmc.zenefitserver.domain.policy.domain.Policy;
+import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
+import com.cmc.zenefitserver.domain.user.domain.Gender;
+import com.cmc.zenefitserver.domain.user.domain.User;
+import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
+import com.cmc.zenefitserver.global.infra.fcm.FCMService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+@RequiredArgsConstructor
+@Service
+public class NotificationScheduler {
+
+    private final PolicyRepository policyRepository;
+    private final UserPolicyRepository userPolicyRepository;
+    private final AmazonS3Client amazonS3Client;
+    private final FCMService fcmService;
+
+
+    @Scheduled(cron = "0 0 0 * * *") // 매일 오전 12시에 실행
+    public void notifyUser() {
+        notifyUserBySttDate(LocalDate.now()); // 신청 시작일 기준
+        notifyUserByEndDate(LocalDate.now()); // 신청 종료일 기준
+//        notifyUserByApplyDate(LocalDate.now()); 신청일 기준
+    }
+
+
+    public void notifyUserByEndDate(LocalDate now) {
+
+        String imageUrl = getImageUrl(SearchDateType.END_DATE);
+        // D-1
+        notifyUser(
+                policyRepository.findAllByEndDate(now.plusDays(1)),
+                "신청마감일 D-1",
+                "내일이 신청 마감일이에요.\n서둘러 신청하세요!",
+                imageUrl
+        );
+        // D-3
+        notifyUser(
+                policyRepository.findAllByEndDate(now.plusDays(3)),
+                "신청마감일 D-3",
+                "신청일이 얼마 남지 않았어요.\n서둘러 신청하세요!",
+                imageUrl
+        );
+        // D-7
+        notifyUser(
+                policyRepository.findAllByEndDate(now.plusDays(7)),
+                "신청마감일 D-7",
+                "일주일 뒤 신청이 마감돼요.",
+                imageUrl
+        );
+    }
+
+    public void notifyUserBySttDate(LocalDate now) {
+
+        String imageUrl = getImageUrl(SearchDateType.STT_DATE);
+        // D-1
+        notifyUser(
+                policyRepository.findAllBySttDate(now.plusDays(1)),
+                "신청시작일 D-1",
+                "내일부터 신청이 시작돼요!",
+                imageUrl
+        );
+        // D-3
+        notifyUser(
+                policyRepository.findAllBySttDate(now.plusDays(3)),
+                "신청시작일 D-3",
+                "신청시작일이 얼마 남지 않았어요.",
+                imageUrl
+        );
+        // D-7
+        notifyUser(
+                policyRepository.findAllBySttDate(now.plusDays(7)),
+                "신청시작일 D-7",
+                "일주일 뒤 신청이 시작돼요.",
+                imageUrl
+        );
+    }
+
+//    public void notifyUserByApplyDate(LocalDate now) {
+//        String imageUrl = getImageUrl(SearchDateType.STT_DATE);
+//        // D-1
+//        notifyUser(
+//                policyRepository.findAllBySttDate(now.plusDays(1)),
+//                "신청일 D-1",
+//                "내일이 신청하는 날이예요!",
+//                imageUrl
+//        );
+//        // D-3
+//        notifyUser(
+//                policyRepository.findAllBySttDate(now.plusDays(3)),
+//                "신청일 D-3",
+//                "신청일이 얼마 남지 않았어요.",
+//                imageUrl
+//        );
+//        // D-7
+//        notifyUser(
+//                policyRepository.findAllBySttDate(now.plusDays(7)),
+//                "신청일 D-7",
+//                "신청일이 일주일 남았어요.",
+//                imageUrl
+//        );
+//
+//    }
+//
+    private void notifyUser(List<Policy> policies, String titlePrefix, String content, String imageUrl) {
+        for (Policy policy : policies) {
+            String policyName = policy.getPolicyName();
+            String title = "[" + policyName + "] " + titlePrefix;
+            List<String> userFcmTokens = userPolicyRepository.findAllByPolicy_idAndInterestFlag(policy.getId(), true)
+                    .stream()
+                    .filter(up -> up.getUser().isPushNotificationStatus())
+                    .map(up -> up.getUser().getFcmToken())
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
+            fcmService.sendFCMNotificationMulticast(userFcmTokens, title, content, imageUrl);
+        }
+    }
+
+
+    public String getImageUrl(SearchDateType searchDateType) {
+
+        String bucketName = "zenefit-bucket";
+        String folderName = "alarm";
+
+        String bucketImageUrl = searchDateType.name();
+
+        String s3ObjectKey = folderName + "/" + bucketImageUrl + ".png"; // 이미지 파일의 객체 키
+
+        Date expiration = new Date(System.currentTimeMillis() + 3600000); // URL의 만료 시간 (1시간)
+        GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                new GeneratePresignedUrlRequest(bucketName, s3ObjectKey).withExpiration(expiration);
+
+        URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
+        return url.toString(); // 이미지 URL 반환
+    }
+
+}
