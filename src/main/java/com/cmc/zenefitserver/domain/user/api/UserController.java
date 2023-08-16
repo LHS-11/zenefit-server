@@ -98,4 +98,13 @@ public class UserController {
         return CommonResponse.success(null);
     }
 
+    @PatchMapping("/notification")
+    @Operation(summary = "알람 수신 여부 업데이트 API", description = "유저의 알림 수신 여부를 업데이트 합니다.")
+    public CommonResponse<String> updatePushNotificationStatus(@AuthUser User user, @RequestParam boolean pushNotificationStatus) {
+        log.info("알림 수신 여부 업데이트 API, user = {}", user.getUserId());
+        userService.updatePushNotificationStatus(user, pushNotificationStatus);
+        return CommonResponse.success(null);
+    }
+
+
 }

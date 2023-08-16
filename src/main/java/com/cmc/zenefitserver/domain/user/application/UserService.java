@@ -231,4 +231,9 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void updatePushNotificationStatus(User user, boolean pushNotificationStatus) {
+        user.updatePushNotificationStatus(pushNotificationStatus);
+        userRepository.save(user);
+    }
+
 }

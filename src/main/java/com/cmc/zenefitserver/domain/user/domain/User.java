@@ -94,6 +94,10 @@ public class User extends BaseEntity {
         this.fcmToken = fcmToken;
     }
 
+    public void updatePushNotificationStatus(boolean pushNotificationStatus) {
+        this.pushNotificationStatus = pushNotificationStatus;
+    }
+
     public void update(ModifyRequestDto modifyRequestDto) {
         this.nickname = modifyRequestDto.getNickname();
         this.age = modifyRequestDto.getAge();
