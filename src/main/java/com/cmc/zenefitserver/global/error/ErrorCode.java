@@ -45,6 +45,10 @@ public enum ErrorCode {
     NOT_FOUND_USER_POLICY("USER_POLICY_001", "데이터베이스에 없는 유저 정책입니다.", UNAUTHORIZED),
 
 
+    /**
+     * Notification 관련 오류
+     */
+    NOTIFICATION_INTERNAL_SERVER_ERROR("NOTIFICATION_001", "FIREBASE 서버 오류", UNAUTHORIZED),
 
     /**
      * Common 관련 오류

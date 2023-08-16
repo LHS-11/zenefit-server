@@ -48,10 +48,10 @@ public class PolicyQueryRepository {
                 .leftJoin(userPolicy)
                 .on(policy.id.eq(userPolicy.policy.id).and(userPolicy.user.userId.eq(user.getUserId())))
                 .where(
-                        ltPolicyId(lastPolicyId)
+                        getPolicyId(lastPolicyId,pageable),
                         // 조건
-//                        policy.supportPolicyType.eq(supportPolicyType),
-//                        policy.policyCode.eq(policyCode)
+                        policy.supportPolicyType.eq(supportPolicyType),
+                        policy.policyCode.eq(policyCode)
                 );
 
         if (PolicyCode.NONE.getName() != policyCode.getName()) {
@@ -84,10 +84,10 @@ public class PolicyQueryRepository {
                 .leftJoin(userPolicy)
                 .on(policy.id.eq(userPolicy.policy.id).and(userPolicy.user.userId.eq(user.getUserId())))
                 .where(
-                        ltPolicyId(lastPolicyId)
+                        getPolicyId(lastPolicyId,pageable),
                         // 조건
-//                        policy.supportPolicyType.eq(supportPolicyType),
-//                        policy.policyCode.eq(policyCode)
+                        policy.supportPolicyType.eq(supportPolicyType),
+                        policy.policyCode.eq(policyCode)
                 );
 
         if (PolicyCode.NONE.getName() != policyCode.getName()) {
@@ -116,14 +116,34 @@ public class PolicyQueryRepository {
                 }
             }
         }
-        return new OrderSpecifier(Order.ASC, policy.id);
+        return new OrderSpecifier(Order.ASC, policy.id); // 기본이 policy ID 오름차순
     }
 
     private BooleanExpression ltPolicyId(Long policyId) {
         if (policyId == null) {
             return null;
         }
-        return policy.id.lt(policyId);
+
+        return policy.id.gt(policyId);
+    }
+
+    private BooleanExpression getPolicyId(Long policyId,Pageable pageable) {
+        if (policyId == null) {
+            return null;
+        }
+        Sort sort = pageable.getSort();
+        if (sort != null) {
+            for (Sort.Order order : sort) {
+                boolean isAscending = order.getDirection().isAscending();
+                if(isAscending){
+                    return policy.id.gt(policyId);
+                }
+                if(!isAscending){
+                    return policy.id.lt(policyId);
+                }
+            }
+        }
+        return policy.id.gt(policyId); // 기본이 policy ID 오름차순이기 때문에,
     }
 
     // 무한 스크롤 방식 처리하는 메서드

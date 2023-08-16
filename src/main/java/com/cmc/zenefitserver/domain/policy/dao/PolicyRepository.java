@@ -32,4 +32,10 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
                     "ORDER BY p.end_date ASC " +
                     "LIMIT 1", nativeQuery = true)
     Policy findMostImminentNonAppliedPolicyNative(@Param("userId") Long userId, @Param("policyType") SupportPolicyType policyType, @Param("currentDate") LocalDate currentDate);
+
+
+    List<Policy> findAllByEndDate(LocalDate endDate);
+
+    List<Policy> findAllBySttDate(LocalDate sttDate);
+
 }
