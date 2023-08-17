@@ -77,15 +77,11 @@ public class Policy implements Serializable {
 
     private int maxAge; // 최대 나이
 
-    @ElementCollection
-    @CollectionTable(name = "policy_area_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
     @Enumerated(EnumType.STRING)
-    private Set<AreaCode> areaCodes = new HashSet<>(); // 지역 코드 - 시,도
+    private AreaCode areaCode; // 지역 코드 - 시,도
 
-    @ElementCollection
-    @CollectionTable(name = "policy_city_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
     @Enumerated(EnumType.STRING)
-    private Set<CityCode> cityCodes = new HashSet<>(); // 지역 코드 - 구
+    private CityCode cityCode; // 지역 코드 - 구
 
     @ElementCollection
     @CollectionTable(name = "policy_job_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
@@ -102,12 +98,19 @@ public class Policy implements Serializable {
     @Enumerated(EnumType.STRING)
     private Set<PolicySplzType> policySplzTypes = new HashSet<>(); // 특화 분야 유형
 
+    @ElementCollection
+    @CollectionTable(name = "policy_support_type_list", joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"))
+    @Enumerated(EnumType.STRING)
+    private Set<SupportPolicyType> supportPolicyTypes = new HashSet<>(); // 특화 분야 유형
+
+
     @Enumerated(EnumType.STRING)
     private PolicyCode policyCode; // 정책 유형
 
     @Enumerated(EnumType.STRING)
     private SupportPolicyType supportPolicyType; // 지원 정책 유형
 
+    @Column(columnDefinition = "TEXT")
     private String agency; // 기관
 
     private String agencyLogo; // 임시 기관 로고
@@ -144,15 +147,16 @@ public class Policy implements Serializable {
     }
 
     public void updateAreaCode(AreaCode areaCode) {
-        this.areaCodes.add(areaCode);
+        this.areaCode = areaCode;
     }
 
     public void updateCityCode(CityCode cityCode) {
-        this.cityCodes.add(cityCode);
+        this.cityCode=cityCode;
     }
 
+
     @Builder
-    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, Set<AreaCode> areaCodes, Set<CityCode> cityCodes, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, SupportPolicyType supportPolicyType, String agency, String agencyLogo, String policyApplyDenialReason, String applyStatus, LocalDate sttDate, LocalDate endDate, Set<UserPolicy> userPolicies, int benefit) {
+    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, AreaCode areaCode, CityCode cityCode, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, SupportPolicyType supportPolicyType, String agency, String agencyLogo, String policyApplyDenialReason, String applyStatus, LocalDate sttDate, LocalDate endDate, Set<UserPolicy> userPolicies, int benefit) {
         this.bizId = bizId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
@@ -174,8 +178,8 @@ public class Policy implements Serializable {
         this.submissionDocumentContent = submissionDocumentContent;
         this.minAge = minAge;
         this.maxAge = maxAge;
-        this.areaCodes = areaCodes;
-        this.cityCodes = cityCodes;
+        this.areaCode = areaCode;
+        this.cityCode = cityCode;
         this.policyCode = policyCode;
         this.supportPolicyType = supportPolicyType;
         this.agency = agency;

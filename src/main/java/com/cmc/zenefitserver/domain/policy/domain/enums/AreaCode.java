@@ -108,10 +108,12 @@ public enum AreaCode {
     SEJONG("003002017", "세종", Arrays.asList(
             SEJONG_SEONG
     )),
-    ;
+    CENTRAL_GOVERNMENT("003002000", "중앙부처", null);
 
     private final String code;
     private final String name;
+
+
     private final List<CityCode> cities;
 
     AreaCode(String code, String name, List<CityCode> cities) {
@@ -136,7 +138,7 @@ public enum AreaCode {
         return Arrays.stream(AreaCode.values())
                 .filter(a -> a.getCode().equals(code))
                 .findFirst()
-                .orElseGet(null);
+                .orElse(null);
     }
 
     public static List<String> findCityCodes(String name) {
@@ -148,4 +150,5 @@ public enum AreaCode {
                         .collect(Collectors.toList()))
                 .orElseThrow(() -> new BusinessException(NOT_FOUND_AREA_ENUM_VALUE));
     }
+
 }
