@@ -110,10 +110,7 @@ public class Policy implements Serializable {
     @Enumerated(EnumType.STRING)
     private SupportPolicyType supportPolicyType; // 지원 정책 유형
 
-    @Column(columnDefinition = "TEXT")
-    private String agency; // 기관
-
-    private String agencyLogo; // 임시 기관 로고
+    private String policyLogo; // 정책 로고
 
     private String policyApplyDenialReason; // 신청 불가 사유
 
@@ -155,8 +152,12 @@ public class Policy implements Serializable {
     }
 
 
+    public void updateLogo(String imageUrl) {
+        this.policyLogo = imageUrl;
+    }
+
     @Builder
-    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, AreaCode areaCode, CityCode cityCode, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, SupportPolicyType supportPolicyType, String agency, String agencyLogo, String policyApplyDenialReason, String applyStatus, LocalDate sttDate, LocalDate endDate, Set<UserPolicy> userPolicies, int benefit) {
+    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, AreaCode areaCode, CityCode cityCode, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, SupportPolicyType supportPolicyType, String policyLogo, String policyApplyDenialReason, String applyStatus, LocalDate sttDate, LocalDate endDate, Set<UserPolicy> userPolicies, int benefit) {
         this.bizId = bizId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
@@ -182,8 +183,7 @@ public class Policy implements Serializable {
         this.cityCode = cityCode;
         this.policyCode = policyCode;
         this.supportPolicyType = supportPolicyType;
-        this.agency = agency;
-        this.agencyLogo = agencyLogo;
+        this.policyLogo = policyLogo;
         this.policyApplyDenialReason = policyApplyDenialReason;
         this.applyStatus = applyStatus;
         this.sttDate = sttDate;
