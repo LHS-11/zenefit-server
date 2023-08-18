@@ -51,11 +51,10 @@ public class PolicyQueryRepository {
                 .where(
                         getPolicyId(lastPolicyId,pageable),
                         // 조건
-                        policy.supportPolicyType.eq(supportPolicyType),
-                        policy.policyCode.eq(policyCode)
+                        policy.supportPolicyType.eq(supportPolicyType)
                 );
 
-        if (PolicyCode.NONE.getName() != policyCode.getName()) {
+        if (PolicyCode.NONE != policyCode) {
             query.where(policy.policyCode.eq(policyCode));
         }
 
@@ -88,11 +87,10 @@ public class PolicyQueryRepository {
                 .where(
                         getPolicyId(lastPolicyId,pageable),
                         // 조건
-                        policy.supportPolicyType.eq(supportPolicyType),
-                        policy.policyCode.eq(policyCode)
+                        policy.supportPolicyType.eq(supportPolicyType)
                 );
 
-        if (PolicyCode.NONE.getName() != policyCode.getName()) {
+        if (PolicyCode.NONE != policyCode) {
             query.where(policy.policyCode.eq(policyCode));
         }
 
