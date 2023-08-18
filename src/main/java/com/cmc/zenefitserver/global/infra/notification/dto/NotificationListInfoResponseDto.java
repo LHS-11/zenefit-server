@@ -26,7 +26,8 @@ public class NotificationListInfoResponseDto {
     private String logo;
 
     @Builder
-    public NotificationListInfoResponseDto(String title, String content, String logo) {
+    public NotificationListInfoResponseDto(Long notificationId, String title, String content, String logo) {
+        this.notificationId = notificationId;
         this.title = title;
         this.content = content;
         this.logo = logo;

@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDate;
-
 @ToString
 @Getter
 @NoArgsConstructor
@@ -26,19 +24,15 @@ public class ApplyPolicyListResponseDto {
     @ApiModelProperty(notes = "정책 수혜 금액",example = "120000")
     private int policyBenefit;
 
-    @ApiModelProperty(notes = "기관",example = "기관정보")
-    private String policyAgency;
-
-    @ApiModelProperty(notes = "기관 로고",example = "기관 로고 url")
-    private String policyAgencyLogo;
+    @ApiModelProperty(notes = "정책 로고",example = "기관 로고 url")
+    private String policyLogo;
 
     @Builder
-    public ApplyPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, int policyBenefit, String policyAgency, String policyAgencyLogo) {
+    public ApplyPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, int policyBenefit, String policyLogo) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
         this.policyBenefit = policyBenefit;
-        this.policyAgency = policyAgency;
-        this.policyAgencyLogo = policyAgencyLogo;
+        this.policyLogo = policyLogo;
     }
 }

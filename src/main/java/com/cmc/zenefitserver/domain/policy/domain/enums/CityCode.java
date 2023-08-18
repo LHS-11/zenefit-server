@@ -1,7 +1,11 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 
+
+@Getter
 public enum CityCode {
 
     // 1. 서울
@@ -277,18 +281,18 @@ public enum CityCode {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public static CityCode findCityCode(String code) {
         return Arrays.stream(CityCode.values())
                 .filter(c -> c.getCode().equals(code))
                 .findFirst()
                 .orElseGet(null);
+    }
+
+    public static String findName(String cityCode) {
+        return Arrays.stream(CityCode.values())
+                .filter(code -> code.name().equals(cityCode))
+                .findFirst()
+                .map(code -> code.getName())
+                .orElse(null);
     }
 }

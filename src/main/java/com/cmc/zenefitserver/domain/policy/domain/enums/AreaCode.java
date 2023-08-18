@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import static com.cmc.zenefitserver.domain.policy.domain.enums.CityCode.*;
 import static com.cmc.zenefitserver.global.error.ErrorCode.NOT_FOUND_AREA_ENUM_VALUE;
 
+@Getter
 public enum AreaCode {
     SEOUL("003002001", "서울", Arrays.asList(
             JONGRO, JUNG, YONGSAN, SUNGDONG, GWANGJIN,
@@ -108,24 +110,18 @@ public enum AreaCode {
     SEJONG("003002017", "세종", Arrays.asList(
             SEJONG_SEONG
     )),
-    ;
+    CENTRAL_GOVERNMENT("003002000", "중앙부처", null);
 
     private final String code;
     private final String name;
+
+
     private final List<CityCode> cities;
 
     AreaCode(String code, String name, List<CityCode> cities) {
         this.code = code;
         this.name = name;
         this.cities = cities;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public List<CityCode> getCities() {
@@ -136,7 +132,7 @@ public enum AreaCode {
         return Arrays.stream(AreaCode.values())
                 .filter(a -> a.getCode().equals(code))
                 .findFirst()
-                .orElseGet(null);
+                .orElse(null);
     }
 
     public static List<String> findCityCodes(String name) {
@@ -148,4 +144,13 @@ public enum AreaCode {
                         .collect(Collectors.toList()))
                 .orElseThrow(() -> new BusinessException(NOT_FOUND_AREA_ENUM_VALUE));
     }
+
+    public static String findName(String areaCode){
+        return Arrays.stream(AreaCode.values())
+                .filter(code -> code.name().equals(areaCode))
+                .findFirst()
+                .map(code -> code.getName())
+                .orElseThrow(() -> new BusinessException(NOT_FOUND_AREA_ENUM_VALUE));
+    }
+
 }

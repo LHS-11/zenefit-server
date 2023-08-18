@@ -31,22 +31,35 @@ public class PolicyService {
 
     // 정책 리스트 조회 비즈니스 로직
     public Slice<PolicyListResponseDto> getPolicyList(User user, PolicyListRequestDto policyListRequestDto, Pageable pageable) {
-        return policyQueryRepository.searchBySlice(
+        Slice<PolicyListResponseDto> policyListResponseDtos = policyQueryRepository.searchBySlice(
                 user,
                 policyListRequestDto.getLastPolicyId(),
                 SupportPolicyType.fromString(policyListRequestDto.getSupportPolicyType()),
                 PolicyCode.fromString(policyListRequestDto.getPolicyType()),
                 pageable);
+        policyListResponseDtos.stream()
+                .forEach(policyListResponseDto -> {
+                    policyListResponseDto.updateAreaCode(policyListResponseDto.getAreaCode());
+                    policyListResponseDto.updateCityCode(policyListResponseDto.getCityCode());
+                });
+
+        return policyListResponseDtos;
     }
 
     public Slice<PolicyListResponseDto> getSearchPolicyList(User user, SearchPolicyListRequestDto searchPolicyDto, Pageable pageable) {
-        return policyQueryRepository.searchBySlice(
+        Slice<PolicyListResponseDto> policyListResponseDtos = policyQueryRepository.searchBySlice(
                 user,
                 searchPolicyDto.getLastPolicyId(),
                 SupportPolicyType.fromString(searchPolicyDto.getSupportPolicyType()),
                 PolicyCode.fromString(searchPolicyDto.getPolicyType()),
                 searchPolicyDto.getKeyword(),
                 pageable);
+        policyListResponseDtos.stream()
+                .forEach(policyListResponseDto -> {
+                    policyListResponseDto.updateAreaCode(policyListResponseDto.getAreaCode());
+                    policyListResponseDto.updateCityCode(policyListResponseDto.getCityCode());
+                });
+        return policyListResponseDtos;
     }
 
     public PolicyInfoResponseDto getPolicy(User user, Long policyId) {
@@ -92,7 +105,7 @@ public class PolicyService {
                                     .policyId(policy.getId())
                                     .policyName(policy.getPolicyName())
                                     .policyApplyStatus(policy.getApplyStatus())
-                                    .policyAgencyLogo(policy.getAgencyLogo())
+                                    .policyAgencyLogo(policy.getPolicyLogo())
                                     .policySttDateOrEndDate(policy.getSttDate())
                                     .build();
                             return dto;
@@ -115,7 +128,7 @@ public class PolicyService {
                                     .policyId(policy.getId())
                                     .policyName(policy.getPolicyName())
                                     .policyApplyStatus(policy.getApplyStatus())
-                                    .policyAgencyLogo(policy.getAgencyLogo())
+                                    .policyAgencyLogo(policy.getPolicyLogo())
                                     .policySttDateOrEndDate(policy.getEndDate())
                                     .build();
                             return dto;
