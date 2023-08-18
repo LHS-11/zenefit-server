@@ -52,7 +52,7 @@ jobs:
           touch ./src/main/resources/firebase/zenefit-dbf19-firebase-adminsdk-iaour-b20189de47.json
           echo "$FIREBASE_JSON" > ./src/main/resources/firebase/zenefit-dbf19-firebase-adminsdk-iaour-b20189de47.json
         env:
-          PROPERTIES_PROD: ${{ secrets.FIREBASE_JSON }}
+          FIREBASE_JSON: ${{ secrets.FIREBASE_JSON }}
 
       - name: Build with Gradle
         run: ./gradlew build -x test  #test 코드 빼고 돌리기
