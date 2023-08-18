@@ -39,8 +39,7 @@ public class UserPolicyQueryRepository {
                                 userPolicy.policy.policyName,
                                 userPolicy.policy.policyIntroduction,
                                 userPolicy.policy.endDate,
-                                userPolicy.policy.agency,
-                                userPolicy.policy.agencyLogo
+                                userPolicy.policy.policyLogo
                         )
                 )
                 .from(userPolicy)
@@ -63,8 +62,7 @@ public class UserPolicyQueryRepository {
                                 userPolicy.policy.policyName,
                                 userPolicy.policy.policyIntroduction,
                                 userPolicy.policy.benefit,
-                                userPolicy.policy.agency,
-                                userPolicy.policy.agencyLogo
+                                userPolicy.policy.policyLogo
                         )
                 )
                 .from(userPolicy)

@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import static com.cmc.zenefitserver.domain.policy.domain.enums.CityCode.*;
 import static com.cmc.zenefitserver.global.error.ErrorCode.NOT_FOUND_AREA_ENUM_VALUE;
 
+@Getter
 public enum AreaCode {
     SEOUL("003002001", "서울", Arrays.asList(
             JONGRO, JUNG, YONGSAN, SUNGDONG, GWANGJIN,
@@ -122,14 +124,6 @@ public enum AreaCode {
         this.cities = cities;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public List<CityCode> getCities() {
         return cities;
     }
@@ -148,6 +142,14 @@ public enum AreaCode {
                 .map(code -> code.getCities().stream()
                         .map(cityCode -> cityCode.getName())
                         .collect(Collectors.toList()))
+                .orElseThrow(() -> new BusinessException(NOT_FOUND_AREA_ENUM_VALUE));
+    }
+
+    public static String findName(String areaCode){
+        return Arrays.stream(AreaCode.values())
+                .filter(code -> code.name().equals(areaCode))
+                .findFirst()
+                .map(code -> code.getName())
                 .orElseThrow(() -> new BusinessException(NOT_FOUND_AREA_ENUM_VALUE));
     }
 

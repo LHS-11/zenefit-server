@@ -42,18 +42,102 @@ public class PolicyAreaClassifier {
     private final RestTemplate restTemplate;
 
     @Transactional
+    public void updateCentralGovernment() {
+        List<Policy> policies = policyRepository.findAll();
+        policies
+                .stream()
+                .filter(policy -> policy.getAreaCode() == null)
+                .forEach(policy -> policy.updateAreaCode(AreaCode.CENTRAL_GOVERNMENT));
+
+    }
+
+    @Transactional
     public void updateAreaCode() {
         Map<String, Policy> policyMap = new HashMap<>();
+        List<Policy> policies = new ArrayList<>();
 
         for (AreaCode areaCode : AreaCode.values()) {
-            getPolices(policyMap, URL, 1, 40, areaCode);
+            List<Policy> policesToList = getPolicesToList(URL, 1, 40, areaCode);
+            if (policesToList != null) {
+                policies.addAll(policesToList);
+            }
+        }
+
+        for (AreaCode areaCode : AreaCode.values()) {
             for (CityCode cityCode : areaCode.getCities()) {
-                getPolices(policyMap, URL, 1, 40, cityCode);
+                List<Policy> policesToList = getPolicesToList(URL, 1, 2, cityCode);
+                if (policesToList != null) {
+                    policies.addAll(policesToList);
+                }
             }
         }
 
         // 중복을 제거한 후 일괄 삽입
-        policyRepository.saveAll(policyMap.values());
+        policyRepository.saveAll(policies);
+    }
+
+    @Transactional
+    public void updateCityCode() {
+        List<Policy> policies = new ArrayList<>();
+
+        Arrays.stream(AreaCode.values())
+                .filter(areaCode -> areaCode != AreaCode.CENTRAL_GOVERNMENT)
+                .map(a -> a.getCities())
+                .forEach(cityCodes -> {
+                    cityCodes.stream()
+                            .forEach(cityCode -> {
+                                List<Policy> policesToList = getPolicesToList(URL, 1, 2, cityCode);
+                                if (policesToList != null) {
+                                    policies.addAll(policesToList);
+                                }
+                            });
+                });
+
+        // 중복을 제거한 후 일괄 삽입
+        policyRepository.saveAll(policies);
+    }
+
+
+    private List<Policy> getPolicesToList(String apiUrl, int pageIndex, int limit, Enum<?> codeEnum) {
+        try {
+            List<Policy> policies = new ArrayList<>();
+            for (; pageIndex <= limit; pageIndex++) {
+                String xmlData = fetchXmlDataFromApi(apiUrl, String.valueOf(pageIndex), codeEnum);
+                xmlData = removeInvalidCharacters(xmlData);
+
+                JAXBContext jaxbContext = JAXBContext.newInstance(YouthPolicyList.class);
+                Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+
+                InputStream inputStream = new ByteArrayInputStream(xmlData.getBytes(StandardCharsets.UTF_8));
+                YouthPolicyList youthPolicyList = (YouthPolicyList) unmarshaller.unmarshal(inputStream);
+                YouthPolicy[] youthPolicies = youthPolicyList.getYouthPolicies();
+
+
+                if (youthPolicies == null) {
+                    break;
+                }
+
+                if (youthPolicies != null) {
+                    for (YouthPolicy p : youthPolicies) {
+                        Policy policy = policyRepository.findByBizId(p.getBizId())
+                                .orElseThrow(() -> new IllegalArgumentException("해당하는 정책이 데이터베이스에 존재하지 않습니다."));
+
+                        if (codeEnum instanceof AreaCode) {
+                            policy.updateAreaCode((AreaCode) codeEnum);
+                        }
+                        if (codeEnum instanceof CityCode) {
+                            policy.updateCityCode((CityCode) codeEnum);
+                        }
+
+                        // policyMap에 policy를 추가 또는 업데이트
+                        policies.add(policy);
+                    }
+                }
+            }
+            return policies;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void getPolices(Map<String, Policy> policyMap, String apiUrl, int pageIndex, int limit, Enum<?> codeEnum) {
@@ -104,7 +188,7 @@ public class PolicyAreaClassifier {
                 .queryParam("display", DISPLAY_CNT)
                 .queryParam("pageIndex", pageIndex)
                 .queryParam("srchPolyBizSecd", getCodeFromEnum(codeEnum));
-        System.out.println("builder.toUriString() = " + builder.toUriString());
+//        System.out.println("builder.toUriString() = " + builder.toUriString());
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
@@ -116,7 +200,7 @@ public class PolicyAreaClassifier {
                 System.out.println("error 발생");
                 throw new RestClientException("error 발생");
             }
-            return response.getBody();
+            return body;
         } catch (RestClientException e) {
             return fetchXmlDataFromApi(apiUrl, pageIndex, codeEnum);
         }

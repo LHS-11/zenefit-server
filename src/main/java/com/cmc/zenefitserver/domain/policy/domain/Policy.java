@@ -17,7 +17,8 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "policy", indexes = {
-        @Index(name = "idx_policy_biz_id", columnList = "bizId")
+        @Index(name = "idx_policy_biz_id", columnList = "bizId"),
+        @Index(name = "idx_policy_id", columnList = "id")
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Policy implements Serializable {
@@ -83,22 +84,22 @@ public class Policy implements Serializable {
     @Enumerated(EnumType.STRING)
     private CityCode cityCode; // 지역 코드 - 구
 
-    @ElementCollection
-    @CollectionTable(name = "policy_job_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "policy_job_code_list", joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"))
     @Enumerated(EnumType.STRING)
     private Set<JobType> jobTypes = new HashSet<>(); // 직업 유형
 
-    @ElementCollection
-    @CollectionTable(name = "policy_education_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "policy_education_code_list", joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"))
     @Enumerated(EnumType.STRING)
     private Set<EducationType> educationTypes = new HashSet<>(); // 학력 유형
 
-    @ElementCollection
-    @CollectionTable(name = "policy_splz_code_list", joinColumns = @JoinColumn(name = "biz_id", referencedColumnName = "bizId"))
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "policy_splz_code_list", joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"))
     @Enumerated(EnumType.STRING)
     private Set<PolicySplzType> policySplzTypes = new HashSet<>(); // 특화 분야 유형
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "policy_support_type_list", joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"))
     @Enumerated(EnumType.STRING)
     private Set<SupportPolicyType> supportPolicyTypes = new HashSet<>(); // 특화 분야 유형
@@ -110,6 +111,7 @@ public class Policy implements Serializable {
     @Enumerated(EnumType.STRING)
     private SupportPolicyType supportPolicyType; // 지원 정책 유형
 
+    @Column(columnDefinition = "TEXT")
     private String policyLogo; // 정책 로고
 
     private String policyApplyDenialReason; // 신청 불가 사유

@@ -2,6 +2,7 @@ package com.cmc.zenefitserver.domain.userpolicy.application;
 
 import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
+import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyQueryRepository;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -101,8 +101,7 @@ public class UserPolicyService {
                             .policyName(policy.getPolicyName())
                             .policyIntroduction(policy.getPolicyIntroduction())
                             .policyEndDate(LocalDate.of(2023,2,12))
-                            .policyAgency("임시 기관")
-                            .policyAgencyLogo("임시 기관 로고")
+                            .policyLogo(policy.getPolicyLogo())
                             .build();
                     return dto;
                 })
@@ -119,8 +118,7 @@ public class UserPolicyService {
                             .policyName(policy.getPolicyName())
                             .policyIntroduction(policy.getPolicyIntroduction())
                             .policyBenefit(policy.getBenefit())
-                            .policyAgency(policy.getAgency())
-                            .policyAgencyLogo(policy.getAgencyLogo())
+                            .policyLogo(policy.getPolicyLogo())
                             .build();
                     return dto;
                 })
