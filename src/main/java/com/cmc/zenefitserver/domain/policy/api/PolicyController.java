@@ -5,6 +5,7 @@ import com.cmc.zenefitserver.domain.policy.dto.*;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
+@Api(tags = "3. policy", description = "policy API")
 @RequiredArgsConstructor
 @RequestMapping("/policy")
 @RestController
@@ -52,6 +54,13 @@ public class PolicyController {
     @Operation(summary = "특정 날짜에 따른 관심 정책 조회 API", description = "달력에서 해당 날짜(달)에 신청 시작일 또는 신청 종료일을 가지는 정책을 조회합니다.")
     public CommonResponse<List<CalendarPolicyListResponseDto>> getPolicesBySearchDate(@AuthUser User user, @RequestParam("searchDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate, @RequestParam String searchDateType) {
         List<CalendarPolicyListResponseDto> result = policyService.getPolicyListBySearchDate(user, searchDate, searchDateType);
+        return CommonResponse.success(result);
+    }
+
+    @GetMapping("/recommend")
+    @Operation(summary = "지원 정책 유형에 따른 추천 정책 API",description = "로그인(회원가입)하고, 유저에게 정책을 추천할 때 사용합니다.")
+    public CommonResponse<RecommendPolicyInfoResponseDto> recommend(@AuthUser User user){
+        RecommendPolicyInfoResponseDto result = policyService.recommendPolicy(user);
         return CommonResponse.success(result);
     }
 }

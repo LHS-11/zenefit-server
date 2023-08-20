@@ -1,5 +1,7 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
+import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -15,17 +19,17 @@ import javax.validation.constraints.NotNull;
 public class Address {
 
     @NotNull
-    @ApiModelProperty(notes = "도시", example = "서울시")
     @Column(name = "city")
-    private String city;
+    @Enumerated(EnumType.STRING)
+    private AreaCode city;
 
     @NotNull
-    @ApiModelProperty(notes = "구/군", example = "강서구")
     @Column(name = "district")
-    private String district;
+    @Enumerated(EnumType.STRING)
+    private CityCode district;
 
     @Builder
-    public Address(String city, String district) {
+    public Address(AreaCode city, CityCode district) {
         this.city = city;
         this.district = district;
     }

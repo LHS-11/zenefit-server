@@ -51,9 +51,8 @@ public class PolicyLogoClassifier {
 
         String s3ObjectKey = folderName + "/" + bucketImageUrl + ".jpg"; // 이미지 파일의 객체 키
 
-        Date expiration = new Date(System.currentTimeMillis() + 3600000); // URL의 만료 시간 (1시간)
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(bucketName, s3ObjectKey).withExpiration(expiration);
+                new GeneratePresignedUrlRequest(bucketName, s3ObjectKey);
 
         java.net.URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
         return url.toString(); // 이미지 URL 반환

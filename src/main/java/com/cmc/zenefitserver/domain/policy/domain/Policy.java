@@ -150,12 +150,15 @@ public class Policy implements Serializable {
     }
 
     public void updateCityCode(CityCode cityCode) {
-        this.cityCode=cityCode;
+        this.cityCode = cityCode;
     }
-
 
     public void updateLogo(String imageUrl) {
         this.policyLogo = imageUrl;
+    }
+
+    public void updateSupportType(SupportPolicyType supportPolicyType) {
+        this.supportPolicyType = supportPolicyType;
     }
 
     @Builder
@@ -193,4 +196,6 @@ public class Policy implements Serializable {
         this.userPolicies = userPolicies;
         this.benefit = benefit;
     }
+
+
 }
