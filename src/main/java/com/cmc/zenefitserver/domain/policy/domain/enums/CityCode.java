@@ -1,5 +1,8 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
+import com.cmc.zenefitserver.global.error.ErrorCode;
+import com.cmc.zenefitserver.global.error.exception.BusinessException;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -294,5 +297,13 @@ public enum CityCode {
                 .findFirst()
                 .map(code -> code.getName())
                 .orElse(null);
+    }
+
+    @JsonCreator
+    public static CityCode findCityCodeByName(String name) {
+        return Arrays.stream(CityCode.values())
+                .filter(code -> code.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_CITY_ENUM_VALUE));
     }
 }

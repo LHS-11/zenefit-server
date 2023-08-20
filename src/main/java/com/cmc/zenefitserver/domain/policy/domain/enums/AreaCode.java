@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -128,11 +129,19 @@ public enum AreaCode {
         return cities;
     }
 
-    public static AreaCode findAreaCode(String code) {
+    public static AreaCode findAreaCodeByCode(String code) {
         return Arrays.stream(AreaCode.values())
                 .filter(a -> a.getCode().equals(code))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @JsonCreator
+    public static AreaCode findAreaCodeByName(String name) {
+        return Arrays.stream(AreaCode.values())
+                .filter(a -> a.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException(NOT_FOUND_AREA_ENUM_VALUE));
     }
 
     public static List<String> findCityCodes(String name) {

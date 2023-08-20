@@ -60,7 +60,8 @@ public enum ErrorCode {
     NOT_FOUND_AREA_ENUM_VALUE("COMMON_005", "area 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
     NOT_FOUND_PROVIDER_TYPE_ENUM_VALUE("COMMON_006", "providerType 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
     NOT_FOUND_SUPPORT_POLICY_TYPE_ENUM_VALUE("COMMON_007", "supportPolicyType 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
-    NOT_FOUND_POLICY_TYPE_ENUM_VALUE("COMMON_008", "policyType 값이 올바르지 않은 값입니다.", UNAUTHORIZED);;
+    NOT_FOUND_POLICY_TYPE_ENUM_VALUE("COMMON_008", "policyType 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
+    NOT_FOUND_CITY_ENUM_VALUE("COMMON_009", "city 값이 올바르지 않은 값입니다.", UNAUTHORIZED);
 
 
 
