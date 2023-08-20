@@ -1,6 +1,8 @@
 package com.cmc.zenefitserver.domain.policy.dao;
 
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
+import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,5 +39,12 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
     List<Policy> findAllByEndDate(LocalDate endDate);
 
     List<Policy> findAllBySttDate(LocalDate sttDate);
+
+    List<Policy> findAllBySupportPolicyType(SupportPolicyType supportPolicyType);
+
+    @Query(value = "SELECT p FROM Policy p " +
+            "WHERE (p.areaCode = :areaCode AND p.cityCode = :cityCode) OR (p.areaCode = :areaCode AND p.cityCode IS NULL) OR (p.areaCode = :central) " +
+            "AND p.minAge <= :age AND p.maxAge >= :age")
+    List<Policy> findByAreaCodeAndCityCodeAndAge(@Param("areaCode") AreaCode areaCode, @Param("central") AreaCode central, @Param("cityCode") CityCode cityCode, @Param("age") int age);
 
 }

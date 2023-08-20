@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class PolicyService {
     private final PolicyQueryRepository policyQueryRepository;
     private final PolicyRepository policyRepository;
     private final UserPolicyRepository userPolicyRepository;
+    private final PolicyRecommender policyRecommender;
 
     // 정책 리스트 조회 비즈니스 로직
     public Slice<PolicyListResponseDto> getPolicyList(User user, PolicyListRequestDto policyListRequestDto, Pageable pageable) {
@@ -74,7 +76,7 @@ public class PolicyService {
                 .policyId(policy.getId())
                 .policyName(policy.getPolicyName())
                 .policyIntroduction(policy.getPolicyIntroduction())
-                .policyApplyDenialReason(denialReason)
+                .policyApplyDenialReason(PolicyDenialReasonClassifier.getDenialReasonType(user, policy).getText())
                 .policyApplyDocument(policy.getSubmissionDocumentContent())
                 .policyApplyMethod(policy.getApplicationProcedureContent())
                 .policyApplyDate(policy.getApplicationPeriodContent())
@@ -140,5 +142,39 @@ public class PolicyService {
         return result;
     }
 
+    public RecommendPolicyInfoResponseDto recommendPolicy(User user) {
+        Map<SupportPolicyType, Policy> supportPolicyTypePolicyMap = policyRecommender.recommendPolicy(user);
+
+        List<RecommendPolicyInfoResponseDto.recommendPolicyInfo> recommendPolicyInfoList = supportPolicyTypePolicyMap.keySet()
+                .stream()
+                .map(supportPolicyType -> {
+                    Policy policy = supportPolicyTypePolicyMap.get(supportPolicyType);
+                    List<Policy> supportTypePolices = policyRepository.findAllBySupportPolicyType(supportPolicyType);
+
+                    RecommendPolicyInfoResponseDto.recommendPolicyInfo dto = RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
+                            .supportType(supportPolicyType.getDescription())
+                            .policyId(policy.getId())
+                            .policyName(policy.getPolicyName())
+                            .policyIntroduction(policy.getPolicyIntroduction())
+                            .policyLogo(policy.getPolicyLogo())
+                            .policyAreaCode(policy.getAreaCode().getName())
+                            .supportTypePolicyCnt(supportTypePolices.size())
+                            .benefit(policy.getBenefit())
+                            .applyStatus(policy.getApplyStatus())
+                            .build();
+
+                    if(policy.getCityCode() != null){
+                        dto.upgradeCityCode(policy.getCityCode().getName());
+                    }
+                    return dto;
+                }).collect(Collectors.toList());
+
+        RecommendPolicyInfoResponseDto result = RecommendPolicyInfoResponseDto.builder()
+                .policyCnt(user.getPolicyCnt())
+                .policyInfos(recommendPolicyInfoList)
+                .build();
+
+        return result;
+    }
 }
 
