@@ -103,54 +103,6 @@ public class PolicyRecommender {
         return secondFindPolices;
     }
 
-    public DenialReasonType getDenialReasonType(User user, Policy policy) {
-
-        // 장애인 12
-        if (isDisabledDenial(user, policy)) {
-            return DenialReasonType.SPECIAL_CONTENT_DISABLED;
-        }
-        // 군인 11
-        if (isSoldierDenial(user, policy)) {
-            return DenialReasonType.SPECIAL_CONTENT_SOLDIER;
-        }
-        // 농업인 10
-        if (isFarmerDenial(user, policy)) {
-            return DenialReasonType.SPECIAL_CONTENT_FARMER;
-        }
-        // 여성 9
-        if (isFarmerDenial(user, policy)) {
-            return DenialReasonType.SPECIAL_CONTENT_FEMALE;
-        }
-        // 지역인재 8
-        if (isLocalTalentDenial(user, policy)) {
-            return DenialReasonType.SPECIAL_CONTENT_FARMER;
-        }
-        // 저소득 7
-        if (isLowIncomeDenial(user, policy)) {
-            return DenialReasonType.SPECIAL_CONTENT_LOW_INCOME;
-        }
-        // 중소기업 6
-        if (isSmallBusinessDenial(user, policy)) {
-            return DenialReasonType.SPECIAL_CONTENT_SMALL_BUSINESS;
-        }
-        // 나이 4
-        if (isAgeDenial(user, policy)) {
-            return DenialReasonType.AGE;
-        }
-        // 취업살태내용 3
-        if (isJobDenial(user, policy)) {
-            return DenialReasonType.JOB_CONTENT;
-        }
-        // 학력요건내용 2
-        if (isEducationDenial(user, policy)) {
-            return DenialReasonType.EDUCATION_CONTENT;
-        }
-        // 거주지역 1
-        if (isLocalDenial(user, policy)) {
-            return DenialReasonType.LOCAL;
-        }
-        return null;
-    }
 
     private static boolean isDisabledDenial(User user, Policy policy) {
         return !user.getUserDetail().isDisabled() && policy.getPolicySplzTypes().contains(PolicySplzType.DISABLED);
