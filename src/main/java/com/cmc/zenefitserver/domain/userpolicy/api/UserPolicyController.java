@@ -6,6 +6,7 @@ import com.cmc.zenefitserver.domain.userpolicy.dto.ApplyPolicyListResponseDto;
 import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListResponseDto;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
+@Api(tags = "4. user-policy", description = "interest policy or apply(benefit) policy API")
 @RequestMapping("/user/policy")
 @RestController
 public class UserPolicyController {
