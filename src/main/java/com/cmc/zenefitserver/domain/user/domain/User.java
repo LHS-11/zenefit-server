@@ -98,6 +98,9 @@ public class User extends BaseEntity {
         this.pushNotificationStatus = pushNotificationStatus;
     }
 
+    public void updatePolicyCnt(int cnt) {
+        this.policyCnt = cnt;
+    }
     public void update(ModifyRequestDto modifyRequestDto) {
         this.nickname = modifyRequestDto.getNickname();
         this.age = modifyRequestDto.getAge();
@@ -125,5 +128,4 @@ public class User extends BaseEntity {
         this.provider = provider;
         this.benefit = benefit;
     }
-
 }
