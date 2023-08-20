@@ -29,15 +29,16 @@ public class KakaoLoginService {
     @Value("${kakao.redirect-url}")
     private String redirectUrl;
 
-    public KakaoInfo getInfo(final String code){
+    public KakaoInfo getInfo(final String token){
 
         // code -> access token 획득
         try {
-            KakaoToken token = getToken(code);
+//            KakaoToken token = getToken(code);
+//            String token = code;
             log.debug("token = {}", token);
 
             // access token -> 유저 정보 획득
-            return kakaoFeignService.getInfo(new URI(kakaoUserApiUrl), token.getTokenType() + " " + token.getAccessToken());
+            return kakaoFeignService.getInfo(new URI(kakaoUserApiUrl), "Bearer" + " " + token);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

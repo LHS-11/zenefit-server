@@ -47,8 +47,8 @@ public class AuthService {
 
     public TokenResponseDto kakaoLogin(AuthRequestDto authRequestDto) {
 
-        String code = authRequestDto.getToken();
-        KakaoAccount kakaoAccount = kakaoLoginService.getInfo(code).getKakaoAccount();
+//        String code = authRequestDto.getToken();
+        KakaoAccount kakaoAccount = kakaoLoginService.getInfo(authRequestDto.getToken()).getKakaoAccount();
 
         // 이메일로 회원 조회시 없으면 이메일과 함께 오류 반환
         User findUser = userRepository.findByEmailAndProvider(kakaoAccount.getEmail(), ProviderType.KAKAO)
