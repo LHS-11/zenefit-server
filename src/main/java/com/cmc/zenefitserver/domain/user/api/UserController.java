@@ -34,14 +34,14 @@ public class UserController {
         log.info("회원가입 API");
 
         if (result.hasErrors()) {
-            return CommonResponse.failure(INVALID_NICKNAME);
+            return CommonResponse.failure(result.getFieldError().getCode(),result.getFieldError().getDefaultMessage(),null);
         }
 
         TokenResponseDto tokenResponseDto = userService.signUp(signUpRequestDto);
         return CommonResponse.success(tokenResponseDto);
     }
 
-    @PostMapping("/modify")
+    @PatchMapping("/modify")
     @Operation(summary = "회원정보수정 API", description = "회원정보를 수정합니다.")
     public CommonResponse<User> modify(@Valid @RequestBody ModifyRequestDto modifyRequestDto,
                                        @ApiIgnore @AuthUser User user) {

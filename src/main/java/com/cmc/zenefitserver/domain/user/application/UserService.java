@@ -7,6 +7,7 @@ import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
+import com.cmc.zenefitserver.domain.user.domain.Address;
 import com.cmc.zenefitserver.domain.user.domain.Gender;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.domain.UserDetail;
@@ -55,12 +56,17 @@ public class UserService {
                     throw new BusinessException(DUPLICATE_EMAIL_PROVIDER);
                 });
 
+        Address address = Address.builder()
+                .areaCode(signUpRequestDto.getAreaCode())
+                .cityCode(signUpRequestDto.getCityCode())
+                .build();
+
         User user = User.builder()
                 .email(signUpRequestDto.getEmail())
                 .nickname(signUpRequestDto.getNickname())
                 .age(signUpRequestDto.getAge())
                 .lastYearIncome(signUpRequestDto.getLastYearIncome())
-                .address(signUpRequestDto.getAddress())
+                .address(address)
                 .educationType(signUpRequestDto.getEducationType())
                 .jobs(signUpRequestDto.getJobs())
                 .provider(signUpRequestDto.getProvider())
