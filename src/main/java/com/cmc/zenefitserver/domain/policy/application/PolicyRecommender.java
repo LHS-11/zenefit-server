@@ -72,9 +72,9 @@ public class PolicyRecommender {
         // 1차 선별
         Integer age = user.getAge();
 
-        AreaCode userAreaCode = user.getAddress().getCity();
+        AreaCode userAreaCode = user.getAddress().getAreaCode();
 
-        CityCode userCityCode = user.getAddress().getDistrict();
+        CityCode userCityCode = user.getAddress().getCityCode();
 
         List<Policy> firstFindPolices = policyRepository.findByAreaCodeAndCityCodeAndAge(userAreaCode, AreaCode.CENTRAL_GOVERNMENT, userCityCode, age);
 
@@ -149,7 +149,7 @@ public class PolicyRecommender {
     }
 
     private static boolean isLocalDenial(User user, Policy policy) {
-        return user.getAddress().getCity() != policy.getAreaCode()
-                || (policy.getCityCode() != null && policy.getCityCode() != user.getAddress().getDistrict());
+        return user.getAddress().getAreaCode() != policy.getAreaCode()
+                || (policy.getCityCode() != null && policy.getCityCode() != user.getAddress().getCityCode());
     }
 }
