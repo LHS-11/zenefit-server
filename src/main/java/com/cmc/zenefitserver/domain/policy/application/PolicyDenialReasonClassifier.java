@@ -99,7 +99,7 @@ public class PolicyDenialReasonClassifier {
         return !policy.getEducationTypes().contains(user.getEducationType());
     }
     private static boolean isLocalDenial(User user,Policy policy){
-        return user.getAddress().getCity() != policy.getAreaCode()
-                || (policy.getCityCode() != null && policy.getCityCode() != user.getAddress().getDistrict());
+        return user.getAddress().getAreaCode() != policy.getAreaCode()
+                || (policy.getCityCode() != null && policy.getCityCode() != user.getAddress().getCityCode());
     }
 }

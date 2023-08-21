@@ -2,7 +2,6 @@ package com.cmc.zenefitserver.domain.user.domain;
 
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,16 +20,16 @@ public class Address {
     @NotNull
     @Column(name = "city")
     @Enumerated(EnumType.STRING)
-    private AreaCode city;
+    private AreaCode areaCode;
 
     @NotNull
     @Column(name = "district")
     @Enumerated(EnumType.STRING)
-    private CityCode district;
+    private CityCode cityCode;
 
     @Builder
-    public Address(AreaCode city, CityCode district) {
-        this.city = city;
-        this.district = district;
+    public Address(AreaCode areaCode, CityCode cityCode) {
+        this.areaCode = areaCode;
+        this.cityCode = cityCode;
     }
 }
