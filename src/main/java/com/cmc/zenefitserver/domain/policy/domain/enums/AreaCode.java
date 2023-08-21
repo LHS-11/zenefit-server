@@ -136,7 +136,7 @@ public enum AreaCode {
                 .orElse(null);
     }
 
-    @JsonCreator
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static AreaCode findAreaCodeByName(String name) {
         return Arrays.stream(AreaCode.values())
                 .filter(a -> a.getName().equals(name))

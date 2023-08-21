@@ -1,5 +1,7 @@
 package com.cmc.zenefitserver.domain.user.dto;
 
+import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.user.domain.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,8 +27,11 @@ public class ModifyRequestDto {
     @ApiModelProperty(notes = "나이",example = "25")
     private Integer age;
 
-    @ApiModelProperty(notes = "주소")
-    private Address address;
+    @ApiModelProperty(notes = "시/도",example = "서울")
+    private AreaCode areaCode;
+
+    @ApiModelProperty(notes = "시/구",example = "강서구")
+    private CityCode cityCode;
 
     @ApiModelProperty(notes = "작년 소득",example = "50000000")
     private Integer lastYearIncome;
@@ -36,9 +41,6 @@ public class ModifyRequestDto {
 
     @ApiModelProperty(notes = "직업",example = "재직자")
     private Set<JobType> jobs;
-
-//    @ApiModelProperty(notes = "성별",example = "MALE")
-//    private Gender gender;
 
     @ApiModelProperty(notes = "유저 상세 정보",example = "중소기업, 군인, 저소득층 ")
     private UserDetail userDetail;

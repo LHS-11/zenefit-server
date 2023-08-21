@@ -299,7 +299,7 @@ public enum CityCode {
                 .orElse(null);
     }
 
-    @JsonCreator
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static CityCode findCityCodeByName(String name) {
         return Arrays.stream(CityCode.values())
                 .filter(code -> code.getName().equals(name))

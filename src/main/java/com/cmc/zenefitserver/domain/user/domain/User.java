@@ -104,7 +104,10 @@ public class User extends BaseEntity {
     public void update(ModifyRequestDto modifyRequestDto) {
         this.nickname = modifyRequestDto.getNickname();
         this.age = modifyRequestDto.getAge();
-        this.address = modifyRequestDto.getAddress();
+        this.address = Address.builder()
+                .areaCode(modifyRequestDto.getAreaCode())
+                .cityCode(modifyRequestDto.getCityCode())
+                .build();
         this.lastYearIncome = modifyRequestDto.getLastYearIncome();
         this.educationType = modifyRequestDto.getEducationType();
         this.jobs = modifyRequestDto.getJobs();
