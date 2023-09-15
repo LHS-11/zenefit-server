@@ -34,7 +34,7 @@ public class UserController {
         log.info("회원가입 API");
 
         if (result.hasErrors()) {
-            return CommonResponse.failure(result.getFieldError().getCode(),result.getFieldError().getDefaultMessage(),null);
+            return CommonResponse.failure(400, result.getFieldError().getDefaultMessage(), null);
         }
 
         TokenResponseDto tokenResponseDto = userService.signUp(signUpRequestDto);

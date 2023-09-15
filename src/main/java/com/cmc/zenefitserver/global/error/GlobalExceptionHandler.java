@@ -36,23 +36,23 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = BusinessException.class)
-    public ResponseEntity handleBusinessException(BusinessException e,@AuthUser User user,HttpServletRequest request){
+    public ResponseEntity handleBusinessException(BusinessException e, @AuthUser User user, HttpServletRequest request) {
         getExceptionStackTrace(e, user, request);
         ErrorCode errorCode = e.getErrorCode();
-        return new ResponseEntity<>(CommonResponse.failure(errorCode.getCode(),errorCode.getMessage(),e.getData()),errorCode.getStatus());
+        return new ResponseEntity<>(CommonResponse.failure(errorCode.getCode(), errorCode.getMessage(), e.getData()), errorCode.getStatus());
     }
 
     @ExceptionHandler(value = ControllerException.class)
-    public ResponseEntity handleUnknownException(Exception e,@AuthUser User user,HttpServletRequest request){
-        getExceptionStackTrace(e,user,request);
-        return new ResponseEntity<>(CommonResponse.failure("500", e.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity handleUnknownException(Exception e, @AuthUser User user, HttpServletRequest request) {
+        getExceptionStackTrace(e, user, request);
+        return new ResponseEntity<>(CommonResponse.failure(500, e.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity handleMethodArgumentTypeMismatchException(Exception e){
+    public ResponseEntity handleMethodArgumentTypeMismatchException(Exception e) {
 //        getExceptionStackTrace(e,user,request);
-        log.error("handleMethodArgumentTypeMismatchException",e);
-        return new ResponseEntity<>(CommonResponse.failure("500", e.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
+        log.error("handleMethodArgumentTypeMismatchException", e);
+        return new ResponseEntity<>(CommonResponse.failure(500, e.getMessage(), null), HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
