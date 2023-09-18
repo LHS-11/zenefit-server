@@ -35,5 +35,4 @@ services:
       - "443:443" # Add port for HTTPS
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro # Share SSL certification
-      - /var/lib/letsencrypt:/var/lib/letsencrypt:ro # Share SSL certification
     restart: always
