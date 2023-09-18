@@ -1,5 +1,5 @@
 ---
-name: 'refacotor '
+name: refactor
 about: 리팩토링을 진행합니다.
 title: "[REFACTOR]"
 labels: refactor
