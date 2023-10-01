@@ -2,6 +2,7 @@ package com.cmc.zenefitserver.global.auth;
 
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
+import com.cmc.zenefitserver.domain.user.domain.UserDetail;
 import com.cmc.zenefitserver.global.auth.apple.AppleFeignService;
 import com.cmc.zenefitserver.global.auth.apple.AppleKeyInfo;
 import com.cmc.zenefitserver.global.auth.jwt.JwtService;
@@ -19,7 +20,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.math.BigInteger;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -44,10 +47,11 @@ public class AuthService {
     private final KakaoLoginService kakaoLoginService;
     private final AppleFeignService appleFeignService;
     private final JwtService jwtService;
+    private final EntityManager em;
 
+    @Transactional(noRollbackFor = BusinessException.class)
     public TokenResponseDto kakaoLogin(AuthRequestDto authRequestDto) {
 
-//        String code = authRequestDto.getToken();
         KakaoAccount kakaoAccount = kakaoLoginService.getInfo(authRequestDto.getToken()).getKakaoAccount();
 
         TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, kakaoAccount.getEmail(), kakaoAccount.getGender(), authRequestDto.getProviderType());
@@ -132,12 +136,18 @@ public class AuthService {
         } catch (BusinessException exception) {
 
             // 1. DB에 정보가 없을 때, 해당 정보로 임시 회원가입 진행하고 NOT_FOUND_USER 2001 예외 처리
+            UserDetail userDetail = UserDetail.builder().build();
+
             User user = User.builder()
                     .email(email)
                     .provider(authRequestDto.getProviderType())
+                    .userDetail(userDetail)
                     .build();
 
+            userDetail.setUser(user);
             userRepository.save(user);
+            em.flush();
+            em.clear();
 
             throw exception;
         }
