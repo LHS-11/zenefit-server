@@ -41,7 +41,7 @@ public class User extends BaseEntity {
 
     @Column(name = "last_year_income")
     @NotNull
-    private int lastYearIncome;
+    private Integer lastYearIncome;
 
     @Column(name = "education_type")
     @Enumerated(EnumType.STRING)
@@ -82,6 +82,21 @@ public class User extends BaseEntity {
 
     private int benefit; // 유저 수혜 금액
 
+    public boolean isUserRegistrationValid() {
+        if (
+                this.email.isEmpty()
+                        && this.age == null
+                        && this.address.getAreaCode() == null
+                        && this.address.getCityCode() == null
+                        && this.lastYearIncome == null
+                        && this.educationType == null
+                        && this.jobs.size() == 0
+        ){
+            return false;
+        }
+        return true;
+    }
+
     public void updateUserPolicy(UserPolicy userPolicy) {
         this.userPolicies.add(userPolicy);
     }
@@ -101,6 +116,7 @@ public class User extends BaseEntity {
     public void updatePolicyCnt(int cnt) {
         this.policyCnt = cnt;
     }
+
     public void update(ModifyRequestDto modifyRequestDto) {
         this.nickname = modifyRequestDto.getNickname();
         this.age = modifyRequestDto.getAge();

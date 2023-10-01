@@ -33,6 +33,7 @@ public enum ErrorCode {
     DUPLICATE_NICKNAME(2002, "중복된 닉네임 입니다.", UNAUTHORIZED),
     DUPLICATE_EMAIL_PROVIDER(2003, "중복된 이메일과 소셜 타입입니다.", UNAUTHORIZED),
     INVALID_NICKNAME(2004, "닉네임은 1~7자의 영문 대소문자, 숫자, 한글로만 입력해주세요.", UNAUTHORIZED),
+    INVALID_USER(2005,"임시 회원가입된 유저입니다. 추가 정보를 입력해주세요.",UNAUTHORIZED),
 
     /**
      * POLICY 관련 오류

@@ -50,18 +50,10 @@ public class AuthService {
 //        String code = authRequestDto.getToken();
         KakaoAccount kakaoAccount = kakaoLoginService.getInfo(authRequestDto.getToken()).getKakaoAccount();
 
-        // 이메일로 회원 조회시 없으면 이메일과 함께 오류 반환
-        User findUser = userRepository.findByEmailAndProvider(kakaoAccount.getEmail(), ProviderType.KAKAO)
-                .orElseThrow(() -> new BusinessException(NOT_FOUND_USER,
-                        Map.of("email", kakaoAccount.getEmail(),
-                                "gender", kakaoAccount.getGender(),
-                                "provider", "KAKAO")
-                ));
-
-        // 이메일로 회원 조회시 있으면 로그인하고 자체 JWT 만들어서 Access Token 과 Refresh Token 반환
-        TokenResponseDto jwtToken = jwtService.createToken(new TokenRequestDto(findUser));
+        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, kakaoAccount.getEmail(), kakaoAccount.getGender(), authRequestDto.getProviderType());
         return jwtToken;
     }
+
 
     public TokenResponseDto appleLogin(AuthRequestDto authRequestDto) {
         String token = authRequestDto.getToken();
@@ -103,14 +95,7 @@ public class AuthService {
         String gender = userInfoObject.get("gender").getAsString();
         String email = userInfoObject.get("email").getAsString();
 
-        User findUser = userRepository.findByEmailAndProvider(email, authRequestDto.getProviderType())
-                .orElseThrow(() -> new BusinessException(NOT_FOUND_USER,
-                        Map.of("email", email,
-                                "gender", gender,
-                                "provider", "APPLE")
-                ));
-
-        TokenResponseDto jwtToken = jwtService.createToken(new TokenRequestDto(findUser));
+        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, email, gender, authRequestDto.getProviderType());
         return jwtToken;
     }
 
@@ -133,5 +118,38 @@ public class AuthService {
         }
     }
 
+    private TokenResponseDto getTokenResponseDto(AuthRequestDto authRequestDto, String email, String gender, ProviderType providerType) {
+        // 이메일과 프로바이더로 회원조회
+        User findUser = null;
+        try {
+            findUser = userRepository.findByEmailAndProvider(email, providerType)
+                    .orElseThrow(() -> new BusinessException(NOT_FOUND_USER,
+                            Map.of("email", email,
+                                    "gender", gender,
+                                    "provider", providerType.getValue())
+                    ));
+
+        } catch (BusinessException exception) {
+
+            // 1. DB에 정보가 없을 때, 해당 정보로 임시 회원가입 진행하고 NOT_FOUND_USER 2001 예외 처리
+            User user = User.builder()
+                    .email(email)
+                    .provider(authRequestDto.getProviderType())
+                    .build();
+
+            userRepository.save(user);
+
+            throw exception;
+        }
+
+        // 2. 이미 임시 회원가입이 되어 있을 경우, INVALID_USER 2005 예외 처리
+        if (!findUser.isUserRegistrationValid()) {
+            throw new BusinessException(INVALID_USER);
+        }
+
+        // 3. 이메일로 회원 조회시 있으면 로그인 하고 자체 JWT 만들어서 Access Token 과 Refresh Token 반환
+        TokenResponseDto jwtToken = jwtService.createToken(new TokenRequestDto(findUser));
+        return jwtToken;
+    }
 
 }
