@@ -2,6 +2,7 @@ package com.cmc.zenefitserver.domain.user.domain;
 
 
 import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
+import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import com.cmc.zenefitserver.global.auth.ProviderType;
 import com.cmc.zenefitserver.global.common.BaseEntity;
@@ -10,10 +11,10 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
+@ToString
 @Getter
 @Entity
 @Table(name = "user")
@@ -29,18 +30,15 @@ public class User extends BaseEntity {
     private String email;
 
     @Column(name = "nickname", unique = true)
-    @NotNull
     private String nickname;
 
     @Column(name = "age")
-    @NotNull
     private Integer age;
 
     @Embedded
     private Address address;
 
     @Column(name = "last_year_income")
-    @NotNull
     private Integer lastYearIncome;
 
     @Column(name = "education_type")
@@ -84,17 +82,35 @@ public class User extends BaseEntity {
 
     public boolean isUserRegistrationValid() {
         if (
-                this.email.isEmpty()
-                        && this.age == null
-                        && this.address.getAreaCode() == null
-                        && this.address.getCityCode() == null
+                this.age == null
+                        && this.address == null
                         && this.lastYearIncome == null
                         && this.educationType == null
                         && this.jobs.size() == 0
-        ){
+        ) {
             return false;
         }
         return true;
+    }
+
+    public void updateUser(SignUpRequestDto signUpRequestDto) {
+
+        Address address = Address.builder()
+                .areaCode(signUpRequestDto.getAreaCode())
+                .cityCode(signUpRequestDto.getCityCode())
+                .build();
+
+        UserDetail userDetail = UserDetail.builder()
+                .gender(signUpRequestDto.getGender())
+                .build();
+
+        this.age = signUpRequestDto.getAge();
+        this.address = address;
+        this.lastYearIncome = signUpRequestDto.getLastYearIncome();
+        this.educationType = signUpRequestDto.getEducationType();
+        this.jobs = signUpRequestDto.getJobs();
+        this.userDetail.modify(userDetail);
+
     }
 
     public void updateUserPolicy(UserPolicy userPolicy) {
@@ -131,7 +147,7 @@ public class User extends BaseEntity {
     }
 
     @Builder
-    public User(String email, String nickname, Integer age, Address address, int lastYearIncome, EducationType educationType, Set<JobType> jobs, int policyCnt, UserDetail userDetail, String fcmToken, boolean pushNotificationStatus, boolean appNotificationStatus, ProviderType provider, int benefit) {
+    public User(String email, String nickname, Integer age, Address address, Integer lastYearIncome, EducationType educationType, Set<JobType> jobs, int policyCnt, UserDetail userDetail, String fcmToken, boolean pushNotificationStatus, boolean appNotificationStatus, ProviderType provider, int benefit) {
         this.email = email;
         this.nickname = nickname;
         this.age = age;

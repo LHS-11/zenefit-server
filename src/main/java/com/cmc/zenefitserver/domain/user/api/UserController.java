@@ -28,7 +28,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/signup")
+    @PatchMapping("/signup")
     @Operation(summary = "회원가입 API", description = "회원가입을 진행합니다. \n 로그인 실패시 이메일과 필요한 정보들을 반환하여 해당 값을 이용해서 회원가입")
     public CommonResponse<TokenResponseDto> signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto, BindingResult result) {
         log.info("회원가입 API");

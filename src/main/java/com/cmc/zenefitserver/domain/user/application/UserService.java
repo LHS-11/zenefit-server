@@ -42,45 +42,26 @@ public class UserService {
     private final JwtService jwtService;
 
     // 회원가입
+    @Transactional
     public TokenResponseDto signUp(SignUpRequestDto signUpRequestDto) {
 
         // 닉네임 중복 여부 확인
-        userRepository.findByNickname(signUpRequestDto.getNickname())
-                .ifPresent(user -> {
-                    throw new BusinessException(DUPLICATE_NICKNAME);
-                });
+//        userRepository.findByNickname(signUpRequestDto.getNickname())
+//                .ifPresent(user -> {
+//                    throw new BusinessException(DUPLICATE_NICKNAME);
+//                });
 
         // 이메일 + provider 중복 여부 확인
-        userRepository.findByEmailAndProvider(signUpRequestDto.getEmail(), signUpRequestDto.getProvider())
-                .ifPresent(user -> {
-                    throw new BusinessException(DUPLICATE_EMAIL_PROVIDER);
-                });
+//        userRepository.findByEmailAndProvider(signUpRequestDto.getEmail(), signUpRequestDto.getProvider())
+//                .ifPresent(user -> {
+//                    throw new BusinessException(DUPLICATE_EMAIL_PROVIDER);
+//                });
 
-        Address address = Address.builder()
-                .areaCode(signUpRequestDto.getAreaCode())
-                .cityCode(signUpRequestDto.getCityCode())
-                .build();
+        User findUser = userRepository.findByEmailAndProvider(signUpRequestDto.getEmail(), signUpRequestDto.getProvider())
+                .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
 
-        User user = User.builder()
-                .email(signUpRequestDto.getEmail())
-                .nickname(signUpRequestDto.getNickname())
-                .age(signUpRequestDto.getAge())
-                .lastYearIncome(signUpRequestDto.getLastYearIncome())
-                .address(address)
-                .educationType(signUpRequestDto.getEducationType())
-                .jobs(signUpRequestDto.getJobs())
-                .provider(signUpRequestDto.getProvider())
-                .build();
-
-        UserDetail userDetail = UserDetail.builder()
-                .gender(signUpRequestDto.getGender())
-                .build();
-
-        user.setUserDetail(userDetail);
-        userDetail.setUser(user);
-
-        User savedUser = userRepository.save(user);
-        return jwtService.createToken(new TokenRequestDto(savedUser));
+        findUser.updateUser(signUpRequestDto);
+        return jwtService.createToken(new TokenRequestDto(findUser));
     }
 
     // 회원정보 수정
@@ -160,14 +141,13 @@ public class UserService {
         // 신청 정책과 수혜 정책의 수
         int interestPolicyCount = userPolicyRepository.getInterestPolicyCount(user.getUserId());
         int applyPolicyCount = userPolicyRepository.getApplyPolicyCount(user.getUserId());
-        int sumPolicyCount=interestPolicyCount+applyPolicyCount;
+        int sumPolicyCount = interestPolicyCount + applyPolicyCount;
         Gender gender = user.getUserDetail().getGender();
 
         // 추천 정책 조회
         String characterImageUrl = getImageUrl(gender, sumPolicyCount);
 
         // 수혜 정도에 따른 유저 이미지 조회 및 알고리즘
-
 
 
         // 지원 정책 유형에 따른 신청 마감일에 임박한 정책 조회
@@ -197,12 +177,12 @@ public class UserService {
                 .build();
     }
 
-    public String getImageUrl(Gender gender,int sumPolicyCount){
+    public String getImageUrl(Gender gender, int sumPolicyCount) {
 
-        String bucketName="zenefit-bucket";
-        String folderName="character";
+        String bucketName = "zenefit-bucket";
+        String folderName = "character";
 
-        String bucketImageUrl=gender.getCode()+"-";
+        String bucketImageUrl = gender.getCode() + "-";
 
         bucketImageUrl = getImageString(sumPolicyCount, bucketImageUrl);
 
@@ -217,17 +197,17 @@ public class UserService {
     }
 
     private static String getImageString(int sumPolicyCount, String bucketImageUrl) {
-        if(sumPolicyCount >=0 && sumPolicyCount <=3){
-            bucketImageUrl +="no";
+        if (sumPolicyCount >= 0 && sumPolicyCount <= 3) {
+            bucketImageUrl += "no";
         }
-        if(sumPolicyCount >=4 && sumPolicyCount <=9){
-            bucketImageUrl +="new";
+        if (sumPolicyCount >= 4 && sumPolicyCount <= 9) {
+            bucketImageUrl += "new";
         }
-        if(sumPolicyCount >=10 && sumPolicyCount <=12){
-            bucketImageUrl +="save";
+        if (sumPolicyCount >= 10 && sumPolicyCount <= 12) {
+            bucketImageUrl += "save";
         }
-        if(sumPolicyCount >=13){
-            bucketImageUrl +="smart";
+        if (sumPolicyCount >= 13) {
+            bucketImageUrl += "smart";
         }
         return bucketImageUrl;
     }

@@ -17,12 +17,10 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class Address {
 
-    @NotNull
     @Column(name = "city")
     @Enumerated(EnumType.STRING)
     private AreaCode areaCode;
 
-    @NotNull
     @Column(name = "district")
     @Enumerated(EnumType.STRING)
     private CityCode cityCode;
