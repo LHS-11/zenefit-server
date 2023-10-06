@@ -54,7 +54,7 @@ public class AuthService {
 
         KakaoAccount kakaoAccount = kakaoLoginService.getInfo(authRequestDto.getToken()).getKakaoAccount();
 
-        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, kakaoAccount.getEmail(), kakaoAccount.getGender(), authRequestDto.getProviderType());
+        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, kakaoAccount.getEmail(), kakaoAccount.getNickname(), kakaoAccount.getGender(), authRequestDto.getProviderType());
         return jwtToken;
     }
 
@@ -99,7 +99,7 @@ public class AuthService {
         String gender = userInfoObject.get("gender").getAsString();
         String email = userInfoObject.get("email").getAsString();
 
-        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, email, gender, authRequestDto.getProviderType());
+        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, email, null, gender, authRequestDto.getProviderType());
         return jwtToken;
     }
 
@@ -122,15 +122,16 @@ public class AuthService {
         }
     }
 
-    private TokenResponseDto getTokenResponseDto(AuthRequestDto authRequestDto, String email, String gender, ProviderType providerType) {
+    private TokenResponseDto getTokenResponseDto(AuthRequestDto authRequestDto, String email, String nickname, String gender, ProviderType providerType) {
         // 이메일과 프로바이더로 회원조회
         User findUser = null;
         try {
             findUser = userRepository.findByEmailAndProvider(email, providerType)
                     .orElseThrow(() -> new BusinessException(NOT_FOUND_USER,
                             Map.of("email", email,
-                                    "gender", gender,
-                                    "provider", providerType.getValue())
+                                    "nickname", nickname == null ? "null" : nickname,
+                                    "gender", gender == null ? "null" : gender,
+                                    "provider", providerType.name())
                     ));
 
         } catch (BusinessException exception) {
