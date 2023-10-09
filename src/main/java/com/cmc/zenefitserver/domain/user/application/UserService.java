@@ -102,7 +102,10 @@ public class UserService {
 
     // AreaCode 가져오기
     public List<String> getAreaCodes() {
-        return Arrays.stream(AreaCode.values()).map(areaCode -> areaCode.getName()).collect(Collectors.toList());
+        return Arrays.stream(AreaCode.values())
+                .filter(areaCode -> !areaCode.getCode().equals("003002000"))
+                .map(areaCode -> areaCode.getName())
+                .collect(Collectors.toList());
     }
 
     // CityCode 가져오기
