@@ -80,6 +80,9 @@ public class User extends BaseEntity {
 
     private int benefit; // 유저 수혜 금액
 
+    @Column(name = "marketingStatus")
+    private boolean marketingStatus;
+
     public boolean isUserRegistrationValid() {
         if (
                 this.age == null
@@ -100,17 +103,17 @@ public class User extends BaseEntity {
                 .cityCode(signUpRequestDto.getCityCode())
                 .build();
 
-        UserDetail userDetail = UserDetail.builder()
-                .gender(signUpRequestDto.getGender())
-                .build();
+//        UserDetail userDetail = UserDetail.builder()
+//                .gender(signUpRequestDto.getGender())
+//                .build();
 
         this.age = signUpRequestDto.getAge();
         this.address = address;
         this.lastYearIncome = signUpRequestDto.getLastYearIncome();
         this.educationType = signUpRequestDto.getEducationType();
         this.jobs = signUpRequestDto.getJobs();
-        this.userDetail.modify(userDetail);
-
+//        this.userDetail.modify(userDetail);
+        this.marketingStatus = signUpRequestDto.isMarketingStatus();
     }
 
     public void updateUserPolicy(UserPolicy userPolicy) {
