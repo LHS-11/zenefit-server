@@ -21,13 +21,9 @@ import java.util.Set;
 @ApiModel(description = "회원가입 API request")
 public class SignUpRequestDto {
 
-    @NotNull(message = "이메일을 입력해주세요.")
-    @ApiModelProperty(notes = "이메일", example = "awdsawd@naver.com")
-    private String email;
-
-    @NotNull(message = "소셜 타입을 입력해주세요.")
-    @ApiModelProperty(notes = "소셜 타입", example = "KAKAO")
-    private ProviderType provider;
+    @NotNull(message = "유저ID를 입력해주세요.")
+    @ApiModelProperty(notes = "유저ID", example = "24")
+    private String userId;
 
 //    @Pattern(regexp = "^[a-zA-Z0-9가-힣]{1,7}$", message = "닉네임은 1~7자의 영문 대소문자, 숫자, 한글로만 입력해주세요.")
 //    @ApiModelProperty(notes ="닉네임",example = "paul")
@@ -55,20 +51,16 @@ public class SignUpRequestDto {
     @ApiModelProperty(notes = "직업", example = "재직자")
     private Set<JobType> jobs;
 
-    @ApiModelProperty(notes = "성별", example = "MALE")
-    private Gender gender;
+    @ApiModelProperty(notes = "마켓팅 동의 여부", example = "true")
+    private boolean marketingStatus;
 
     @Builder
-    public SignUpRequestDto(String email, ProviderType provider, int age, AreaCode areaCode, CityCode cityCode, int lastYearIncome, EducationType educationType, Set<JobType> jobs, Gender gender) {
-        this.email = email;
-        this.provider = provider;
-//        this.nickname = nickname;
+    public SignUpRequestDto(int age, AreaCode areaCode, CityCode cityCode, int lastYearIncome, EducationType educationType, Set<JobType> jobs) {
         this.age = age;
         this.areaCode = areaCode;
         this.cityCode = cityCode;
         this.lastYearIncome = lastYearIncome;
         this.educationType = educationType;
         this.jobs = jobs;
-        this.gender = gender;
     }
 }

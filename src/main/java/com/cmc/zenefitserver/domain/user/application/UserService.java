@@ -45,19 +45,7 @@ public class UserService {
     @Transactional
     public TokenResponseDto signUp(SignUpRequestDto signUpRequestDto) {
 
-        // 닉네임 중복 여부 확인
-//        userRepository.findByNickname(signUpRequestDto.getNickname())
-//                .ifPresent(user -> {
-//                    throw new BusinessException(DUPLICATE_NICKNAME);
-//                });
-
-        // 이메일 + provider 중복 여부 확인
-//        userRepository.findByEmailAndProvider(signUpRequestDto.getEmail(), signUpRequestDto.getProvider())
-//                .ifPresent(user -> {
-//                    throw new BusinessException(DUPLICATE_EMAIL_PROVIDER);
-//                });
-
-        User findUser = userRepository.findByEmailAndProvider(signUpRequestDto.getEmail(), signUpRequestDto.getProvider())
+        User findUser = userRepository.findByUserId(Long.parseLong(signUpRequestDto.getUserId()))
                 .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
 
         findUser.updateUser(signUpRequestDto);

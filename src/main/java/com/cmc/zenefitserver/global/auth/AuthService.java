@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.global.auth;
 
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
+import com.cmc.zenefitserver.domain.user.domain.Gender;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.domain.UserDetail;
 import com.cmc.zenefitserver.global.auth.apple.AppleFeignService;
@@ -19,6 +20,7 @@ import com.google.gson.JsonParser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +31,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.cmc.zenefitserver.global.error.ErrorCode.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AuthService {
@@ -98,8 +98,9 @@ public class AuthService {
 
         String gender = userInfoObject.get("gender").getAsString();
         String email = userInfoObject.get("email").getAsString();
+        String nickname = userInfoObject.get("nickname").getAsString();
 
-        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, email, null, gender, authRequestDto.getProviderType());
+        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, email, nickname, gender, authRequestDto.getProviderType());
         return jwtToken;
     }
 
@@ -127,35 +128,34 @@ public class AuthService {
         User findUser = null;
         try {
             findUser = userRepository.findByEmailAndProvider(email, providerType)
-                    .orElseThrow(() -> new BusinessException(NOT_FOUND_USER,
-                            Map.of("email", email,
-                                    "nickname", nickname == null ? "null" : nickname,
-                                    "gender", gender == null ? "null" : gender,
-                                    "provider", providerType.name())
-                    ));
+                    .orElseThrow(() -> new BusinessException(NOT_FOUND_USER, new HashMap<>()));
 
         } catch (BusinessException exception) {
 
             // 1. DB에 정보가 없을 때, 해당 정보로 임시 회원가입 진행하고 NOT_FOUND_USER 2001 예외 처리
-            UserDetail userDetail = UserDetail.builder().build();
+            UserDetail userDetail = UserDetail.builder()
+                    .gender(gender == null ? Gender.MALE : Gender.fromStringToName(gender))
+                    .build();
 
             User user = User.builder()
                     .email(email)
+                    .nickname(nickname)
                     .provider(authRequestDto.getProviderType())
                     .userDetail(userDetail)
                     .build();
 
             userDetail.setUser(user);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
             em.flush();
             em.clear();
 
+            exception.setData(savedUser);
             throw exception;
         }
 
         // 2. 이미 임시 회원가입이 되어 있을 경우, INVALID_USER 2005 예외 처리
         if (!findUser.isUserRegistrationValid()) {
-            throw new BusinessException(INVALID_USER);
+            throw new BusinessException(INVALID_USER, Map.of("userId", findUser.getUserId().toString()));
         }
 
         // 3. 이메일로 회원 조회시 있으면 로그인 하고 자체 JWT 만들어서 Access Token 과 Refresh Token 반환

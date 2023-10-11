@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 @Getter
 public enum Gender {
-    MALE("남성","m"),
-    FEMALE("여성","f");
+    MALE("남성", "m"),
+    FEMALE("여성", "f");
 
     private String description;
     private String code;
@@ -26,7 +26,14 @@ public enum Gender {
         return Arrays.stream(Gender.values())
                 .filter(v -> v.description.equalsIgnoreCase(value))
                 .findFirst()
-                .orElseThrow(()->new BusinessException(ErrorCode.NOT_FOUND_GENDER_ENUM_VALUE));
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_GENDER_ENUM_VALUE));
+    }
+
+    public static Gender fromStringToName(String value) {
+        return Arrays.stream(Gender.values())
+                .filter(v -> v.name().equalsIgnoreCase(value))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_GENDER_ENUM_VALUE));
     }
 
     @JsonValue
