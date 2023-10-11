@@ -163,7 +163,7 @@ public class PolicyService {
                             .applyStatus(policy.getApplyStatus())
                             .build();
 
-                    if(policy.getCityCode() != null){
+                    if (policy.getCityCode() != null) {
                         dto.upgradeCityCode(policy.getCityCode().getName());
                     }
                     return dto;
@@ -175,6 +175,12 @@ public class PolicyService {
                 .build();
 
         return result;
+    }
+
+    public PolicyCountResponseDto getRecommendCount(User user) {
+        return PolicyCountResponseDto.builder()
+                .policyCnt(policyRecommender.matchPolicy(user).size())
+                .build();
     }
 }
 

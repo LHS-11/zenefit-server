@@ -63,4 +63,11 @@ public class PolicyController {
         RecommendPolicyInfoResponseDto result = policyService.recommendPolicy(user);
         return CommonResponse.success(result);
     }
+
+    @GetMapping("/recommend/count")
+    @Operation(summary = "지원할 수 있는 정책의 수 조회 API",description = "로그인시 해당 유저가 지원할 수 있는 정책의 수를 가져옵니다.")
+    public CommonResponse<PolicyCountResponseDto> getRecommendCount(@AuthUser User user){
+        PolicyCountResponseDto result = policyService.getRecommendCount(user);
+        return CommonResponse.success(result);
+    }
 }

@@ -44,7 +44,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
 
     @Query(value = "SELECT p FROM Policy p " +
             "WHERE (p.areaCode = :areaCode AND p.cityCode = :cityCode) OR (p.areaCode = :areaCode AND p.cityCode IS NULL) OR (p.areaCode = :central) " +
-            "AND p.minAge <= :age AND p.maxAge >= :age")
+            "AND :age between p.minAge and p.maxAge") //  p.minAge <= :age AND p.maxAge >= :age"
     List<Policy> findByAreaCodeAndCityCodeAndAge(@Param("areaCode") AreaCode areaCode, @Param("central") AreaCode central, @Param("cityCode") CityCode cityCode, @Param("age") int age);
 
 }
