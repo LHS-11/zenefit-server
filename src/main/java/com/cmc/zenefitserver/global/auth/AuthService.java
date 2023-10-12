@@ -53,8 +53,7 @@ public class AuthService {
     public TokenResponseDto kakaoLogin(AuthRequestDto authRequestDto) {
 
         KakaoAccount kakaoAccount = kakaoLoginService.getInfo(authRequestDto.getToken()).getKakaoAccount();
-
-        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, kakaoAccount.getEmail(), kakaoAccount.getNickname(), kakaoAccount.getGender(), authRequestDto.getProviderType());
+        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, kakaoAccount.getEmail(), kakaoAccount.getProfile().getNickname(), kakaoAccount.getGender(), authRequestDto.getProviderType());
         return jwtToken;
     }
 

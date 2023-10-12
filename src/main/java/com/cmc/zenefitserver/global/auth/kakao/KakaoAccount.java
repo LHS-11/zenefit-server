@@ -8,5 +8,10 @@ import lombok.ToString;
 public class KakaoAccount {
     private String gender;
     private String email;
-    private String nickname;
+    private Profile profile;
+
+    @Getter
+    public static class Profile{
+        private String nickname;
+    }
 }
