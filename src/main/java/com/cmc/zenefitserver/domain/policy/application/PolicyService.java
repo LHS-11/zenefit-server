@@ -177,8 +177,9 @@ public class PolicyService {
         return result;
     }
 
-    public PolicyCountResponseDto getRecommendCount(User user) {
+    public PolicyCountResponseDto getRecommendCountAndNickname(User user) {
         return PolicyCountResponseDto.builder()
+                .nickname(user.getNickname())
                 .policyCnt(policyRecommender.matchPolicy(user).size())
                 .build();
     }
