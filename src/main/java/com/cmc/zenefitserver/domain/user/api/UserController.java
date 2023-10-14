@@ -106,5 +106,15 @@ public class UserController {
         return CommonResponse.success(null);
     }
 
+    @GetMapping("/manual")
+    public CommonResponse<UserManualStatusResponseDto> getManualStatus(@AuthUser User user){
+        return CommonResponse.success(UserManualStatusResponseDto.builder().manualStatus(user.isManualStatus()).build());
+    }
+
+    @PatchMapping("/manual")
+    public CommonResponse<String> updateManualStatus(@AuthUser User user){
+        userService.updateManualStatus(user);
+        return CommonResponse.success(null);
+    }
 
 }

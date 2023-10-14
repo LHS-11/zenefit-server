@@ -81,7 +81,10 @@ public class User extends BaseEntity {
     private int benefit; // 유저 수혜 금액
 
     @Column(name = "marketingStatus")
-    private boolean marketingStatus;
+    private boolean marketingStatus; // 마켓팅 동의 여부
+
+    @Column(name = "manualStatus")
+    private boolean manualStatus; // 메뉴얼 확인 여부
 
     public boolean isUserRegistrationValid() {
         if (
@@ -165,5 +168,9 @@ public class User extends BaseEntity {
         this.appNotificationStatus = appNotificationStatus;
         this.provider = provider;
         this.benefit = benefit;
+    }
+
+    public void updateManualStatus() {
+        this.manualStatus = true;
     }
 }

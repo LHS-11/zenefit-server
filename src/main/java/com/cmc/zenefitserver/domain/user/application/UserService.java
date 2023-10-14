@@ -7,10 +7,8 @@ import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
-import com.cmc.zenefitserver.domain.user.domain.Address;
 import com.cmc.zenefitserver.domain.user.domain.Gender;
 import com.cmc.zenefitserver.domain.user.domain.User;
-import com.cmc.zenefitserver.domain.user.domain.UserDetail;
 import com.cmc.zenefitserver.domain.user.dto.*;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
 import com.cmc.zenefitserver.global.auth.jwt.JwtService;
@@ -213,4 +211,8 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void updateManualStatus(User user) {
+        user.updateManualStatus();
+        userRepository.save(user);
+    }
 }
