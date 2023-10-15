@@ -217,4 +217,8 @@ public class UserService {
         user.updateManualStatus();
         userRepository.save(user);
     }
+
+    public void delete(User user) {
+        userRepository.delete(user);
+    }
 }

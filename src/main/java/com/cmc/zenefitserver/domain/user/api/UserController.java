@@ -119,4 +119,10 @@ public class UserController {
         return CommonResponse.success(null);
     }
 
+    @DeleteMapping
+    public CommonResponse<String> delete(@AuthUser User user){
+        userService.delete(user);
+        return CommonResponse.success(null);
+    }
+
 }
