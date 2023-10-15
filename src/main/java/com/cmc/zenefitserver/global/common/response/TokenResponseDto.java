@@ -18,11 +18,17 @@ public class TokenResponseDto {
     @ApiModelProperty(notes = "리프레시 토큰", example = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ~~~~")
     private final String refreshToken;
 
-    @Builder
-    public TokenResponseDto(String accessToken, String refreshToken) {
-        this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
+    @ApiModelProperty(notes = "유저 닉네임",example = "임화섭")
+    private String nickname;
+
+    public void updateNickname(String nickname){
+        this.nickname=nickname;
     }
 
-
+    @Builder
+    public TokenResponseDto(String accessToken, String refreshToken, String nickname) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.nickname = nickname;
+    }
 }

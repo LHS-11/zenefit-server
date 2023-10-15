@@ -107,11 +107,13 @@ public class UserController {
     }
 
     @GetMapping("/manual")
+    @Operation(summary = "메뉴얼 상태 조회 API", description = "유저의 알림 수신 여부를 업데이트 합니다.")
     public CommonResponse<UserManualStatusResponseDto> getManualStatus(@AuthUser User user){
         return CommonResponse.success(UserManualStatusResponseDto.builder().manualStatus(user.isManualStatus()).build());
     }
 
     @PatchMapping("/manual")
+    @Operation(summary = "메뉴얼 상태 업데이트 API", description = "유저의 알림 수신 여부를 업데이트 합니다.")
     public CommonResponse<String> updateManualStatus(@AuthUser User user){
         userService.updateManualStatus(user);
         return CommonResponse.success(null);

@@ -47,7 +47,9 @@ public class UserService {
                 .orElseThrow(() -> new BusinessException(NOT_FOUND_USER));
 
         findUser.updateUser(signUpRequestDto);
-        return jwtService.createToken(new TokenRequestDto(findUser));
+        TokenResponseDto tokenResponseDto = jwtService.createToken(new TokenRequestDto(findUser));
+        tokenResponseDto.updateNickname(findUser.getNickname());
+        return tokenResponseDto;
     }
 
     // 회원정보 수정
