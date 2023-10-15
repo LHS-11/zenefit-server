@@ -27,4 +27,7 @@ public class AuthRequestDto {
     @ApiModelProperty(notes = "소셜 토큰 (kakao는 code)", example = "p1b3M_ikmtHivvFJqwY5bXAYg-ilCq4E7DnJwlT5CisM0wAAAYOPy1oR")
     @NotNull
     private String token;
+
+    @ApiModelProperty(notes = "소셜 닉네임 (애플 첫 로그인 시에만 넣어주시면 됩니다.)", example = "paul")
+    private String nickname;
 }

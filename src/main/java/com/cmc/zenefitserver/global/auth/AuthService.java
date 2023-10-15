@@ -14,7 +14,6 @@ import com.cmc.zenefitserver.global.common.request.TokenRequestDto;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.jsonwebtoken.Claims;
@@ -41,7 +40,7 @@ import static com.cmc.zenefitserver.global.error.ErrorCode.*;
 public class AuthService {
 
     private static final String APPLE_REQUEST_URL = "https://appleid.apple.com";
-    private static final String ZENEFIT_ISSUER = "teamzenefit.zenefit";
+    private static final String ZENEFIT_ISSUER = "iosdev.sw.ZeneFitApp";
 
     private final UserRepository userRepository;
     private final KakaoLoginService kakaoLoginService;
@@ -57,7 +56,7 @@ public class AuthService {
         return jwtToken;
     }
 
-
+    @Transactional(noRollbackFor = BusinessException.class)
     public TokenResponseDto appleLogin(AuthRequestDto authRequestDto) {
         String token = authRequestDto.getToken();
         JsonParser parser = new JsonParser();
@@ -95,11 +94,9 @@ public class AuthService {
             throw new BusinessException(MISMATCH_AUDIENCE);
         }
 
-        String gender = userInfoObject.get("gender").getAsString();
         String email = userInfoObject.get("email").getAsString();
-        String nickname = userInfoObject.get("nickname").getAsString();
 
-        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, email, nickname, gender, authRequestDto.getProviderType());
+        TokenResponseDto jwtToken = getTokenResponseDto(authRequestDto, email, authRequestDto.getNickname(), null, authRequestDto.getProviderType());
         return jwtToken;
     }
 
