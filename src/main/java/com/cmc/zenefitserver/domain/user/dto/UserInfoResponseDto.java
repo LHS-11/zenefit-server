@@ -28,7 +28,7 @@ public class UserInfoResponseDto {
     private String city;
 
     @ApiModelProperty(notes = "유저 작년 소득",example = "600000")
-    private int lastYearIncome;
+    private Double lastYearIncome;
 
     @ApiModelProperty(notes = "유저 학력",example = "대학 재학")
     private String educationType;
@@ -58,7 +58,7 @@ public class UserInfoResponseDto {
     private boolean farmer;
 
     @Builder
-    public UserInfoResponseDto(String nickname, int age, String area, String city, int lastYearIncome, String educationType, Set<String> jobs, String gender, boolean smallBusiness, boolean soldier, boolean lowIncome, boolean disabled, boolean localTalent, boolean farmer) {
+    public UserInfoResponseDto(String nickname, int age, String area, String city, Double lastYearIncome, String educationType, Set<String> jobs, String gender, boolean smallBusiness, boolean soldier, boolean lowIncome, boolean disabled, boolean localTalent, boolean farmer) {
         this.nickname = nickname;
         this.age = age;
         this.area = area;

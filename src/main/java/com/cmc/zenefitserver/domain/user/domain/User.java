@@ -39,7 +39,7 @@ public class User extends BaseEntity {
     private Address address;
 
     @Column(name = "last_year_income")
-    private Integer lastYearIncome;
+    private Double lastYearIncome;
 
     @Column(name = "education_type")
     @Enumerated(EnumType.STRING)
@@ -153,7 +153,7 @@ public class User extends BaseEntity {
     }
 
     @Builder
-    public User(String email, String nickname, Integer age, Address address, Integer lastYearIncome, EducationType educationType, Set<JobType> jobs, int policyCnt, UserDetail userDetail, String fcmToken, boolean pushNotificationStatus, boolean appNotificationStatus, ProviderType provider, int benefit) {
+    public User(String email, String nickname, Integer age, Address address, Double lastYearIncome, EducationType educationType, Set<JobType> jobs, int policyCnt, UserDetail userDetail, String fcmToken, boolean pushNotificationStatus, boolean appNotificationStatus, ProviderType provider, int benefit) {
         this.email = email;
         this.nickname = nickname;
         this.age = age;

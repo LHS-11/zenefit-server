@@ -3,9 +3,7 @@ package com.cmc.zenefitserver.domain.user.dto;
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.user.domain.EducationType;
-import com.cmc.zenefitserver.domain.user.domain.Gender;
 import com.cmc.zenefitserver.domain.user.domain.JobType;
-import com.cmc.zenefitserver.global.auth.ProviderType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -41,9 +39,8 @@ public class SignUpRequestDto {
     @ApiModelProperty(notes = "시/구", example = "강서구")
     private CityCode cityCode;
 
-    @NotNull(message = "작년 소득을 입력해주세요.")
     @ApiModelProperty(notes = "작년 소득", example = "50000000")
-    private int lastYearIncome;
+    private @NotNull(message = "작년 소득을 입력해주세요.") Double lastYearIncome;
 
     @ApiModelProperty(notes = "학력", example = "대학 재학")
     private EducationType educationType;
@@ -55,12 +52,13 @@ public class SignUpRequestDto {
     private boolean marketingStatus;
 
     @Builder
-    public SignUpRequestDto(int age, AreaCode areaCode, CityCode cityCode, int lastYearIncome, EducationType educationType, Set<JobType> jobs) {
+    public SignUpRequestDto(int age, AreaCode areaCode, CityCode cityCode, Double lastYearIncome, EducationType educationType, Set<JobType> jobs, boolean marketingStatus) {
         this.age = age;
         this.areaCode = areaCode;
         this.cityCode = cityCode;
         this.lastYearIncome = lastYearIncome;
         this.educationType = educationType;
         this.jobs = jobs;
+        this.marketingStatus = marketingStatus;
     }
 }

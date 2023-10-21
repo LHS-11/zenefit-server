@@ -34,7 +34,7 @@ public class ModifyRequestDto {
     private CityCode cityCode;
 
     @ApiModelProperty(notes = "작년 소득",example = "50000000")
-    private Integer lastYearIncome;
+    private Double lastYearIncome;
 
     @ApiModelProperty(notes = "학력",example = "대학 재학")
     private EducationType educationType;
