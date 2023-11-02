@@ -5,6 +5,7 @@ import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -42,6 +43,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
 
     List<Policy> findAllBySupportPolicyType(SupportPolicyType supportPolicyType);
 
+    @EntityGraph(attributePaths = {"jobTypes","educationTypes","policySplzTypes","supportPolicyTypes"})
     @Query(value = "SELECT p FROM Policy p " +
             "WHERE (p.areaCode = :areaCode AND p.cityCode = :cityCode) OR (p.areaCode = :areaCode AND p.cityCode IS NULL) OR (p.areaCode = :central) " +
             "AND :age between p.minAge and p.maxAge") //  p.minAge <= :age AND p.maxAge >= :age"
