@@ -54,6 +54,9 @@ dependencies {
 	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
 	implementation 'com.amazonaws:aws-java-sdk-s3'
 
+	// json
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
 	// batch
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
 
