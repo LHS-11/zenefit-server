@@ -191,8 +191,6 @@ public class Policy implements Serializable {
         this.policyLogo = policyLogo;
         this.policyApplyDenialReason = policyApplyDenialReason;
         this.applyStatus = applyStatus;
-        this.sttDate = sttDate;
-        this.endDate = endDate;
         this.applySttDate = applySttDate;
         this.applyEndDate = applyEndDate;
         this.userPolicies = userPolicies;
