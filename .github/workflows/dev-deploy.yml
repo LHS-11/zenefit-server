@@ -54,10 +54,6 @@ jobs:
         env:
           FIREBASE_JSON: ${{ secrets.FIREBASE_JSON }}
 
-
-      - name: Build with Gradle (Clean and Build)
-        run: ./gradlew clean build -x test  # clean으로 프로젝트를 정리하고 build로 새로 빌드
-
       - name: Build with Gradle
         run: ./gradlew build -x test  #test 코드 빼고 돌리기
 
