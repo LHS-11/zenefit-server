@@ -46,7 +46,7 @@ public class User extends BaseEntity {
     private EducationType educationType; // 학력 요건 내용
 
     @ElementCollection
-    @CollectionTable(name = "jobs", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "user_jobs", joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<JobType> jobs = new HashSet<>();
 
