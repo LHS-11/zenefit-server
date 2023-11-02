@@ -33,7 +33,6 @@ public class PolicyRecommender {
         System.out.println("recommendPolicy.size() = " + recommendPolicy.size());
 
 
-
         Policy maxBenefitMoneyPolicy = recommendPolicy.stream()
                 .filter(p -> p.getSupportPolicyType().equals(SupportPolicyType.MONEY))
                 .max(Comparator.comparingInt(Policy::getBenefit))
@@ -78,7 +77,6 @@ public class PolicyRecommender {
 
         List<Policy> firstFindPolices = policyRepository.findByAreaCodeAndCityCodeAndAge(userAreaCode, AreaCode.CENTRAL_GOVERNMENT, userCityCode, age);
 
-
         // 2차 선별
         List<Policy> secondFindPolices = firstFindPolices.stream()
                 .filter(policy ->
@@ -92,7 +90,6 @@ public class PolicyRecommender {
                                 && !isEducationDenial(user, policy)
                                 && !isAgeDenial(user, policy)
                                 && !isJobDenial(user, policy)
-                                && !isEducationDenial(user, policy)
                                 && !isLocalDenial(user, policy)
 
                 )
@@ -141,11 +138,11 @@ public class PolicyRecommender {
         Set<JobType> policyJobTypes = policy.getJobTypes();
         Set<JobType> userJobTypes = user.getJobs();
         userJobTypes.retainAll(policyJobTypes);
-        return userJobTypes.isEmpty();
+        return userJobTypes.isEmpty() && !(policy.getJobTypes().contains(JobType.UNLIMITED));
     }
 
     private static boolean isEducationDenial(User user, Policy policy) {
-        return !policy.getEducationTypes().contains(user.getEducationType());
+        return !policy.getEducationTypes().contains(user.getEducationType()) && !policy.getEducationTypes().contains(EducationType.UNLIMITED);
     }
 
     private static boolean isLocalDenial(User user, Policy policy) {
