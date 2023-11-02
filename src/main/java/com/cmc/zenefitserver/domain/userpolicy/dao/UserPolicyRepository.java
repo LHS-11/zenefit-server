@@ -16,8 +16,8 @@ public interface UserPolicyRepository extends JpaRepository<UserPolicy, Long> {
     List<UserPolicy> findAllByUser_userIdAndInterestFlag(Long userId, boolean interestFlag);
     List<UserPolicy> findAllByUser_userIdAndApplyFlag(Long userId, boolean ApplyFlag);
 
-    List<UserPolicy> findAllByUser_userIdAndInterestFlagAndPolicy_SttDateBetween(Long userId, boolean applyFlag, LocalDate searchSttDate, LocalDate searchEndDate);
-    List<UserPolicy> findAllByUser_userIdAndInterestFlagAndPolicy_EndDateBetween(Long userId, boolean applyFlag, LocalDate searchSttDate, LocalDate searchEndDate);
+    List<UserPolicy> findAllByUser_userIdAndInterestFlagAndPolicy_ApplySttDateBetween(Long userId, boolean applyFlag, LocalDate searchSttDate, LocalDate searchEndDate);
+    List<UserPolicy> findAllByUser_userIdAndInterestFlagAndPolicy_ApplyEndDateBetween(Long userId, boolean applyFlag, LocalDate searchSttDate, LocalDate searchEndDate);
 
     List<UserPolicy> findAllByPolicy_idAndInterestFlag(Long policyId,boolean interestFlag);
 

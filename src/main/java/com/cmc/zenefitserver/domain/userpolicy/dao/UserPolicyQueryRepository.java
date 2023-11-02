@@ -1,25 +1,17 @@
 package com.cmc.zenefitserver.domain.userpolicy.dao;
 
-import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.userpolicy.dto.ApplyPolicyListResponseDto;
 import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListResponseDto;
-import com.querydsl.core.types.ExpressionUtils;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.cmc.zenefitserver.domain.policy.domain.QPolicy.policy;
@@ -38,7 +30,7 @@ public class UserPolicyQueryRepository {
                                 userPolicy.policy.id,
                                 userPolicy.policy.policyName,
                                 userPolicy.policy.policyIntroduction,
-                                userPolicy.policy.endDate,
+                                userPolicy.policy.applyEndDate,
                                 userPolicy.policy.policyLogo
                         )
                 )

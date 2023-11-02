@@ -47,8 +47,8 @@ public class PolicyRecommender {
         LocalDate now = LocalDate.now();
         Policy mostImminentEndDateSocialServicePolicy = recommendPolicy.stream()
                 .filter(p -> p.getSupportPolicyType().equals(SupportPolicyType.SOCIAL_SERVICE))
-                .filter(p -> p.getEndDate().isAfter(now))
-                .min(Comparator.comparing(p -> ChronoUnit.DAYS.between(now, p.getEndDate())))
+                .filter(p -> p.getApplyEndDate().isAfter(now))
+                .min(Comparator.comparing(p -> ChronoUnit.DAYS.between(now, p.getApplyEndDate())))
                 .orElse(null);
 
         System.out.println("mostImminentEndDateSocialServicePolicy = " + mostImminentEndDateSocialServicePolicy);

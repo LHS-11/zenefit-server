@@ -150,7 +150,7 @@ public class UserService {
                             .policyName(findPolicy.getPolicyName())
                             .supportPolicyType(findPolicy.getSupportPolicyType())
                             .supportPolicyTypeName(findPolicy.getSupportPolicyType().getDescription())
-                            .endDate(findPolicy.getEndDate())
+                            .endDate(findPolicy.getApplyEndDate())
                             .build();
                     return homePolicyInfo;
                 })

@@ -20,25 +20,25 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
     // jpql
     @Query("SELECT p FROM Policy p " +
             "WHERE p.supportPolicyType = :policyType " +
-            "AND p.endDate >= :currentDate " +
+            "AND p.applyEndDate >= :currentDate " +
             "AND NOT EXISTS (SELECT up FROM UserPolicy up WHERE up.policy = p AND up.user.userId = :userId AND up.applyFlag=true) " +
-            "ORDER BY p.endDate ASC ")
+            "ORDER BY p.applyEndDate ASC ")
     List<Policy> findMostImminentNonAppliedPolicy(@Param("userId") Long userId, @Param("policyType") SupportPolicyType policyType, @Param("currentDate") LocalDate currentDate, Pageable pageable);
 
     // native query
     @Query(value =
             "SELECT p.* FROM policy p " +
                     "WHERE p.support_policy_type = :policyType " +
-                    "AND p.end_date >= :currentDate " +
+                    "AND p.apply_end_date >= :currentDate " +
                     "AND NOT EXISTS (SELECT 1 FROM user_policy up WHERE up.policy_id = p.id AND up.user_id = :userId AND up.apply_flag = true) " +
-                    "ORDER BY p.end_date ASC " +
+                    "ORDER BY p.apply_end_date ASC " +
                     "LIMIT 1", nativeQuery = true)
     Policy findMostImminentNonAppliedPolicyNative(@Param("userId") Long userId, @Param("policyType") SupportPolicyType policyType, @Param("currentDate") LocalDate currentDate);
 
 
-    List<Policy> findAllByEndDate(LocalDate endDate);
+    List<Policy> findAllByApplyEndDate(LocalDate endDate);
 
-    List<Policy> findAllBySttDate(LocalDate sttDate);
+    List<Policy> findAllByApplySttDate(LocalDate sttDate);
 
     List<Policy> findAllBySupportPolicyType(SupportPolicyType supportPolicyType);
 

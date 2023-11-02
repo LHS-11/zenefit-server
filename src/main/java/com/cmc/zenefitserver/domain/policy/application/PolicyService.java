@@ -95,7 +95,7 @@ public class PolicyService {
         List<CalendarPolicyListResponseDto> result = null;
         if (SearchDateType.STT_DATE.name().equals(type)) {
 
-            List<UserPolicy> userPolices = userPolicyRepository.findAllByUser_userIdAndInterestFlagAndPolicy_SttDateBetween(
+            List<UserPolicy> userPolices = userPolicyRepository.findAllByUser_userIdAndInterestFlagAndPolicy_ApplySttDateBetween(
                     user.getUserId(), true, searchSttDate, searchEndDate
             );
 
@@ -108,7 +108,7 @@ public class PolicyService {
                                     .policyName(policy.getPolicyName())
                                     .policyApplyStatus(policy.getApplyStatus())
                                     .policyAgencyLogo(policy.getPolicyLogo())
-                                    .policySttDateOrEndDate(policy.getSttDate())
+                                    .policySttDateOrEndDate(policy.getApplySttDate())
                                     .build();
                             return dto;
                         })
@@ -119,7 +119,7 @@ public class PolicyService {
 
         if (SearchDateType.END_DATE.name().equals(type)) {
 
-            List<UserPolicy> userPolices = userPolicyRepository.findAllByUser_userIdAndInterestFlagAndPolicy_EndDateBetween(
+            List<UserPolicy> userPolices = userPolicyRepository.findAllByUser_userIdAndInterestFlagAndPolicy_ApplyEndDateBetween(
                     user.getUserId(), true, searchSttDate, searchEndDate
             );
             if (userPolices != null) {
@@ -131,7 +131,7 @@ public class PolicyService {
                                     .policyName(policy.getPolicyName())
                                     .policyApplyStatus(policy.getApplyStatus())
                                     .policyAgencyLogo(policy.getPolicyLogo())
-                                    .policySttDateOrEndDate(policy.getEndDate())
+                                    .policySttDateOrEndDate(policy.getApplyEndDate())
                                     .build();
                             return dto;
                         })

@@ -118,9 +118,9 @@ public class Policy implements Serializable {
 
     private String applyStatus; // 신청 가능 상태
 
-    private LocalDate sttDate; // 신청 시작일
+    private LocalDate applySttDate; // 신청 시작일
 
-    private LocalDate endDate; // 신청 종료일
+    private LocalDate applyEndDate; // 신청 종료일
 
 
     @OneToMany(mappedBy = "policy", fetch = FetchType.LAZY)
@@ -162,7 +162,7 @@ public class Policy implements Serializable {
     }
 
     @Builder
-    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, AreaCode areaCode, CityCode cityCode, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, SupportPolicyType supportPolicyType, String policyLogo, String policyApplyDenialReason, String applyStatus, LocalDate sttDate, LocalDate endDate, Set<UserPolicy> userPolicies, int benefit) {
+    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, AreaCode areaCode, CityCode cityCode, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, SupportPolicyType supportPolicyType, String policyLogo, String policyApplyDenialReason, String applyStatus, LocalDate applySttDate, LocalDate applyEndDate, Set<UserPolicy> userPolicies, int benefit) {
         this.bizId = bizId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
@@ -193,6 +193,8 @@ public class Policy implements Serializable {
         this.applyStatus = applyStatus;
         this.sttDate = sttDate;
         this.endDate = endDate;
+        this.applySttDate = applySttDate;
+        this.applyEndDate = applyEndDate;
         this.userPolicies = userPolicies;
         this.benefit = benefit;
     }
