@@ -21,7 +21,13 @@ public class HomeInfoResponseDto {
     private String nickname;
 
     @ApiModelProperty(notes = "유저 캐릭터 이미지 url")
-    private String userImage;
+    private String characterImage;
+
+    @ApiModelProperty(notes = "유저 설명 텍스트")
+    private String description;
+
+    @ApiModelProperty(notes = "유저 캐릭터 별명")
+    private String characterNickname;
 
     @ApiModelProperty(notes = "유저 수혜 금액")
     private int benefit;
@@ -39,9 +45,11 @@ public class HomeInfoResponseDto {
     private List<HomePolicyInfo> endDatePolicy;
 
     @Builder
-    public HomeInfoResponseDto(String nickname, String userImage, int benefit, int interestPolicyCnt, int applyPolicyCnt, List<HomePolicyInfo> recommendPolicy, List<HomePolicyInfo> endDatePolicy) {
+    public HomeInfoResponseDto(String nickname, String characterImage, String description, String characterNickname, int benefit, int interestPolicyCnt, int applyPolicyCnt, List<HomePolicyInfo> recommendPolicy, List<HomePolicyInfo> endDatePolicy) {
         this.nickname = nickname;
-        this.userImage = userImage;
+        this.characterImage = characterImage;
+        this.description = description;
+        this.characterNickname = characterNickname;
         this.benefit = benefit;
         this.interestPolicyCnt = interestPolicyCnt;
         this.applyPolicyCnt = applyPolicyCnt;
@@ -53,8 +61,14 @@ public class HomeInfoResponseDto {
     @NoArgsConstructor
     public static class HomePolicyInfo{
 
+        @ApiModelProperty(notes = "정책 ID")
+        private Long policyId;
+
         @ApiModelProperty(notes = "정책 이름")
         private String policyName;
+
+        @ApiModelProperty(notes = "정책 로고")
+        private String policyLogo;
 
         @ApiModelProperty(notes = "지원 정책 유형")
         private SupportPolicyType supportPolicyType;
@@ -66,12 +80,13 @@ public class HomeInfoResponseDto {
         private LocalDate endDate;
 
         @Builder
-        public HomePolicyInfo(String policyName, SupportPolicyType supportPolicyType, String supportPolicyTypeName, LocalDate endDate) {
+        public HomePolicyInfo(Long policyId, String policyName, String policyLogo, SupportPolicyType supportPolicyType, String supportPolicyTypeName, LocalDate endDate) {
+            this.policyId = policyId;
             this.policyName = policyName;
+            this.policyLogo = policyLogo;
             this.supportPolicyType = supportPolicyType;
             this.supportPolicyTypeName = supportPolicyTypeName;
             this.endDate = endDate;
         }
-
     }
 }
