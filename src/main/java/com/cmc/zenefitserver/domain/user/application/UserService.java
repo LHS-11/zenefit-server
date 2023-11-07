@@ -7,6 +7,7 @@ import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
+import com.cmc.zenefitserver.domain.user.domain.Character;
 import com.cmc.zenefitserver.domain.user.domain.Gender;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.dto.*;
@@ -135,11 +136,14 @@ public class UserService {
         int sumPolicyCount = interestPolicyCount + applyPolicyCount;
         Gender gender = user.getUserDetail().getGender();
 
-        // 추천 정책 조회
-        String characterImageUrl = getImageUrl(gender, sumPolicyCount);
+        // 관심 정책과 수혜 정책의 합에 따른 캐릭터 산출
+        Character findCharacter = Character.getCharacter(sumPolicyCount);
 
-        // 수혜 정도에 따른 유저 이미지 조회 및 알고리즘
+        // 캐릭터 이미지
+        String characterImageUrl = getCharacterImageUrl(gender, findCharacter);
 
+
+        // 지원 정책 유형에 따른 추천 정책 조회 - recommendPolicy
 
         // 지원 정책 유형에 따른 신청 마감일에 임박한 정책 조회
         LocalDate currentTime = LocalDate.now();
@@ -147,7 +151,9 @@ public class UserService {
                 .map(type -> {
                     Policy findPolicy = policyRepository.findMostImminentNonAppliedPolicy(user.getUserId(), type, currentTime, PageRequest.of(0, 1)).get(0);
                     HomeInfoResponseDto.HomePolicyInfo homePolicyInfo = HomeInfoResponseDto.HomePolicyInfo.builder()
+                            .policyId(findPolicy.getId())
                             .policyName(findPolicy.getPolicyName())
+                            .policyLogo(findPolicy.getPolicyLogo())
                             .supportPolicyType(findPolicy.getSupportPolicyType())
                             .supportPolicyTypeName(findPolicy.getSupportPolicyType().getDescription())
                             .endDate(findPolicy.getApplyEndDate())
@@ -159,7 +165,8 @@ public class UserService {
 
         return HomeInfoResponseDto.builder()
                 .nickname(user.getNickname())
-                .userImage(characterImageUrl)
+                .characterImage(characterImageUrl)
+                .description(findCharacter.getDescription())
                 .benefit(user.getBenefit())
                 .interestPolicyCnt(interestPolicyCount)
                 .applyPolicyCnt(applyPolicyCount)
@@ -168,14 +175,12 @@ public class UserService {
                 .build();
     }
 
-    public String getImageUrl(Gender gender, int sumPolicyCount) {
+    public String getCharacterImageUrl(Gender gender, Character character) {
 
         String bucketName = "zenefit-bucket";
         String folderName = "character";
 
-        String bucketImageUrl = gender.getCode() + "-";
-
-        bucketImageUrl = getImageString(sumPolicyCount, bucketImageUrl);
+        String bucketImageUrl = gender.getCode() + "-" + character.getName();
 
         String s3ObjectKey = folderName + "/" + bucketImageUrl + ".png"; // 이미지 파일의 객체 키
 
@@ -185,22 +190,6 @@ public class UserService {
 
         URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
         return url.toString(); // 이미지 URL 반환
-    }
-
-    private static String getImageString(int sumPolicyCount, String bucketImageUrl) {
-        if (sumPolicyCount >= 0 && sumPolicyCount <= 3) {
-            bucketImageUrl += "no";
-        }
-        if (sumPolicyCount >= 4 && sumPolicyCount <= 9) {
-            bucketImageUrl += "new";
-        }
-        if (sumPolicyCount >= 10 && sumPolicyCount <= 12) {
-            bucketImageUrl += "save";
-        }
-        if (sumPolicyCount >= 13) {
-            bucketImageUrl += "smart";
-        }
-        return bucketImageUrl;
     }
 
     public void updateFcmToken(User user, String fcmToken) {
