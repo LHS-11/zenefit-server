@@ -26,9 +26,6 @@ public class HomeInfoResponseDto {
     @ApiModelProperty(notes = "유저 설명 텍스트")
     private String description;
 
-    @ApiModelProperty(notes = "유저 수혜 금액")
-    private int benefit;
-
     @ApiModelProperty(notes = "유저의 관심 정책 수", example = "4")
     private int interestPolicyCnt;
 
@@ -42,11 +39,10 @@ public class HomeInfoResponseDto {
     private List<HomePolicyInfo> endDatePolicy;
 
     @Builder
-    public HomeInfoResponseDto(String nickname, String characterImage, String description, int benefit, int interestPolicyCnt, int applyPolicyCnt, List<HomePolicyInfo> recommendPolicy, List<HomePolicyInfo> endDatePolicy) {
+    public HomeInfoResponseDto(String nickname, String characterImage, String description, int interestPolicyCnt, int applyPolicyCnt, List<HomePolicyInfo> recommendPolicy, List<HomePolicyInfo> endDatePolicy) {
         this.nickname = nickname;
         this.characterImage = characterImage;
         this.description = description;
-        this.benefit = benefit;
         this.interestPolicyCnt = interestPolicyCnt;
         this.applyPolicyCnt = applyPolicyCnt;
         this.recommendPolicy = recommendPolicy;

@@ -171,7 +171,6 @@ public class UserService {
                 .nickname(user.getNickname())
                 .characterImage(characterImageUrl)
                 .description(findCharacter.getDescription())
-                .benefit(user.getBenefit())
                 .interestPolicyCnt(interestPolicyCount)
                 .applyPolicyCnt(applyPolicyCount)
                 .recommendPolicy(recommendPolicyInfoList)
