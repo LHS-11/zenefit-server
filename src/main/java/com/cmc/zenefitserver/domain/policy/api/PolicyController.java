@@ -57,16 +57,16 @@ public class PolicyController {
         return CommonResponse.success(result);
     }
 
-    @GetMapping("/recommend")
-    @Operation(summary = "지원 정책 유형에 따른 추천 정책 API",description = "로그인(회원가입)하고, 유저에게 정책을 추천할 때 사용합니다.")
-    public CommonResponse<RecommendPolicyInfoResponseDto> recommend(@AuthUser User user){
-        RecommendPolicyInfoResponseDto result = policyService.recommendPolicy(user);
-        return CommonResponse.success(result);
-    }
+//    @GetMapping("/recommend")
+//    @Operation(summary = "지원 정책 유형에 따른 추천 정책 API",description = "로그인(회원가입)하고, 유저에게 정책을 추천할 때 사용합니다.")
+//    public CommonResponse<RecommendPolicyInfoResponseDto> recommend(@AuthUser User user){
+//        RecommendPolicyInfoResponseDto result = policyService.recommendPolicy(user);
+//        return CommonResponse.success(result);
+//    }
 
     @GetMapping("/recommend/count")
-    @Operation(summary = "지원할 수 있는 정책의 수 조회 API",description = "로그인시 해당 유저가 지원할 수 있는 정책의 수를 가져옵니다.")
-    public CommonResponse<PolicyCountResponseDto> getRecommend(@AuthUser User user){
+    @Operation(summary = "지원할 수 있는 정책의 수 조회 API", description = "로그인시 해당 유저가 지원할 수 있는 정책의 수를 가져옵니다.")
+    public CommonResponse<PolicyCountResponseDto> getRecommend(@AuthUser User user) {
         PolicyCountResponseDto result = policyService.getRecommendCountAndNickname(user);
         return CommonResponse.success(result);
     }

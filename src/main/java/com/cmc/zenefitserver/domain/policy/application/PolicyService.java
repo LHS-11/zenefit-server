@@ -8,6 +8,7 @@ import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import com.cmc.zenefitserver.domain.policy.dto.*;
 import com.cmc.zenefitserver.domain.user.domain.User;
+import com.cmc.zenefitserver.domain.user.dto.HomeInfoResponseDto;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import com.cmc.zenefitserver.global.error.ErrorCode;
@@ -142,39 +143,23 @@ public class PolicyService {
         return result;
     }
 
-    public RecommendPolicyInfoResponseDto recommendPolicy(User user) {
+    public List<HomeInfoResponseDto.HomePolicyInfo> recommendPolicy(User user) {
         Map<SupportPolicyType, Policy> supportPolicyTypePolicyMap = policyRecommender.recommendPolicy(user);
 
-        List<RecommendPolicyInfoResponseDto.recommendPolicyInfo> recommendPolicyInfoList = supportPolicyTypePolicyMap.keySet()
+        return supportPolicyTypePolicyMap.keySet()
                 .stream()
                 .map(supportPolicyType -> {
                     Policy policy = supportPolicyTypePolicyMap.get(supportPolicyType);
-                    List<Policy> supportTypePolices = policyRepository.findAllBySupportPolicyType(supportPolicyType);
 
-                    RecommendPolicyInfoResponseDto.recommendPolicyInfo dto = RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
-                            .supportType(supportPolicyType.getDescription())
+                    HomeInfoResponseDto.HomePolicyInfo dto = HomeInfoResponseDto.HomePolicyInfo.builder()
                             .policyId(policy.getId())
                             .policyName(policy.getPolicyName())
-                            .policyIntroduction(policy.getPolicyIntroduction())
                             .policyLogo(policy.getPolicyLogo())
-                            .policyAreaCode(policy.getAreaCode().getName())
-                            .supportTypePolicyCnt(supportTypePolices.size())
-                            .benefit(policy.getBenefit())
-                            .applyStatus(policy.getApplyStatus())
+                            .supportPolicyType(supportPolicyType)
+                            .supportPolicyTypeName(supportPolicyType.getDescription())
                             .build();
-
-                    if (policy.getCityCode() != null) {
-                        dto.upgradeCityCode(policy.getCityCode().getName());
-                    }
                     return dto;
                 }).collect(Collectors.toList());
-
-        RecommendPolicyInfoResponseDto result = RecommendPolicyInfoResponseDto.builder()
-                .policyCnt(user.getPolicyCnt())
-                .policyInfos(recommendPolicyInfoList)
-                .build();
-
-        return result;
     }
 
     public PolicyCountResponseDto getRecommendCountAndNickname(User user) {

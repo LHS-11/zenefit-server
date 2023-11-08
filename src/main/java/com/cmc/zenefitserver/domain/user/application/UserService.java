@@ -2,6 +2,7 @@ package com.cmc.zenefitserver.domain.user.application;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.cmc.zenefitserver.domain.policy.application.PolicyService;
 import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +41,7 @@ public class UserService {
     private final UserPolicyRepository userPolicyRepository;
     private final AmazonS3Client amazonS3Client;
     private final JwtService jwtService;
+    private final PolicyService policyService;
 
     // 회원가입
     @Transactional
@@ -142,8 +145,9 @@ public class UserService {
         // 캐릭터 이미지
         String characterImageUrl = getCharacterImageUrl(gender, findCharacter);
 
-
         // 지원 정책 유형에 따른 추천 정책 조회 - recommendPolicy
+//        List<HomeInfoResponseDto.HomePolicyInfo> recommendPolicyInfoList = policyService.recommendPolicy(user);
+        List<HomeInfoResponseDto.HomePolicyInfo> recommendPolicyInfoList = getRecommendPolicyDummy();
 
         // 지원 정책 유형에 따른 신청 마감일에 임박한 정책 조회
         LocalDate currentTime = LocalDate.now();
@@ -170,7 +174,7 @@ public class UserService {
                 .benefit(user.getBenefit())
                 .interestPolicyCnt(interestPolicyCount)
                 .applyPolicyCnt(applyPolicyCount)
-                .recommendPolicy(null)
+                .recommendPolicy(recommendPolicyInfoList)
                 .endDatePolicy(endDateHomePolicyInfoList)
                 .build();
     }
@@ -209,5 +213,27 @@ public class UserService {
 
     public void delete(User user) {
         userRepository.delete(user);
+    }
+
+    public List<HomeInfoResponseDto.HomePolicyInfo> getRecommendPolicyDummy() {
+        Policy loansPolicy = policyRepository.findAllBySupportPolicyType(SupportPolicyType.LOANS).get(0);
+        Policy moneyPolicy = policyRepository.findAllBySupportPolicyType(SupportPolicyType.MONEY).get(0);
+        Policy socialServicePolicy = policyRepository.findAllBySupportPolicyType(SupportPolicyType.SOCIAL_SERVICE).get(0);
+
+        List<HomeInfoResponseDto.HomePolicyInfo> result = new ArrayList<>();
+        result.add(get(loansPolicy));
+        result.add(get(moneyPolicy));
+        result.add(get(socialServicePolicy));
+        return result;
+    }
+
+    public HomeInfoResponseDto.HomePolicyInfo get(Policy policy) {
+        return HomeInfoResponseDto.HomePolicyInfo.builder()
+                .policyId(policy.getId())
+                .policyName(policy.getPolicyName())
+                .policyLogo(policy.getPolicyLogo())
+                .supportPolicyTypeName(policy.getSupportPolicyType().getDescription())
+                .supportPolicyType(policy.getSupportPolicyType())
+                .build();
     }
 }
