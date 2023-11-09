@@ -10,6 +10,7 @@ import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import com.cmc.zenefitserver.domain.userpolicy.dto.ApplyPolicyListResponseDto;
 import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListResponseDto;
+import com.cmc.zenefitserver.domain.userpolicy.dto.PolicySizeResponseDto;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -44,14 +45,14 @@ public class UserPolicyService {
                 .orElse(null);
 
         if (findUserPolicy == null) {
-             findUserPolicy = UserPolicy.builder()
+            findUserPolicy = UserPolicy.builder()
                     .user(findUser)
                     .policy(findPolicy)
                     .interestFlag(true)
                     .build();
         }
 
-        if(findUserPolicy != null){
+        if (findUserPolicy != null) {
             findUserPolicy.setInterestFlagToTrue();
         }
 
@@ -76,18 +77,18 @@ public class UserPolicyService {
                     .build();
         }
 
-        if(findUserPolicy != null){
+        if (findUserPolicy != null) {
             findUserPolicy.setApplyFlagToTrue();
         }
 
         userPolicyRepository.save(findUserPolicy);
     }
 
-    public Slice<InterestPolicyListResponseDto> getInterestPolicyListByPaging(User user, Long lastPolicyId, Pageable pageable){
+    public Slice<InterestPolicyListResponseDto> getInterestPolicyListByPaging(User user, Long lastPolicyId, Pageable pageable) {
         return userPolicyQueryRepository.searchInterestPolicyBySlice(user, lastPolicyId, pageable);
     }
 
-    public Slice<ApplyPolicyListResponseDto> getApplyPolicyListByPaging(User user, Long lastPolicyId, Pageable pageable){
+    public Slice<ApplyPolicyListResponseDto> getApplyPolicyListByPaging(User user, Long lastPolicyId, Pageable pageable) {
         return userPolicyQueryRepository.searchApplyPolicyBySlice(user, lastPolicyId, pageable);
     }
 
@@ -100,7 +101,7 @@ public class UserPolicyService {
                             .policyId(policy.getId())
                             .policyName(policy.getPolicyName())
                             .policyIntroduction(policy.getPolicyIntroduction())
-                            .policyEndDate(LocalDate.of(2023,2,12))
+                            .policyEndDate(LocalDate.of(2023, 2, 12))
                             .policyLogo(policy.getPolicyLogo())
                             .build();
                     return dto;
@@ -132,12 +133,12 @@ public class UserPolicyService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER_POLICY));
 
         // 수혜 정책 X -> delete
-        if(!findUserPolicy.isApplyFlag()){
+        if (!findUserPolicy.isApplyFlag()) {
             userPolicyRepository.delete(findUserPolicy);
         }
 
         // 수혜 정책 O -> 수정
-        if(findUserPolicy.isApplyFlag()){
+        if (findUserPolicy.isApplyFlag()) {
             findUserPolicy.setInterestFlagToFalse();
         }
 
@@ -149,12 +150,12 @@ public class UserPolicyService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_USER_POLICY));
 
         // 관심 정책 X
-        if(!findUserPolicy.isInterestFlag()){
+        if (!findUserPolicy.isInterestFlag()) {
             userPolicyRepository.delete(findUserPolicy);
         }
 
         // 관심 정책 O -> 수정
-        if(findUserPolicy.isInterestFlag()){
+        if (findUserPolicy.isInterestFlag()) {
             findUserPolicy.setApplyFlagToFalse();
         }
 
