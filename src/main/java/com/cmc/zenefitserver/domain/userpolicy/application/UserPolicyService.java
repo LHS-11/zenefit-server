@@ -160,4 +160,24 @@ public class UserPolicyService {
         }
 
     }
+
+    public void deleteAllInterestPolicy(User user) {
+        userPolicyRepository.deleteAllByUserAndInterestFlag(user, true);
+    }
+
+    public void deleteAllApplyPolicy(User user) {
+        userPolicyRepository.deleteAllByUserAndApplyFlag(user, true);
+    }
+
+    public PolicySizeResponseDto getAllInterestPolicySize(User user) {
+        return PolicySizeResponseDto.builder()
+                .size(userPolicyRepository.getInterestPolicyCount(user.getUserId()))
+                .build();
+    }
+
+    public PolicySizeResponseDto getAllApplyPolicySize(User user) {
+        return PolicySizeResponseDto.builder()
+                .size(userPolicyRepository.getApplyPolicyCount(user.getUserId()))
+                .build();
+    }
 }
