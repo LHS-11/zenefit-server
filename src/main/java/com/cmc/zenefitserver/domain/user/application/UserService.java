@@ -170,6 +170,7 @@ public class UserService {
         return HomeInfoResponseDto.builder()
                 .nickname(user.getNickname())
                 .characterImage(characterImageUrl)
+                .characterNickname(findCharacter.getName())
                 .description(findCharacter.getDescription())
                 .interestPolicyCnt(interestPolicyCount)
                 .applyPolicyCnt(applyPolicyCount)

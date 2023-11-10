@@ -23,6 +23,9 @@ public class HomeInfoResponseDto {
     @ApiModelProperty(notes = "유저 캐릭터 이미지 url")
     private String characterImage;
 
+    @ApiModelProperty(notes = "유저 캐릭터 닉네임")
+    private String characterNickname;
+
     @ApiModelProperty(notes = "유저 설명 텍스트")
     private String description;
 
@@ -39,9 +42,10 @@ public class HomeInfoResponseDto {
     private List<HomePolicyInfo> endDatePolicy;
 
     @Builder
-    public HomeInfoResponseDto(String nickname, String characterImage, String description, int interestPolicyCnt, int applyPolicyCnt, List<HomePolicyInfo> recommendPolicy, List<HomePolicyInfo> endDatePolicy) {
+    public HomeInfoResponseDto(String nickname, String characterImage, String characterNickname, String description, int interestPolicyCnt, int applyPolicyCnt, List<HomePolicyInfo> recommendPolicy, List<HomePolicyInfo> endDatePolicy) {
         this.nickname = nickname;
         this.characterImage = characterImage;
+        this.characterNickname = characterNickname;
         this.description = description;
         this.interestPolicyCnt = interestPolicyCnt;
         this.applyPolicyCnt = applyPolicyCnt;
