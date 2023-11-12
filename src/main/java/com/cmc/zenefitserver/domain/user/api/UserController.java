@@ -125,4 +125,11 @@ public class UserController {
         return CommonResponse.success(null);
     }
 
+    @GetMapping("/dummy")
+    public CommonResponse<String> addDummy(@AuthUser User user){
+        userService.addPolicyDummy(user);
+        return CommonResponse.success(null);
+    }
+
+
 }

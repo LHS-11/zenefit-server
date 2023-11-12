@@ -13,6 +13,7 @@ import com.cmc.zenefitserver.domain.user.domain.Gender;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.dto.*;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
+import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import com.cmc.zenefitserver.global.auth.jwt.JwtService;
 import com.cmc.zenefitserver.global.common.request.TokenRequestDto;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
@@ -212,8 +213,59 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     public void delete(User user) {
+        userPolicyRepository.deleteAllByUser(user);
         userRepository.delete(user);
+    }
+
+    @Transactional
+    public void addPolicyDummy(User user){
+        Policy policy = policyRepository.findById(1L).get();
+        Policy policy2 = policyRepository.findById(2L).get();
+        Policy policy3 = policyRepository.findById(3L).get();
+        Policy policy4 = policyRepository.findById(4L).get();
+        Policy policy5 = policyRepository.findById(5L).get();
+        Policy policy6 = policyRepository.findById(6L).get();
+        Policy policy7 = policyRepository.findById(7L).get();
+        Policy policy8 = policyRepository.findById(8L).get();
+        Policy policy9 = policyRepository.findById(9L).get();
+        Policy policy10 = policyRepository.findById(10L).get();
+
+        Policy policy11 = policyRepository.findById(11L).get();
+        Policy policy12 = policyRepository.findById(12L).get();
+        Policy policy13 = policyRepository.findById(13L).get();
+        Policy policy14 = policyRepository.findById(14L).get();
+        Policy policy15 = policyRepository.findById(15L).get();
+        Policy policy16 = policyRepository.findById(16L).get();
+        Policy policy17 = policyRepository.findById(17L).get();
+        Policy policy18 = policyRepository.findById(18L).get();
+        Policy policy19 = policyRepository.findById(19L).get();
+        Policy policy20 = policyRepository.findById(20L).get();
+
+        List<Policy> interestPolices = List.of(policy, policy2, policy3, policy4, policy5, policy6, policy7, policy8, policy9 , policy10);
+        List<Policy> appliyPolices = List.of(policy11, policy12, policy13, policy14, policy15, policy16, policy17, policy18, policy19 , policy20);
+
+        for (Policy interestPolicy : interestPolices) {
+            UserPolicy userPolicy = UserPolicy.builder()
+                    .user(user)
+                    .policy(interestPolicy)
+                    .interestFlag(true)
+                    .applyFlag(false)
+                    .build();
+            userPolicyRepository.save(userPolicy);
+        }
+
+        for (Policy applyPolicy : appliyPolices) {
+            UserPolicy userPolicy = UserPolicy.builder()
+                    .user(user)
+                    .policy(applyPolicy)
+                    .interestFlag(false)
+                    .applyFlag(true)
+                    .build();
+            userPolicyRepository.save(userPolicy);
+        }
+
     }
 
     public List<HomeInfoResponseDto.HomePolicyInfo> getRecommendPolicyDummy() {

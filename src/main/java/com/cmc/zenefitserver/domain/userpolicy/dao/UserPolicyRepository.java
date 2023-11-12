@@ -34,4 +34,6 @@ public interface UserPolicyRepository extends JpaRepository<UserPolicy, Long> {
 
     void deleteAllByUserAndApplyFlag(User user, boolean applyFlag);
 
+    void deleteAllByUser(User user);
+
 }
