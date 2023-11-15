@@ -64,7 +64,10 @@ public enum ErrorCode {
     NOT_FOUND_PROVIDER_TYPE_ENUM_VALUE(8006, "providerType 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
     NOT_FOUND_SUPPORT_POLICY_TYPE_ENUM_VALUE(8007, "supportPolicyType 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
     NOT_FOUND_POLICY_TYPE_ENUM_VALUE(8008, "policyType 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
-    NOT_FOUND_CITY_ENUM_VALUE(8009, "city 값이 올바르지 않은 값입니다.", UNAUTHORIZED);
+    NOT_FOUND_CITY_ENUM_VALUE(8009, "city 값이 올바르지 않은 값입니다.", UNAUTHORIZED),
+    NOT_FOUND_POLICY_DATE_TYPE(8010, "policyDateType 이 올바르지 않은 값입니다.", UNAUTHORIZED),
+
+    ERROR(9999, "에러 발생", UNAUTHORIZED);
 
 
     private final int code;
