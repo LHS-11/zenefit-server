@@ -2,6 +2,8 @@ package com.cmc.zenefitserver.domain.userpolicy.dao;
 
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,5 +37,7 @@ public interface UserPolicyRepository extends JpaRepository<UserPolicy, Long> {
     void deleteAllByUserAndApplyFlag(User user, boolean applyFlag);
 
     void deleteAllByUser(User user);
+
+    Page<UserPolicy> findUserPoliciesByUserAndInterestFlag(User user, boolean interestFlag, Pageable pageable);
 
 }

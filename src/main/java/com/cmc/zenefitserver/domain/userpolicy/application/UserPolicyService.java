@@ -14,12 +14,13 @@ import com.cmc.zenefitserver.domain.userpolicy.dto.PolicySizeResponseDto;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -109,7 +110,6 @@ public class UserPolicyService {
                             .policyId(policy.getId())
                             .policyName(policy.getPolicyName())
                             .policyIntroduction(policy.getPolicyIntroduction())
-                            .policyEndDate(LocalDate.of(2023, 2, 12))
                             .policyLogo(policy.getPolicyLogo())
                             .build();
                     return dto;
@@ -187,5 +187,11 @@ public class UserPolicyService {
         return PolicySizeResponseDto.builder()
                 .size(userPolicyRepository.getApplyPolicyCount(user.getUserId()))
                 .build();
+    }
+
+    public Page<InterestPolicyListResponseDto> getUserPoliciesByInterestFlag(User user, boolean interestFlag, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        return userPolicyRepository.findUserPoliciesByUserAndInterestFlag(user, interestFlag, pageable)
+                .map(userPolicy -> InterestPolicyListResponseDto.of(userPolicy.getPolicy()));
     }
 }
