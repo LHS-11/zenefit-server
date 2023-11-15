@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @ApiModel(description = "관심 정책 리스트 정보 조회 API response")
-public class InterestPolicyListResponseDto {
+public class InterestAndApplyPolicyListResponseDto {
 
     @ApiModelProperty(notes = "정책 ID", example = "12")
     private Long policyId;
@@ -27,15 +27,15 @@ public class InterestPolicyListResponseDto {
     private String policyLogo;
 
     @Builder
-    private InterestPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, String policyLogo) {
+    private InterestAndApplyPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, String policyLogo) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
         this.policyLogo = policyLogo;
     }
 
-    public static InterestPolicyListResponseDto of(Policy policy) {
-        return InterestPolicyListResponseDto.builder()
+    public static InterestAndApplyPolicyListResponseDto of(Policy policy) {
+        return InterestAndApplyPolicyListResponseDto.builder()
                 .policyId(policy.getId())
                 .policyName(policy.getPolicyName())
                 .policyLogo(policy.getPolicyLogo())

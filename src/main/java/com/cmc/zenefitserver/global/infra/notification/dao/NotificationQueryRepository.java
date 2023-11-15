@@ -1,8 +1,6 @@
 package com.cmc.zenefitserver.global.infra.notification.dao;
 
 import com.cmc.zenefitserver.domain.user.domain.User;
-import com.cmc.zenefitserver.domain.userpolicy.dto.ApplyPolicyListResponseDto;
-import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListResponseDto;
 import com.cmc.zenefitserver.global.infra.notification.dto.NotificationListInfoResponseDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
