@@ -49,4 +49,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
             "AND :age between p.minAge and p.maxAge")
     List<Policy> findByAreaCodeAndCityCodeAndAge(@Param("areaCode") AreaCode areaCode, @Param("central") AreaCode central, @Param("cityCode") CityCode cityCode, @Param("age") int age);
 
+    @Query("SELECT COUNT(p) FROM Policy p WHERE p.supportPolicyType = :supportPolicyType")
+    int getPolicyCntBySupportPolicyType(@Param("supportPolicyType") SupportPolicyType supportPolicyType);
+
 }

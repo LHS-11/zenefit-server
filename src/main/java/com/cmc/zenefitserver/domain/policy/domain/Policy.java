@@ -10,7 +10,9 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @ToString
@@ -104,7 +106,6 @@ public class Policy implements Serializable {
     @Enumerated(EnumType.STRING)
     private Set<SupportPolicyType> supportPolicyTypes = new HashSet<>(); // 특화 분야 유형
 
-
     @Enumerated(EnumType.STRING)
     private PolicyCode policyCode; // 정책 유형
 
@@ -122,11 +123,18 @@ public class Policy implements Serializable {
 
     private LocalDate applyEndDate; // 신청 종료일
 
+    private String remark; // 비고
+
+    @Enumerated(EnumType.STRING)
+    private PolicyDateType policyDateType;
 
     @OneToMany(mappedBy = "policy", fetch = FetchType.LAZY)
     private Set<UserPolicy> userPolicies = new HashSet<>();
 
     private int benefit; // 수혜 금액
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<ApplyPeriod> applyPeriods = new ArrayList<>();
 
     public void updateAgeInfo(int minAge, int maxAge) {
         this.minAge = minAge;
@@ -161,8 +169,25 @@ public class Policy implements Serializable {
         this.supportPolicyType = supportPolicyType;
     }
 
+    public void updateRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public void updateApplySttDateAndApplyEndDate(LocalDate applySttDate, LocalDate applyEndDate) {
+        this.applySttDate = applySttDate;
+        this.applyEndDate = applyEndDate;
+    }
+
+    public void updateApplyPeriods(List<ApplyPeriod> applyPeriods) {
+        this.applyPeriods = applyPeriods;
+    }
+
+    public void updateDateType(PolicyDateType policyDateType) {
+        this.policyDateType = policyDateType;
+    }
+
     @Builder
-    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, AreaCode areaCode, CityCode cityCode, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, SupportPolicyType supportPolicyType, String policyLogo, String policyApplyDenialReason, String applyStatus, LocalDate applySttDate, LocalDate applyEndDate, Set<UserPolicy> userPolicies, int benefit) {
+    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, AreaCode areaCode, CityCode cityCode, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, SupportPolicyType supportPolicyType, String policyLogo, String policyApplyDenialReason, String applyStatus, LocalDate applySttDate, LocalDate applyEndDate, Set<UserPolicy> userPolicies, int benefit, String remark, List<ApplyPeriod> applyPeriods, PolicyDateType policyDateType) {
         this.bizId = bizId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
@@ -195,6 +220,9 @@ public class Policy implements Serializable {
         this.applyEndDate = applyEndDate;
         this.userPolicies = userPolicies;
         this.benefit = benefit;
+        this.remark = remark;
+        this.applyPeriods = applyPeriods;
+        this.policyDateType = policyDateType;
     }
 
 
