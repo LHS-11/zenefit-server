@@ -44,6 +44,10 @@ public class UserPolicyService {
         UserPolicy findUserPolicy = userPolicyRepository.findByUser_userIdAndPolicy_Id(findUser.getUserId(), findPolicy.getId())
                 .orElse(null);
 
+        if (findUserPolicy.isInterestFlag()) {
+            throw new BusinessException(ErrorCode.ALREADY_EXISTS_INTEREST_USER_POLICY);
+        }
+
         if (findUserPolicy == null) {
             findUserPolicy = UserPolicy.builder()
                     .user(findUser)
@@ -52,7 +56,7 @@ public class UserPolicyService {
                     .build();
         }
 
-        if (findUserPolicy != null) {
+        if (!findUserPolicy.isInterestFlag()) {
             findUserPolicy.setInterestFlagToTrue();
         }
 
@@ -69,6 +73,10 @@ public class UserPolicyService {
         UserPolicy findUserPolicy = userPolicyRepository.findByUser_userIdAndPolicy_Id(findUser.getUserId(), findPolicy.getId())
                 .orElse(null);
 
+        if (findUserPolicy.isApplyFlag()) {
+            throw new BusinessException(ErrorCode.ALREADY_EXISTS_INTEREST_USER_POLICY);
+        }
+
         if (findUserPolicy == null) {
             findUserPolicy = UserPolicy.builder()
                     .user(findUser)
@@ -77,7 +85,7 @@ public class UserPolicyService {
                     .build();
         }
 
-        if (findUserPolicy != null) {
+        if (!findUserPolicy.isApplyFlag()) {
             findUserPolicy.setApplyFlagToTrue();
         }
 
