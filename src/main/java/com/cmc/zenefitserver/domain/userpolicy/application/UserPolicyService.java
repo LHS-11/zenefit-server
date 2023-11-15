@@ -126,7 +126,6 @@ public class UserPolicyService {
                             .policyId(policy.getId())
                             .policyName(policy.getPolicyName())
                             .policyIntroduction(policy.getPolicyIntroduction())
-                            .policyBenefit(policy.getBenefit())
                             .policyLogo(policy.getPolicyLogo())
                             .build();
                     return dto;
@@ -194,4 +193,11 @@ public class UserPolicyService {
         return userPolicyRepository.findUserPoliciesByUserAndInterestFlag(user, interestFlag, pageable)
                 .map(userPolicy -> InterestPolicyListResponseDto.of(userPolicy.getPolicy()));
     }
+
+    public Page<ApplyPolicyListResponseDto> getUserPoliciesByApplyFlag(User user, boolean applyFlag, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        return userPolicyRepository.findUserPoliciesByUserAndApplyFlag(user, applyFlag, pageable)
+                .map(userPolicy -> ApplyPolicyListResponseDto.of(userPolicy.getPolicy()));
+    }
+
 }

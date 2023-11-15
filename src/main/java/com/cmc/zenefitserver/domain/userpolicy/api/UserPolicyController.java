@@ -60,8 +60,8 @@ public class UserPolicyController {
 
     @GetMapping("/apply")
     @Operation(summary = "수혜(신청) 정책 리스트 조회 API", description = "유저의 수혜(신청) 정책 리스트를 보여줄 때 사용합니다.")
-    public CommonResponse<Slice<ApplyPolicyListResponseDto>> getApplyPolicesByPaging(@AuthUser User user, @RequestParam(required = false) Long lastPolicyId, Pageable pageable) {
-        Slice<ApplyPolicyListResponseDto> result = userPolicyService.getApplyPolicyListByPaging(user, lastPolicyId, pageable);
+    public CommonResponse<Page<ApplyPolicyListResponseDto>> getApplyPolicesByPaging(@AuthUser User user, @RequestParam int page, @RequestParam int size) {
+        Page<ApplyPolicyListResponseDto> result = userPolicyService.getUserPoliciesByApplyFlag(user, true, page, size);
         return CommonResponse.success(result);
     }
 

@@ -40,4 +40,7 @@ public interface UserPolicyRepository extends JpaRepository<UserPolicy, Long> {
 
     Page<UserPolicy> findUserPoliciesByUserAndInterestFlag(User user, boolean interestFlag, Pageable pageable);
 
+    Page<UserPolicy> findUserPoliciesByUserAndApplyFlag(User user, boolean applyFlag, Pageable pageable);
+
+
 }
