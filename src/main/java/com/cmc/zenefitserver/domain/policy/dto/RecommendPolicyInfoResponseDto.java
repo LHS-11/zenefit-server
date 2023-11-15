@@ -57,13 +57,13 @@ public class RecommendPolicyInfoResponseDto {
         private int supportTypePolicyCnt;
 
         @ApiModelProperty(notes = "정책 수혜금액", example = "1560000")
-        private double benefit;
+        private int benefit;
 
         @ApiModelProperty(notes = "정책 기간 타입", example = "1560000")
         private String policyDateType;
 
         @Builder
-        public recommendPolicyInfo(SupportPolicyType supportType, String supportTypeDescription, Long policyId, String policyName, String policyLogo, String policyAreaCode, String policyCityCode, String policyIntroduction, int supportTypePolicyCnt, double benefit, String policyDateType) {
+        public recommendPolicyInfo(SupportPolicyType supportType, String supportTypeDescription, Long policyId, String policyName, String policyLogo, String policyAreaCode, String policyCityCode, String policyIntroduction, int supportTypePolicyCnt, int benefit, String policyDateType) {
             this.supportType = supportType;
             this.supportTypeDescription = supportTypeDescription;
             this.policyId = policyId;
