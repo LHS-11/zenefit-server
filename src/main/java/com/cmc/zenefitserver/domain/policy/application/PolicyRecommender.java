@@ -68,7 +68,7 @@ public class PolicyRecommender {
     }
 
     public List<Policy> matchPolicy(User user) {
-        // 1차 선별
+        // 1차 선별 - 나이, 지역
         Integer age = user.getAge();
 
         AreaCode userAreaCode = user.getAddress().getAreaCode();
@@ -77,7 +77,7 @@ public class PolicyRecommender {
 
         List<Policy> firstFindPolices = policyRepository.findByAreaCodeAndCityCodeAndAge(userAreaCode, AreaCode.CENTRAL_GOVERNMENT, userCityCode, age);
 
-        // 2차 선별
+        // 2차 선별 - 특화 유형 ( policySplzTypes )
         List<Policy> secondFindPolices = firstFindPolices.stream()
                 .filter(policy ->
                         !isDisabledDenial(user, policy)

@@ -6,7 +6,8 @@ import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
-import com.cmc.zenefitserver.domain.userpolicy.dto.InterestAndApplyPolicyListResponseDto;
+import com.cmc.zenefitserver.domain.userpolicy.dto.ApplyPolicyListResponseDto;
+import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListResponseDto;
 import com.cmc.zenefitserver.domain.userpolicy.dto.PolicySizeResponseDto;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
@@ -24,16 +25,16 @@ public class UserPolicyService {
     private final PolicyRepository policyRepository;
     private final UserPolicyRepository userPolicyRepository;
 
-    public Page<InterestAndApplyPolicyListResponseDto> getUserPoliciesByInterestFlag(User user, boolean interestFlag, int page, int size) {
+    public Page<InterestPolicyListResponseDto> getUserPoliciesByInterestFlag(User user, boolean interestFlag, int page, int size) {
         PageRequest pageable = PageRequest.of(page, size);
         return userPolicyRepository.findUserPoliciesByUserAndInterestFlag(user, interestFlag, pageable)
-                .map(userPolicy -> InterestAndApplyPolicyListResponseDto.of(userPolicy.getPolicy()));
+                .map(userPolicy -> InterestPolicyListResponseDto.of(userPolicy.getPolicy()));
     }
 
-    public Page<InterestAndApplyPolicyListResponseDto> getUserPoliciesByApplyFlag(User user, boolean applyFlag, int page, int size) {
+    public Page<ApplyPolicyListResponseDto> getUserPoliciesByApplyFlag(User user, boolean applyFlag, int page, int size) {
         PageRequest pageable = PageRequest.of(page, size);
         return userPolicyRepository.findUserPoliciesByUserAndApplyFlag(user, applyFlag, pageable)
-                .map(userPolicy -> InterestAndApplyPolicyListResponseDto.of(userPolicy.getPolicy()));
+                .map(userPolicy -> ApplyPolicyListResponseDto.of(userPolicy.getPolicy()));
     }
 
     @Transactional
