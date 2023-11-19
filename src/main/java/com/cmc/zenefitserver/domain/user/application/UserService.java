@@ -186,7 +186,7 @@ public class UserService {
         String bucketName = "zenefit-bucket";
         String folderName = "character";
 
-        String bucketImageUrl = gender.getCode() + "-" + character.getName();
+        String bucketImageUrl = gender.getCode() + "-" + character.name().toLowerCase();
 
         String s3ObjectKey = folderName + "/" + bucketImageUrl + ".png"; // 이미지 파일의 객체 키
 
