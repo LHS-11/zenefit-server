@@ -82,8 +82,11 @@ public class PolicyService {
                 .policyApplyDocument(policy.getSubmissionDocumentContent())
                 .policyApplyMethod(policy.getApplicationProcedureContent())
                 .policyApplyDate(policy.getApplicationPeriodContent())
+                .policyDateType(policy.getPolicyDateType())
+                .policyDateTypeDescription(policy.getPolicyDateType().getDescription())
                 .applicationSite(policy.getApplicationSiteAddress())
                 .referenceSite(policy.getReferenceSiteUrlAddress())
+                .benefit(policy.getBenefit())
                 .build();
 
         return dto;

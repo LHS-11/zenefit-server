@@ -1,6 +1,6 @@
 package com.cmc.zenefitserver.domain.policy.dto;
 
-import io.swagger.annotations.Api;
+import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyDateType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -26,7 +26,7 @@ public class PolicyInfoResponseDto {
     @ApiModelProperty(notes = "정책 소개",example = "월 70만원을 5년 납입하면 약 5,000만원을 적립할 수 있는 청년도약계좌")
     private String policyIntroduction;
 
-    @ApiModelProperty(notes = "정책 서류",example = "주민등록등본, 신분증, 소득증빙서류 등")
+    @ApiModelProperty(notes = "신청 서류",example = "주민등록등본, 신분증, 소득증빙서류 등")
     private String policyApplyDocument;
 
     @ApiModelProperty(notes = "신청 방법",example = "주소지 읍·면·동 행정복지센터 방문 또는 등기우편 신청")
@@ -35,14 +35,23 @@ public class PolicyInfoResponseDto {
     @ApiModelProperty(notes = "신청 기간",example = "2023년 6월 15일 ~ 2023년 12월 31일")
     private String policyApplyDate;
 
+    @ApiModelProperty(notes = "신청 기간 타입",example = "PERIOD, CONSTANT, UNDECIDED, BLANK")
+    private PolicyDateType policyDateType;
+
+    @ApiModelProperty(notes = "신청 기간 타입 이름",example = "상시, 기간 신청, 미정, 빈값")
+    private String policyDateTypeDescription;
+
     @ApiModelProperty(notes = "신청 url",example = "https://www.kinfa.or.kr/product/youthJump.do")
     private String applicationSite;
 
     @ApiModelProperty(notes = "참고 url",example = "https://www.kinfa.or.kr/product/youthJump.do")
     private String referenceSite;
 
+    @ApiModelProperty(notes = "정책 수혜금액",example = "존재하면 숫자값, 없으면 null값")
+    private int benefit;
+
     @Builder
-    public PolicyInfoResponseDto(Long policyId, String policyName, String policyApplyDenialReason, String policyIntroduction, String policyApplyDocument, String policyApplyMethod, String policyApplyDate, String applicationSite, String referenceSite) {
+    public PolicyInfoResponseDto(Long policyId, String policyName, String policyApplyDenialReason, String policyIntroduction, String policyApplyDocument, String policyApplyMethod, String policyApplyDate, PolicyDateType policyDateType, String policyDateTypeDescription, String applicationSite, String referenceSite, int benefit) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyApplyDenialReason = policyApplyDenialReason;
@@ -50,7 +59,10 @@ public class PolicyInfoResponseDto {
         this.policyApplyDocument = policyApplyDocument;
         this.policyApplyMethod = policyApplyMethod;
         this.policyApplyDate = policyApplyDate;
+        this.policyDateType = policyDateType;
+        this.policyDateTypeDescription = policyDateTypeDescription;
         this.applicationSite = applicationSite;
         this.referenceSite = referenceSite;
+        this.benefit = benefit;
     }
 }

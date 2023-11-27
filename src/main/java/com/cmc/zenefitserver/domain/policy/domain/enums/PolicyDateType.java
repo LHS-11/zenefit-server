@@ -9,7 +9,6 @@ public enum PolicyDateType {
 
     CONSTANT("상시"),
     UNDECIDED("미정"),
-
     PERIOD("기간 신청"),
     BLANK("빈값");
 

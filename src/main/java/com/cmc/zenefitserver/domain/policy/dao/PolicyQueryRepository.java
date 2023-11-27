@@ -3,6 +3,7 @@ package com.cmc.zenefitserver.domain.policy.dao;
 import static com.cmc.zenefitserver.domain.policy.domain.QPolicy.policy;
 import static com.cmc.zenefitserver.domain.userpolicy.domain.QUserPolicy.userPolicy;
 
+import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import com.cmc.zenefitserver.domain.policy.dto.PolicyListResponseDto;
@@ -13,10 +14,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -159,4 +157,38 @@ public class PolicyQueryRepository {
 
         return new SliceImpl<>(results, pageable, hasNext);
     }
+
+    // 유저가 신청할 수 있는 지원 유형별로 정책 찾기
+//    Page<Policy> findPolicyBySupportPolicyType(SupportPolicyType supportPolicyType);
+    public Page<PolicyListResponseDto> searchByPaging(User user, SupportPolicyType supportPolicyType, PolicyCode policyCode, Pageable pageable) {
+//        JPAQuery<PolicyListResponseDto> query = jpaQueryFactory.select(
+//                        Projections.constructor(PolicyListResponseDto.class,
+//                                policy.id,
+//                                policy.policyName,
+//                                policy.policyApplyDenialReason,
+//                                policy.areaCode.stringValue(),
+//                                policy.cityCode.stringValue(),
+//                                policy.policyLogo,
+//                                policy.policyIntroduction,
+//                                policy.applyStatus,
+//                                policy.benefit,
+//                                ExpressionUtils.as(Expressions.constant(false), "applyFlag"),
+//                                ExpressionUtils.as(Expressions.constant(false), "interestFlag")
+//                        )
+//                )
+//                .from(policy)
+//                .leftJoin(userPolicy)
+//                .on(policy.id.eq(userPolicy.policy.id).and(userPolicy.user.userId.eq(user.getUserId())))
+//                .where(
+//                );
+//
+//        if (PolicyCode.NONE != policyCode) {
+//            query.where(policy.policyCode.eq(policyCode));
+//        }
+
+
+        return null;
+    }
+
+    // 유저가 신청할 수 없는 지원 유형별로 정책 찾기
 }

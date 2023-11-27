@@ -17,7 +17,8 @@ public enum DenialReasonType {
     SPECIAL_CONTENT_LOCAL_TALENT("특화분야내용 - 지역인재", "지역인재에 해당하는 분들만 신청 가능해요"),
     SPECIAL_CONTENT_FARMER("특화분야내용 - 농업인", "이 정책은 농업인분들만 신청 가능해요"),
     SPECIAL_CONTENT_LOW_INCOME("특화분야내용 - 저소득층", "저소득층에 해당하는 분들만 신청 가능해요"),
-    SPECIAL_CONTENT_ENTREPRENEUR("특화분야내용 - 창업가", "창업가 해당하는 분들만 신청 가능해요");
+    SPECIAL_CONTENT_ENTREPRENEUR("특화분야내용 - 창업가", "창업가 해당하는 분들만 신청 가능해요"),
+    DATE("날짜","신청 기간이 아니에요");
 
     private final String name;
     private final String text;
