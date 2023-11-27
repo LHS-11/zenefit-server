@@ -5,7 +5,6 @@ import lombok.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @Getter
 @Setter
@@ -59,8 +58,8 @@ public class YouthPolicy {
     @XmlElement(name = "prcpLmttTrgtCn")
     private String prcpLmttTrgtCn; // 15. 참여제한대상 내용
 
-    @XmlElement(name = "jdgnPresCn")
-    private String jdgnPresCn; // 16. 신청사이트 주소
+    @XmlElement(name = "rqutUrla")
+    private String rqutUrla; // 16. 신청사이트 주소
 
     @XmlElement(name = "rfcSiteUrla1")
     private String rfcSiteUrla1; // 17. 참고사이트URL주소1

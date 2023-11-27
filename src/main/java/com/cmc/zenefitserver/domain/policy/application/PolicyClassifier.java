@@ -95,7 +95,7 @@ public class PolicyClassifier {
                                     .residentialAndIncomeRequirementContent(p.getPrcpCn())
                                     .additionalClauseContent(p.getAditRscn())
                                     .eligibilityTargetContent(p.getPrcpLmttTrgtCn())
-                                    .applicationSiteAddress(p.getJdgnPresCn())
+                                    .applicationSiteAddress(p.getRqutUrla())
                                     .referenceSiteUrlAddress(p.getRfcSiteUrla1())
                                     .applicationProcedureContent(p.getRqutProcCn())
                                     .submissionDocumentContent(p.getPstnPaprCn())
