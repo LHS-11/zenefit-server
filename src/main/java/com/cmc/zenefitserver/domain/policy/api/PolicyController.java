@@ -9,8 +9,9 @@ import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,17 +30,19 @@ public class PolicyController {
     // 정책 리스트 조회 API
     @GetMapping
     @Operation(summary = "정책 목록 조회 API", description = "정책 목록을 무한 스크롤해서 보여줍니다.")
-    public CommonResponse<Slice<PolicyListResponseDto>> getPolices(@AuthUser User user, @RequestBody PolicyListRequestDto policyListRequestDto, Pageable pageable) {
-        log.info("pageable = {}", pageable);
-        return CommonResponse.success(policyService.getPolicyList(user, policyListRequestDto, pageable));
+    public CommonResponse<Page<PolicyListResponseDto>> getPolices(@AuthUser User user, @RequestBody PolicyListRequestDto policyListRequestDto, @RequestParam int page, @RequestParam int size, @RequestParam String sortField,
+                                                                  @RequestParam String sortOrder) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortField);
+        return CommonResponse.success(policyService.getPolicyList(user, policyListRequestDto, page, size, sort));
     }
 
     // 정책 검색 API
     @GetMapping("/search")
     @Operation(summary = "정책 검색 API", description = "키워드를 사용하여 해당하는 정책 목록을 무한 스크롤해서 보여줍니다.")
-    public CommonResponse<Slice<PolicyListResponseDto>> getSearchPolices(@AuthUser User user, @RequestBody SearchPolicyListRequestDto policyListRequestDto, Pageable pageable) {
-        log.info("pageable = {}", pageable);
-        return CommonResponse.success(policyService.getSearchPolicyList(user, policyListRequestDto, pageable));
+    public CommonResponse<Slice<PolicyListResponseDto>> getSearchPolices(@AuthUser User user, @RequestBody SearchPolicyListRequestDto policyListRequestDto, @RequestParam int page, @RequestParam int size, @RequestParam String sortField,
+                                                                         @RequestParam String sortOrder) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortField);
+        return CommonResponse.success(policyService.getSearchPolicyList(user, policyListRequestDto, page, size, sort));
     }
 
     // 정책 상세 조회 API
@@ -58,8 +61,8 @@ public class PolicyController {
     }
 
     @GetMapping("/recommend")
-    @Operation(summary = "지원 정책 유형에 따른 추천 정책 API",description = "로그인(회원가입)하고, 해당 유저에게 정책 카테고리를 클릭했을 때 정책 유형에 따른 정책을 추천합니다.")
-    public CommonResponse<RecommendPolicyInfoResponseDto> recommend(@AuthUser User user){
+    @Operation(summary = "지원 정책 유형에 따른 추천 정책 API", description = "로그인(회원가입)하고, 해당 유저에게 정책 카테고리를 클릭했을 때 정책 유형에 따른 정책을 추천합니다.")
+    public CommonResponse<RecommendPolicyInfoResponseDto> recommend(@AuthUser User user) {
         RecommendPolicyInfoResponseDto result = policyService.getRecommendPolicyDummy();
         return CommonResponse.success(result);
     }

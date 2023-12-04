@@ -74,7 +74,7 @@ public class PolicyDenialReasonClassifier {
     private static boolean isDateDenial(User user, Policy policy) {
         LocalDate now = LocalDate.now();
         // 1. 현재 시각이 신청 시작일보다 이른 경우  or 2. 현재 시각이 신청 종료일보다 늦은 경우
-        if (policy.getPolicyDateType().equals(PolicyDateType.PERIOD)
+        if (policy.getPolicyDateType() != null && policy.getPolicyDateType().equals(PolicyDateType.PERIOD)
                 && (policy.getApplyEndDate() != null && now.isAfter(policy.getApplyEndDate()))
                 || (policy.getApplySttDate() != null && now.isBefore(policy.getApplySttDate()))) {
             return true;

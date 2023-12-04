@@ -1,6 +1,8 @@
 package com.cmc.zenefitserver.domain.policy.dto;
 
 
+import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -15,12 +17,9 @@ import org.springframework.validation.annotation.Validated;
 @ApiModel(description = "정책 리스트 조회 API request")
 public class PolicyListRequestDto {
 
-    @ApiModelProperty(notes = "페이징처리 마지막 정책 ID",example = "20")
-    private Long lastPolicyId;
+    @ApiModelProperty(notes = "지원 정책 유형", example = "MONEY,LOANS,SOCIAL_SERVICE")
+    private SupportPolicyType supportPolicyType; // 지원 정책 유형
 
-    @ApiModelProperty(notes ="지원 정책 유형",example = "MONEY,LOANS,SOCIAL_SERVICE")
-    private String supportPolicyType; // 지원 정책 유형
-
-    @ApiModelProperty(notes ="정책 유형",example = "JOB,RESIDENCE,EDUCATION,WELFARE_CULTURE,PARTICIPATION_RIGHT")
-    private String policyType; // 정책 유형
+    @ApiModelProperty(notes = "정책 유형", example = "JOB,RESIDENCE,EDUCATION,WELFARE_CULTURE,PARTICIPATION_RIGHT")
+    private PolicyCode policyType; // 정책 유형
 }

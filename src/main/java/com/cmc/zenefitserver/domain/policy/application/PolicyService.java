@@ -14,8 +14,7 @@ import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -34,36 +33,30 @@ public class PolicyService {
     private final PolicyRecommender policyRecommender;
 
     // 정책 리스트 조회 비즈니스 로직
-    public Slice<PolicyListResponseDto> getPolicyList(User user, PolicyListRequestDto policyListRequestDto, Pageable pageable) {
-        Slice<PolicyListResponseDto> policyListResponseDtos = policyQueryRepository.searchBySlice(
-                user,
-                policyListRequestDto.getLastPolicyId(),
-                SupportPolicyType.fromString(policyListRequestDto.getSupportPolicyType()),
-                PolicyCode.fromString(policyListRequestDto.getPolicyType()),
-                pageable);
-        policyListResponseDtos.stream()
-                .forEach(policyListResponseDto -> {
-                    policyListResponseDto.updateAreaCode(policyListResponseDto.getAreaCode());
-                    policyListResponseDto.updateCityCode(policyListResponseDto.getCityCode());
+    public Page<PolicyListResponseDto> getPolicyList(User user, PolicyListRequestDto policyListRequestDto, int page, int size, Sort sort) {
+        PageRequest pageable = PageRequest.of(page, size, sort);
+        return policyQueryRepository.searchByPaging(user, policyListRequestDto.getSupportPolicyType(), policyListRequestDto.getPolicyType(), null, pageable)
+                .map(dto -> {
+                    Policy findPolicy = policyRepository.findById(dto.getPolicyId()).get();
+                    dto.updatePolicyApplyDenialReason(PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy).getText());
+                    dto.updatePolicyDateTypeDescription(dto.getPolicyDateType());
+                    dto.updateAreaCode(dto.getAreaCode());
+                    dto.updateCityCode(dto.getCityCode());
+                    return dto;
                 });
-
-        return policyListResponseDtos;
     }
 
-    public Slice<PolicyListResponseDto> getSearchPolicyList(User user, SearchPolicyListRequestDto searchPolicyDto, Pageable pageable) {
-        Slice<PolicyListResponseDto> policyListResponseDtos = policyQueryRepository.searchBySlice(
-                user,
-                searchPolicyDto.getLastPolicyId(),
-                SupportPolicyType.fromString(searchPolicyDto.getSupportPolicyType()),
-                PolicyCode.fromString(searchPolicyDto.getPolicyType()),
-                searchPolicyDto.getKeyword(),
-                pageable);
-        policyListResponseDtos.stream()
-                .forEach(policyListResponseDto -> {
-                    policyListResponseDto.updateAreaCode(policyListResponseDto.getAreaCode());
-                    policyListResponseDto.updateCityCode(policyListResponseDto.getCityCode());
+    public Page<PolicyListResponseDto> getSearchPolicyList(User user, SearchPolicyListRequestDto searchPolicyDto, int page, int size, Sort sort) {
+        PageRequest pageable = PageRequest.of(page, size, sort);
+        return policyQueryRepository.searchByPaging(user, searchPolicyDto.getSupportPolicyType(), searchPolicyDto.getPolicyType(), searchPolicyDto.getKeyword(), pageable)
+                .map(dto -> {
+                    Policy findPolicy = policyRepository.findById(dto.getPolicyId()).get();
+                    dto.updatePolicyApplyDenialReason(PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy).getText());
+                    dto.updatePolicyDateTypeDescription(dto.getPolicyDateType());
+                    dto.updateAreaCode(dto.getAreaCode());
+                    dto.updateCityCode(dto.getCityCode());
+                    return dto;
                 });
-        return policyListResponseDtos;
     }
 
     public PolicyInfoResponseDto getPolicy(User user, Long policyId) {
@@ -72,7 +65,6 @@ public class PolicyService {
 
         // 신청 불가 사유 로직
         String denialReason = "null";
-
 
         PolicyInfoResponseDto dto = PolicyInfoResponseDto.builder()
                 .policyId(policy.getId())
