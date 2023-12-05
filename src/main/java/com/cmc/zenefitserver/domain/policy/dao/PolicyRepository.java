@@ -52,4 +52,12 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
     @Query("SELECT COUNT(p) FROM Policy p WHERE p.supportPolicyType = :supportPolicyType")
     int getPolicyCntBySupportPolicyType(@Param("supportPolicyType") SupportPolicyType supportPolicyType);
 
+    @Query("SELECT P FROM Policy P LEFT JOIN P.userPolicies UP " +
+            "WHERE UP.interestFlag = TRUE " +
+            "AND UP.user.userId = :userId " +
+            "AND (:searchSttDate BETWEEN P.applySttDate AND P.applyEndDate " +
+            "OR :searchEndDate BETWEEN P.applySttDate AND P.applyEndDate " +
+            "OR (:searchSttDate <= P.applySttDate AND :searchEndDate >= P.applyEndDate))")
+    List<Policy> findAllBySearchDate(@Param("userId") Long userId, @Param("searchSttDate") LocalDate searchSttDate, @Param("searchEndDate") LocalDate searchEndDate);
+
 }

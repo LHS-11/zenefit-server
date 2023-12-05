@@ -55,8 +55,8 @@ public class PolicyController {
 
     @GetMapping("/calendar")
     @Operation(summary = "특정 날짜에 따른 관심 정책 조회 API", description = "달력에서 해당 날짜(달)에 신청 시작일 또는 신청 종료일을 가지는 정책을 조회합니다.")
-    public CommonResponse<List<CalendarPolicyListResponseDto>> getPolicesBySearchDate(@AuthUser User user, @RequestParam("searchDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate, @RequestParam String searchDateType) {
-        List<CalendarPolicyListResponseDto> result = policyService.getPolicyListBySearchDate(user, searchDate, searchDateType);
+    public CommonResponse<List<CalendarPolicyListResponseDto>> getPolicesBySearchDate(@AuthUser User user, @RequestParam("searchDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        List<CalendarPolicyListResponseDto> result = policyService.getPolicyListBySearchDate(user, searchDate);
         return CommonResponse.success(result);
     }
 

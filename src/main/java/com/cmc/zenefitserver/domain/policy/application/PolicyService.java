@@ -3,14 +3,12 @@ package com.cmc.zenefitserver.domain.policy.application;
 import com.cmc.zenefitserver.domain.policy.dao.PolicyQueryRepository;
 import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
-import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
-import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
+import com.cmc.zenefitserver.domain.policy.domain.enums.DenialReasonType;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import com.cmc.zenefitserver.domain.policy.dto.*;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.dto.HomeInfoResponseDto;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
-import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -84,56 +82,32 @@ public class PolicyService {
         return dto;
     }
 
-    public List<CalendarPolicyListResponseDto> getPolicyListBySearchDate(User user, LocalDate searchDate, String type) {
+    public List<CalendarPolicyListResponseDto> getPolicyListBySearchDate(User user, LocalDate searchDate) {
 
         LocalDate searchSttDate = searchDate.withDayOfMonth(1);
         LocalDate searchEndDate = searchDate.withDayOfMonth(searchDate.lengthOfMonth());
 
         List<CalendarPolicyListResponseDto> result = null;
-        if (SearchDateType.STT_DATE.name().equals(type)) {
 
-            List<UserPolicy> userPolices = userPolicyRepository.findAllByUser_userIdAndInterestFlagAndPolicy_ApplySttDateBetween(
-                    user.getUserId(), true, searchSttDate, searchEndDate
-            );
+        List<Policy> polices = policyRepository.findAllBySearchDate(user.getUserId(), searchSttDate, searchEndDate);
 
-            if (userPolices != null) {
-                result = userPolices.stream()
-                        .map(entity -> {
-                            Policy policy = entity.getPolicy();
-                            CalendarPolicyListResponseDto dto = CalendarPolicyListResponseDto.builder()
-                                    .policyId(policy.getId())
-                                    .policyName(policy.getPolicyName())
-                                    .policyApplyStatus(policy.getApplyStatus())
-                                    .policyAgencyLogo(policy.getPolicyLogo())
-                                    .policySttDateOrEndDate(policy.getApplySttDate())
-                                    .build();
-                            return dto;
-                        })
-                        .collect(Collectors.toList());
-            }
+        if (polices != null) {
+            result = polices.stream()
+                    .map(policy -> {
+                        DenialReasonType denialReasonType = PolicyDenialReasonClassifier.getDenialReasonType(user, policy);
+                        CalendarPolicyListResponseDto dto = CalendarPolicyListResponseDto.builder()
+                                .policyId(policy.getId())
+                                .policyName(policy.getPolicyName())
+                                .applyProcedure("더미데이터 (방문신청, 우편신청, 홈페이지 신청등)")
+                                .policyAgencyLogo(policy.getPolicyLogo())
+                                .applySttDate(policy.getApplySttDate())
+                                .applyEndDate(policy.getApplyEndDate())
+                                .build();
 
-        }
-
-        if (SearchDateType.END_DATE.name().equals(type)) {
-
-            List<UserPolicy> userPolices = userPolicyRepository.findAllByUser_userIdAndInterestFlagAndPolicy_ApplyEndDateBetween(
-                    user.getUserId(), true, searchSttDate, searchEndDate
-            );
-            if (userPolices != null) {
-                result = userPolices.stream()
-                        .map(entity -> {
-                            Policy policy = entity.getPolicy();
-                            CalendarPolicyListResponseDto dto = CalendarPolicyListResponseDto.builder()
-                                    .policyId(policy.getId())
-                                    .policyName(policy.getPolicyName())
-                                    .policyApplyStatus(policy.getApplyStatus())
-                                    .policyAgencyLogo(policy.getPolicyLogo())
-                                    .policySttDateOrEndDate(policy.getApplyEndDate())
-                                    .build();
-                            return dto;
-                        })
-                        .collect(Collectors.toList());
-            }
+                        dto.upgradeApplyStatus(denialReasonType);
+                        return dto;
+                    })
+                    .collect(Collectors.toList());
         }
 
         return result;
