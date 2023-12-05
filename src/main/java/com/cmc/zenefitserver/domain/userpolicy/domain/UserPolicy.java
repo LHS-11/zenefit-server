@@ -2,6 +2,7 @@ package com.cmc.zenefitserver.domain.userpolicy.domain;
 
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.user.domain.User;
+import com.cmc.zenefitserver.global.common.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserPolicy {
+public class UserPolicy extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -5,6 +5,7 @@ import com.cmc.zenefitserver.domain.policy.domain.enums.*;
 import com.cmc.zenefitserver.domain.user.domain.EducationType;
 import com.cmc.zenefitserver.domain.user.domain.JobType;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
+import com.cmc.zenefitserver.global.common.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ import java.util.Set;
         @Index(name = "idx_policy_id", columnList = "id")
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Policy implements Serializable {
+public class Policy extends BaseEntity implements Serializable {
 
     @Id
     @SequenceGenerator(
