@@ -4,6 +4,7 @@ import com.cmc.zenefitserver.domain.policy.dao.PolicyQueryRepository;
 import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.DenialReasonType;
+import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import com.cmc.zenefitserver.domain.policy.dto.*;
 import com.cmc.zenefitserver.domain.user.domain.User;
@@ -82,14 +83,14 @@ public class PolicyService {
         return dto;
     }
 
-    public List<CalendarPolicyListResponseDto> getPolicyListBySearchDate(User user, LocalDate searchDate) {
+    public List<CalendarPolicyListResponseDto> getPolicyListBySearchMonth(User user, LocalDate searchDate) {
 
         LocalDate searchSttDate = searchDate.withDayOfMonth(1);
         LocalDate searchEndDate = searchDate.withDayOfMonth(searchDate.lengthOfMonth());
 
         List<CalendarPolicyListResponseDto> result = null;
 
-        List<Policy> polices = policyRepository.findAllBySearchDate(user.getUserId(), searchSttDate, searchEndDate);
+        List<Policy> polices = policyRepository.findAllBySearchMonth(user.getUserId(), searchSttDate, searchEndDate);
 
         if (polices != null) {
             result = polices.stream()
@@ -111,6 +112,37 @@ public class PolicyService {
         }
 
         return result;
+    }
+
+    public List<CalendarPolicyListResponseDto> getPolicyListBySearchDate(User user, LocalDate searchDate, SearchDateType searchDateType) {
+
+        List<Policy> policies = null;
+        if (SearchDateType.STT_DATE.equals(searchDateType)) {
+            policies = policyRepository.findAllBySearchSttDate(user.getUserId(), searchDate);
+        }
+
+        if (SearchDateType.END_DATE.equals(searchDateType)) {
+            policies = policyRepository.findAllBySearchEndDate(user.getUserId(), searchDate);
+        }
+
+        return policies.stream()
+                .map(policy -> {
+                    DenialReasonType denialReasonType = PolicyDenialReasonClassifier.getDenialReasonType(user, policy);
+                    CalendarPolicyListResponseDto dto = CalendarPolicyListResponseDto.builder()
+                            .policyId(policy.getId())
+                            .policyName(policy.getPolicyName())
+                            .applyProcedure("더미데이터 (방문신청, 우편신청, 홈페이지 신청등)")
+                            .policyAgencyLogo(policy.getPolicyLogo())
+                            .applySttDate(policy.getApplySttDate())
+                            .applyEndDate(policy.getApplyEndDate())
+                            .build();
+
+                    dto.upgradeApplyStatus(denialReasonType);
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+
     }
 
     public RecommendPolicyInfoResponseDto recommend(User user) {

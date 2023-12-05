@@ -58,6 +58,18 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
             "AND (:searchSttDate BETWEEN P.applySttDate AND P.applyEndDate " +
             "OR :searchEndDate BETWEEN P.applySttDate AND P.applyEndDate " +
             "OR (:searchSttDate <= P.applySttDate AND :searchEndDate >= P.applyEndDate))")
-    List<Policy> findAllBySearchDate(@Param("userId") Long userId, @Param("searchSttDate") LocalDate searchSttDate, @Param("searchEndDate") LocalDate searchEndDate);
+    List<Policy> findAllBySearchMonth(@Param("userId") Long userId, @Param("searchSttDate") LocalDate searchSttDate, @Param("searchEndDate") LocalDate searchEndDate);
+
+    @Query("SELECT P FROM Policy P LEFT JOIN P.userPolicies UP " +
+            "WHERE UP.interestFlag = TRUE " +
+            "AND UP.user.userId = :userId " +
+            "AND P.applySttDate = :searchSttDate")
+    List<Policy> findAllBySearchSttDate(@Param("userId") Long userId, @Param("searchSttDate") LocalDate searchSttDate);
+
+    @Query("SELECT P FROM Policy P LEFT JOIN P.userPolicies UP " +
+            "WHERE UP.interestFlag = TRUE " +
+            "AND UP.user.userId = :userId " +
+            "AND P.applyEndDate = :searchEndDate")
+    List<Policy> findAllBySearchEndDate(@Param("userId") Long userId, @Param("searchEndDate") LocalDate searchEndDate);
 
 }

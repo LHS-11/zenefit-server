@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.domain.policy.api;
 
 import com.cmc.zenefitserver.domain.policy.application.PolicyService;
+import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
 import com.cmc.zenefitserver.domain.policy.dto.*;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
@@ -54,9 +55,16 @@ public class PolicyController {
     }
 
     @GetMapping("/calendar")
-    @Operation(summary = "특정 날짜에 따른 관심 정책 조회 API", description = "달력에서 해당 날짜(달)에 신청 시작일 또는 신청 종료일을 가지는 정책을 조회합니다.")
-    public CommonResponse<List<CalendarPolicyListResponseDto>> getPolicesBySearchDate(@AuthUser User user, @RequestParam("searchDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
-        List<CalendarPolicyListResponseDto> result = policyService.getPolicyListBySearchDate(user, searchDate);
+    @Operation(summary = "특정 달에 따른 관심 정책 리스트 조회 API", description = "달력에서 해당 달에 신청 시작일 또는 신청 종료일을 가지는 정책을 조회합니다.")
+    public CommonResponse<List<CalendarPolicyListResponseDto>> getPolicesBySearchMonth(@AuthUser User user, @RequestParam("searchDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        List<CalendarPolicyListResponseDto> result = policyService.getPolicyListBySearchMonth(user, searchDate);
+        return CommonResponse.success(result);
+    }
+
+    @GetMapping("/calendar/date")
+    @Operation(summary = "특정 날짜에 따른 관심 정책 리스트 조회 API", description = "달력에서 해당 날짜에 신청 시작일 또는 신청 종료일을 가지는 정책을 조회합니다.")
+    public CommonResponse<List<CalendarPolicyListResponseDto>> getPolicesBySearchDate(@AuthUser User user, @RequestParam("searchDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate, @RequestParam SearchDateType searchDateType) {
+        List<CalendarPolicyListResponseDto> result = policyService.getPolicyListBySearchDate(user, searchDate, searchDateType);
         return CommonResponse.success(result);
     }
 
