@@ -76,17 +76,17 @@ public class HomeInfoResponseDto {
         @ApiModelProperty(notes = "지원 정책 유형")
         private String supportPolicyTypeName;
 
-        @ApiModelProperty(notes = "지원 마감일")
-        private LocalDate endDate;
+        @ApiModelProperty(notes = "디데이")
+        private long dueDate;
 
         @Builder
-        public HomePolicyInfo(Long policyId, String policyName, String policyLogo, SupportPolicyType supportPolicyType, String supportPolicyTypeName, LocalDate endDate) {
+        public HomePolicyInfo(Long policyId, String policyName, String policyLogo, SupportPolicyType supportPolicyType, String supportPolicyTypeName, long dueDate) {
             this.policyId = policyId;
             this.policyName = policyName;
             this.policyLogo = policyLogo;
             this.supportPolicyType = supportPolicyType;
             this.supportPolicyTypeName = supportPolicyTypeName;
-            this.endDate = endDate;
+            this.dueDate = dueDate;
         }
     }
 }

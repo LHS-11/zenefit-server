@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -161,7 +162,7 @@ public class UserService {
                             .policyLogo(findPolicy.getPolicyLogo())
                             .supportPolicyType(findPolicy.getSupportPolicyType())
                             .supportPolicyTypeName(findPolicy.getSupportPolicyType().getDescription())
-                            .endDate(findPolicy.getApplyEndDate())
+                            .dueDate(ChronoUnit.DAYS.between(currentTime, findPolicy.getApplyEndDate()))
                             .build();
                     return homePolicyInfo;
                 })
