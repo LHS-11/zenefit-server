@@ -49,7 +49,7 @@ public class PolicyQueryRepository {
                 .where(
 //                        getPolicyId(lastPolicyId, pageable),
                         // 조건
-                        policy.supportPolicyType.eq(supportPolicyType)
+                        policy.supportPolicyTypes.contains(supportPolicyType)
                 );
 
         if (PolicyCode.NONE != policyCode) {

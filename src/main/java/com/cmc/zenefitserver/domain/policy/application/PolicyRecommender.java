@@ -34,18 +34,18 @@ public class PolicyRecommender {
 
 
         Policy maxBenefitMoneyPolicy = recommendPolicy.stream()
-                .filter(p -> p.getSupportPolicyType().equals(SupportPolicyType.MONEY))
+                .filter(p -> p.getSupportPolicyTypes().contains((SupportPolicyType.MONEY)))
                 .max(Comparator.comparingInt(Policy::getBenefit))
                 .orElse(null);
 
         Policy maxBenefitLoansPolicy = recommendPolicy.stream()
-                .filter(p -> p.getSupportPolicyType().equals(SupportPolicyType.LOANS))
+                .filter(p -> p.getSupportPolicyTypes().contains(SupportPolicyType.LOANS))
                 .max(Comparator.comparingInt(Policy::getBenefit))
                 .orElse(null);
 
         LocalDate now = LocalDate.now();
         Policy mostImminentEndDateSocialServicePolicy = recommendPolicy.stream()
-                .filter(p -> p.getSupportPolicyType().equals(SupportPolicyType.SOCIAL_SERVICE))
+                .filter(p -> p.getSupportPolicyTypes().contains(SupportPolicyType.SOCIAL_SERVICE))
                 .filter(p -> p.getApplyEndDate().isAfter(now))
                 .min(Comparator.comparing(p -> ChronoUnit.DAYS.between(now, p.getApplyEndDate())))
                 .orElse(null);

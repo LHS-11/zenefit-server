@@ -20,7 +20,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
 
     // jpql
     @Query("SELECT p FROM Policy p " +
-            "WHERE p.supportPolicyType = :policyType " +
+            "WHERE p.supportPolicyTypes in (:policyType) " +
             "AND p.applyEndDate >= :currentDate " +
             "AND NOT EXISTS (SELECT up FROM UserPolicy up WHERE up.policy = p AND up.user.userId = :userId AND up.applyFlag=true) " +
             "ORDER BY p.applyEndDate ASC ")
@@ -29,7 +29,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
     // native query
     @Query(value =
             "SELECT p.* FROM policy p " +
-                    "WHERE p.support_policy_type = :policyType " +
+                    "WHERE p.support_policy_types in (:policyType) " +
                     "AND p.apply_end_date >= :currentDate " +
                     "AND NOT EXISTS (SELECT 1 FROM user_policy up WHERE up.policy_id = p.id AND up.user_id = :userId AND up.apply_flag = true) " +
                     "ORDER BY p.apply_end_date ASC " +
@@ -41,7 +41,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
 
     List<Policy> findAllByApplySttDate(LocalDate sttDate);
 
-    List<Policy> findAllBySupportPolicyType(SupportPolicyType supportPolicyType);
+    List<Policy> findAllBySupportPolicyTypesContains(SupportPolicyType supportPolicyType);
 
     @EntityGraph(attributePaths = {"jobTypes", "educationTypes", "policySplzTypes", "supportPolicyTypes"})
     @Query(value = "SELECT p FROM Policy p " +
@@ -49,7 +49,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
             "AND :age between p.minAge and p.maxAge")
     List<Policy> findByAreaCodeAndCityCodeAndAge(@Param("areaCode") AreaCode areaCode, @Param("central") AreaCode central, @Param("cityCode") CityCode cityCode, @Param("age") int age);
 
-    @Query("SELECT COUNT(p) FROM Policy p WHERE p.supportPolicyType = :supportPolicyType")
+    @Query("SELECT COUNT(p) FROM Policy p WHERE p.supportPolicyTypes in (:supportPolicyType)")
     int getPolicyCntBySupportPolicyType(@Param("supportPolicyType") SupportPolicyType supportPolicyType);
 
     @Query("SELECT P FROM Policy P LEFT JOIN P.userPolicies UP " +

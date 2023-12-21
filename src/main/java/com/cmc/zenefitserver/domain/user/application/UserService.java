@@ -160,8 +160,8 @@ public class UserService {
                             .policyId(findPolicy.getId())
                             .policyName(findPolicy.getPolicyName())
                             .policyLogo(findPolicy.getPolicyLogo())
-                            .supportPolicyType(findPolicy.getSupportPolicyType())
-                            .supportPolicyTypeName(findPolicy.getSupportPolicyType().getDescription())
+                            .supportPolicyType(type)
+                            .supportPolicyTypeName(type.getDescription())
                             .dueDate(ChronoUnit.DAYS.between(currentTime, findPolicy.getApplyEndDate()))
                             .build();
                     return homePolicyInfo;
@@ -221,7 +221,7 @@ public class UserService {
     }
 
     @Transactional
-    public void addPolicyDummy(User user){
+    public void addPolicyDummy(User user) {
         Policy policy = policyRepository.findById(1L).get();
         Policy policy2 = policyRepository.findById(2L).get();
         Policy policy3 = policyRepository.findById(3L).get();
@@ -244,8 +244,8 @@ public class UserService {
         Policy policy19 = policyRepository.findById(19L).get();
         Policy policy20 = policyRepository.findById(20L).get();
 
-        List<Policy> interestPolices = List.of(policy, policy2, policy3, policy4, policy5, policy6, policy7, policy8, policy9 , policy10);
-        List<Policy> appliyPolices = List.of(policy11, policy12, policy13, policy14, policy15, policy16, policy17, policy18, policy19 , policy20);
+        List<Policy> interestPolices = List.of(policy, policy2, policy3, policy4, policy5, policy6, policy7, policy8, policy9, policy10);
+        List<Policy> appliyPolices = List.of(policy11, policy12, policy13, policy14, policy15, policy16, policy17, policy18, policy19, policy20);
 
         for (Policy interestPolicy : interestPolices) {
             UserPolicy userPolicy = UserPolicy.builder()
@@ -270,24 +270,24 @@ public class UserService {
     }
 
     public List<HomeInfoResponseDto.HomePolicyInfo> getRecommendPolicyDummy() {
-        Policy loansPolicy = policyRepository.findAllBySupportPolicyType(SupportPolicyType.LOANS).get(0);
-        Policy moneyPolicy = policyRepository.findAllBySupportPolicyType(SupportPolicyType.MONEY).get(0);
-        Policy socialServicePolicy = policyRepository.findAllBySupportPolicyType(SupportPolicyType.SOCIAL_SERVICE).get(0);
+        Policy loansPolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.LOANS).get(0);
+        Policy moneyPolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.MONEY).get(0);
+        Policy socialServicePolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.SOCIAL_SERVICE).get(0);
 
         List<HomeInfoResponseDto.HomePolicyInfo> result = new ArrayList<>();
-        result.add(get(loansPolicy));
-        result.add(get(moneyPolicy));
-        result.add(get(socialServicePolicy));
+        result.add(get(loansPolicy, SupportPolicyType.LOANS));
+        result.add(get(moneyPolicy, SupportPolicyType.MONEY));
+        result.add(get(socialServicePolicy, SupportPolicyType.SOCIAL_SERVICE));
         return result;
     }
 
-    public HomeInfoResponseDto.HomePolicyInfo get(Policy policy) {
+    public HomeInfoResponseDto.HomePolicyInfo get(Policy policy, SupportPolicyType supportPolicyType) {
         return HomeInfoResponseDto.HomePolicyInfo.builder()
                 .policyId(policy.getId())
                 .policyName(policy.getPolicyName())
                 .policyLogo(policy.getPolicyLogo())
-                .supportPolicyTypeName(policy.getSupportPolicyType().getDescription())
-                .supportPolicyType(policy.getSupportPolicyType())
+                .supportPolicyTypeName(supportPolicyType.getDescription())
+                .supportPolicyType(supportPolicyType)
                 .build();
     }
 }

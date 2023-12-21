@@ -31,21 +31,13 @@ public class ApplyPolicyListResponseDto {
     @ApiModelProperty(notes = "정책 수혜 금액", example = "1000000")
     private int benefit;
 
-    @ApiModelProperty(notes = "정책 지원 유형", example = "SOCAIL_SERVICE")
-    private SupportPolicyType supportPolicyType;
-
-    @ApiModelProperty(notes = "정책 지원 유형 이름", example = "사회복지")
-    private String supportPolicyTypeDescription;
-
     @Builder
-    public ApplyPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, String policyLogo, int benefit, SupportPolicyType supportPolicyType, String supportPolicyTypeDescription) {
+    public ApplyPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, String policyLogo, int benefit) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
         this.policyLogo = policyLogo;
         this.benefit = benefit;
-        this.supportPolicyType = supportPolicyType;
-        this.supportPolicyTypeDescription = supportPolicyTypeDescription;
     }
 
     public static ApplyPolicyListResponseDto of(Policy policy) {
@@ -55,8 +47,6 @@ public class ApplyPolicyListResponseDto {
                 .policyLogo(policy.getPolicyLogo())
                 .policyIntroduction(policy.getPolicyIntroduction())
                 .benefit(policy.getBenefit())
-                .supportPolicyType(policy.getSupportPolicyType())
-                .supportPolicyTypeDescription(policy.getSupportPolicyType().getDescription())
                 .build();
     }
 }

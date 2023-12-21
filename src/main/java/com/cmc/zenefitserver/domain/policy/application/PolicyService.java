@@ -197,15 +197,15 @@ public class PolicyService {
     }
 
     public RecommendPolicyInfoResponseDto getRecommendPolicyDummy() {
-        Policy loansPolicy = policyRepository.findAllBySupportPolicyType(SupportPolicyType.LOANS).get(0);
-        Policy moneyPolicy = policyRepository.findAllBySupportPolicyType(SupportPolicyType.MONEY).get(0);
-        Policy socialServicePolicy = policyRepository.findAllBySupportPolicyType(SupportPolicyType.SOCIAL_SERVICE).get(0);
+        Policy loansPolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.LOANS).get(0);
+        Policy moneyPolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.MONEY).get(0);
+        Policy socialServicePolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.SOCIAL_SERVICE).get(0);
 
         List<RecommendPolicyInfoResponseDto.recommendPolicyInfo> result = new ArrayList<>();
         result.add(
                 RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
-                        .supportTypeDescription(loansPolicy.getSupportPolicyType().getDescription())
-                        .supportType(loansPolicy.getSupportPolicyType())
+                        .supportTypeDescription(SupportPolicyType.LOANS.getDescription())
+                        .supportType(SupportPolicyType.LOANS)
                         .policyId(loansPolicy.getId())
                         .policyName(loansPolicy.getPolicyName())
                         .policyLogo(loansPolicy.getPolicyLogo())
@@ -219,8 +219,8 @@ public class PolicyService {
         );
         result.add(
                 RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
-                        .supportType(moneyPolicy.getSupportPolicyType())
-                        .supportTypeDescription(moneyPolicy.getSupportPolicyType().getDescription())
+                        .supportType(SupportPolicyType.MONEY)
+                        .supportTypeDescription(SupportPolicyType.MONEY.getDescription())
                         .policyId(moneyPolicy.getId())
                         .policyName(moneyPolicy.getPolicyName())
                         .policyLogo(moneyPolicy.getPolicyLogo())
@@ -234,8 +234,8 @@ public class PolicyService {
         );
         result.add(
                 RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
-                        .supportType(socialServicePolicy.getSupportPolicyType())
-                        .supportTypeDescription(socialServicePolicy.getSupportPolicyType().getDescription())
+                        .supportType(SupportPolicyType.SOCIAL_SERVICE)
+                        .supportTypeDescription(SupportPolicyType.SOCIAL_SERVICE.getDescription())
                         .policyId(socialServicePolicy.getId())
                         .policyName(socialServicePolicy.getPolicyName())
                         .policyLogo(socialServicePolicy.getPolicyLogo())

@@ -110,9 +110,6 @@ public class Policy extends BaseEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private PolicyCode policyCode; // 정책 유형
 
-    @Enumerated(EnumType.STRING)
-    private SupportPolicyType supportPolicyType; // 지원 정책 유형
-
     @Column(columnDefinition = "TEXT")
     private String policyLogo; // 정책 로고
 
@@ -166,8 +163,8 @@ public class Policy extends BaseEntity implements Serializable {
         this.policyLogo = imageUrl;
     }
 
-    public void updateSupportType(SupportPolicyType supportPolicyType) {
-        this.supportPolicyType = supportPolicyType;
+    public void updateSupportTypes(Set<SupportPolicyType> supportPolicyTypes) {
+        this.supportPolicyTypes.addAll(supportPolicyTypes);
     }
 
     public void updateRemark(String remark) {
@@ -188,7 +185,7 @@ public class Policy extends BaseEntity implements Serializable {
     }
 
     @Builder
-    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, AreaCode areaCode, CityCode cityCode, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, SupportPolicyType supportPolicyType, String policyLogo, String policyApplyDenialReason, String applyStatus, LocalDate applySttDate, LocalDate applyEndDate, Set<UserPolicy> userPolicies, int benefit, String remark, List<ApplyPeriod> applyPeriods, PolicyDateType policyDateType) {
+    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, AreaCode areaCode, CityCode cityCode, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, String policyLogo, String policyApplyDenialReason, String applyStatus, LocalDate applySttDate, LocalDate applyEndDate, Set<UserPolicy> userPolicies, int benefit, String remark, List<ApplyPeriod> applyPeriods, PolicyDateType policyDateType) {
         this.bizId = bizId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
@@ -213,7 +210,6 @@ public class Policy extends BaseEntity implements Serializable {
         this.areaCode = areaCode;
         this.cityCode = cityCode;
         this.policyCode = policyCode;
-        this.supportPolicyType = supportPolicyType;
         this.policyLogo = policyLogo;
         this.policyApplyDenialReason = policyApplyDenialReason;
         this.applyStatus = applyStatus;
@@ -225,6 +221,5 @@ public class Policy extends BaseEntity implements Serializable {
         this.applyPeriods = applyPeriods;
         this.policyDateType = policyDateType;
     }
-
 
 }
