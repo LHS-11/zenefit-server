@@ -1,6 +1,6 @@
 package com.cmc.zenefitserver.domain.policy.dto;
 
-import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyDateType;
+import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyMethodType;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -62,8 +62,14 @@ public class RecommendPolicyInfoResponseDto {
         @ApiModelProperty(notes = "정책 기간 타입", example = "1560000")
         private String policyDateType;
 
+        @ApiModelProperty(notes = "정책 신청 방법", example = "LETTER, ONLINE, VISIT 등")
+        private PolicyMethodType policyMethodType;
+
+        @ApiModelProperty(notes = "정책 신청 방법 설명", example = "우편신청, 방문신청, 온라인신청 등")
+        private String policyMethodTypeDescription;
+
         @Builder
-        public recommendPolicyInfo(SupportPolicyType supportType, String supportTypeDescription, Long policyId, String policyName, String policyLogo, String policyAreaCode, String policyCityCode, String policyIntroduction, int supportTypePolicyCnt, int benefit, String policyDateType) {
+        public recommendPolicyInfo(SupportPolicyType supportType, String supportTypeDescription, Long policyId, String policyName, String policyLogo, String policyAreaCode, String policyCityCode, String policyIntroduction, int supportTypePolicyCnt, int benefit, String policyDateType, PolicyMethodType policyMethodType, String policyMethodTypeDescription) {
             this.supportType = supportType;
             this.supportTypeDescription = supportTypeDescription;
             this.policyId = policyId;
@@ -75,6 +81,8 @@ public class RecommendPolicyInfoResponseDto {
             this.supportTypePolicyCnt = supportTypePolicyCnt;
             this.benefit = benefit;
             this.policyDateType = policyDateType;
+            this.policyMethodType = policyMethodType;
+            this.policyMethodTypeDescription = policyMethodTypeDescription;
         }
 
         public void upgradeCityCode(String name) {

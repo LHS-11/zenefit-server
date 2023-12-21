@@ -4,6 +4,7 @@ import com.cmc.zenefitserver.domain.policy.dao.PolicyQueryRepository;
 import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.DenialReasonType;
+import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyMethodType;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import com.cmc.zenefitserver.domain.policy.dto.*;
@@ -41,6 +42,7 @@ public class PolicyService {
                     dto.updatePolicyDateTypeDescription(dto.getPolicyDateType());
                     dto.updateAreaCode(dto.getAreaCode());
                     dto.updateCityCode(dto.getCityCode());
+                    dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
                     return dto;
                 });
     }
@@ -54,6 +56,7 @@ public class PolicyService {
                     dto.updatePolicyDateTypeDescription(dto.getPolicyDateType());
                     dto.updateAreaCode(dto.getAreaCode());
                     dto.updateCityCode(dto.getCityCode());
+                    dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
                     return dto;
                 });
     }
@@ -64,6 +67,7 @@ public class PolicyService {
 
         // 신청 불가 사유 로직
         String denialReason = "null";
+        PolicyMethodType findPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(policy.getApplicationProcedureContent());
 
         PolicyInfoResponseDto dto = PolicyInfoResponseDto.builder()
                 .policyId(policy.getId())
@@ -78,6 +82,8 @@ public class PolicyService {
                 .applicationSite(policy.getApplicationSiteAddress())
                 .referenceSite(policy.getReferenceSiteUrlAddress())
                 .benefit(policy.getBenefit())
+                .policyMethodType(findPolicyMethodType)
+                .policyMethodTypeDescription(findPolicyMethodType.getDescription())
                 .build();
 
         return dto;
@@ -153,6 +159,8 @@ public class PolicyService {
                 .stream()
                 .map(supportPolicyType -> {
                     Policy policy = supportPolicyTypePolicyMap.get(supportPolicyType);
+                    PolicyMethodType findPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(policy.getApplicationProcedureContent());
+
                     RecommendPolicyInfoResponseDto.recommendPolicyInfo dto = RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
                             .policyId(policy.getId())
                             .policyName(policy.getPolicyName())
@@ -163,6 +171,8 @@ public class PolicyService {
                             .supportTypePolicyCnt(policyRepository.getPolicyCntBySupportPolicyType(supportPolicyType))
                             .benefit(10000000)
                             .policyDateType(policy.getPolicyDateType().getDescription())
+                            .policyMethodType(findPolicyMethodType)
+                            .policyMethodTypeDescription(findPolicyMethodType.getDescription())
                             .build();
                     return dto;
                 }).collect(Collectors.toList());
@@ -201,6 +211,10 @@ public class PolicyService {
         Policy moneyPolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.MONEY).get(0);
         Policy socialServicePolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.SOCIAL_SERVICE).get(0);
 
+        PolicyMethodType loansPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(loansPolicy.getApplicationProcedureContent());
+        PolicyMethodType moneyPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(moneyPolicy.getApplicationProcedureContent());
+        PolicyMethodType socialServicePolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(socialServicePolicy.getApplicationProcedureContent());
+
         List<RecommendPolicyInfoResponseDto.recommendPolicyInfo> result = new ArrayList<>();
         result.add(
                 RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
@@ -215,6 +229,8 @@ public class PolicyService {
                         .supportTypePolicyCnt(policyRepository.getPolicyCntBySupportPolicyType(SupportPolicyType.LOANS))
                         .benefit(10000000)
                         .policyDateType("기간 신청")
+                        .policyMethodType(loansPolicyMethodType)
+                        .policyMethodTypeDescription(loansPolicyMethodType.getDescription())
                         .build()
         );
         result.add(
@@ -230,6 +246,8 @@ public class PolicyService {
                         .supportTypePolicyCnt(policyRepository.getPolicyCntBySupportPolicyType(SupportPolicyType.MONEY))
                         .benefit(10000000)
                         .policyDateType("상시")
+                        .policyMethodType(moneyPolicyMethodType)
+                        .policyMethodTypeDescription(moneyPolicyMethodType.getDescription())
                         .build()
         );
         result.add(
@@ -245,6 +263,8 @@ public class PolicyService {
                         .supportTypePolicyCnt(policyRepository.getPolicyCntBySupportPolicyType(SupportPolicyType.SOCIAL_SERVICE))
                         .benefit(10000000)
                         .policyDateType("미정")
+                        .policyMethodType(socialServicePolicyMethodType)
+                        .policyMethodTypeDescription(socialServicePolicyMethodType.getDescription())
                         .build()
         );
         return RecommendPolicyInfoResponseDto.builder().policyInfos(result).build();

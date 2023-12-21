@@ -40,7 +40,8 @@ public class PolicyQueryRepository {
                                 policy.policyDateType,
                                 policy.benefit,
                                 ExpressionUtils.as(Expressions.constant(false), "applyFlag"),
-                                ExpressionUtils.as(Expressions.constant(false), "interestFlag")
+                                ExpressionUtils.as(Expressions.constant(false), "interestFlag"),
+                                policy.applicationProcedureContent.as("policyMethodTypeDescription")
                         )
                 )
                 .from(policy)

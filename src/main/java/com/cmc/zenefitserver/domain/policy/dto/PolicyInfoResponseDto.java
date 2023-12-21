@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.domain.policy.dto;
 
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyDateType;
+import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyMethodType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -50,8 +51,14 @@ public class PolicyInfoResponseDto {
     @ApiModelProperty(notes = "정책 수혜금액",example = "존재하면 숫자값, 없으면 null값")
     private int benefit;
 
+    @ApiModelProperty(notes = "정책 신청 방법", example = "LETTER, ONLINE, VISIT 등")
+    private PolicyMethodType policyMethodType;
+
+    @ApiModelProperty(notes = "정책 신청 방법 설명", example = "우편신청, 방문신청, 온라인신청 등")
+    private String policyMethodTypeDescription;
+
     @Builder
-    public PolicyInfoResponseDto(Long policyId, String policyName, String policyApplyDenialReason, String policyIntroduction, String policyApplyDocument, String policyApplyMethod, String policyApplyDate, PolicyDateType policyDateType, String policyDateTypeDescription, String applicationSite, String referenceSite, int benefit) {
+    public PolicyInfoResponseDto(Long policyId, String policyName, String policyApplyDenialReason, String policyIntroduction, String policyApplyDocument, String policyApplyMethod, String policyApplyDate, PolicyDateType policyDateType, String policyDateTypeDescription, String applicationSite, String referenceSite, int benefit, PolicyMethodType policyMethodType, String policyMethodTypeDescription) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyApplyDenialReason = policyApplyDenialReason;
@@ -64,5 +71,7 @@ public class PolicyInfoResponseDto {
         this.applicationSite = applicationSite;
         this.referenceSite = referenceSite;
         this.benefit = benefit;
+        this.policyMethodType = policyMethodType;
+        this.policyMethodTypeDescription = policyMethodTypeDescription;
     }
 }

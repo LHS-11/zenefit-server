@@ -1,9 +1,6 @@
 package com.cmc.zenefitserver.domain.policy.dto;
 
-import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
-import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
-import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyDateType;
-import com.cmc.zenefitserver.domain.policy.domain.enums.PolicySplzType;
+import com.cmc.zenefitserver.domain.policy.domain.enums.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -56,6 +53,12 @@ public class PolicyListResponseDto {
     @ApiModelProperty(notes = "관심 정책 여부")
     private boolean interestFlag;
 
+    @ApiModelProperty(notes = "정책 신청 방법", example = "LETTER, ONLINE, VISIT 등")
+    private PolicyMethodType policyMethodType;
+
+    @ApiModelProperty(notes = "정책 신청 방법 설명", example = "우편신청, 방문신청, 온라인신청 등")
+    private String policyMethodTypeDescription;
+
     public void updateAreaCode(String areaCode) {
         this.areaCode = AreaCode.findName(areaCode);
     }
@@ -64,8 +67,8 @@ public class PolicyListResponseDto {
         this.cityCode = CityCode.findName(cityCode);
     }
 
-    public void updatePolicyDateTypeDescription(PolicyDateType policyDateType){
-        if(policyDateType != null){
+    public void updatePolicyDateTypeDescription(PolicyDateType policyDateType) {
+        if (policyDateType != null) {
             this.policyDateTypeDescription = policyDateType.getDescription();
         }
     }
@@ -80,7 +83,7 @@ public class PolicyListResponseDto {
     }
 
     @Builder
-    public PolicyListResponseDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, String policyDateTypeDescription, String policyApplyDenialReason, boolean applyStatus, int benefit, boolean applyFlag, boolean interestFlag) {
+    public PolicyListResponseDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, String policyDateTypeDescription, String policyApplyDenialReason, boolean applyStatus, int benefit, boolean applyFlag, boolean interestFlag, PolicyMethodType policyMethodType, String policyMethodTypeDescription) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyLogo = policyLogo;
@@ -94,9 +97,11 @@ public class PolicyListResponseDto {
         this.benefit = benefit;
         this.applyFlag = applyFlag;
         this.interestFlag = interestFlag;
+        this.policyMethodType = policyMethodType;
+        this.policyMethodTypeDescription = policyMethodTypeDescription;
     }
 
-    public PolicyListResponseDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, int benefit, boolean applyFlag, boolean interestFlag) {
+    public PolicyListResponseDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, int benefit, boolean applyFlag, boolean interestFlag, String policyMethodTypeDescription) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyLogo = policyLogo;
@@ -107,7 +112,27 @@ public class PolicyListResponseDto {
         this.benefit = benefit;
         this.applyFlag = applyFlag;
         this.interestFlag = interestFlag;
+        this.policyMethodTypeDescription = policyMethodTypeDescription;
     }
+
+    public void updatePolicyMethodType(String applicationProcedureContent) {
+        PolicyMethodType findPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(applicationProcedureContent);
+        this.policyMethodType = findPolicyMethodType;
+        this.policyMethodTypeDescription = findPolicyMethodType.getDescription();
+    }
+
+//    public PolicyListResponseDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, int benefit, boolean applyFlag, boolean interestFlag) {
+//        this.policyId = policyId;
+//        this.policyName = policyName;
+//        this.policyLogo = policyLogo;
+//        this.policyIntroduction = policyIntroduction;
+//        this.areaCode = areaCode;
+//        this.cityCode = cityCode;
+//        this.policyDateType = policyDateType;
+//        this.benefit = benefit;
+//        this.applyFlag = applyFlag;
+//        this.interestFlag = interestFlag;
+//    }
 
     @Builder
     @NoArgsConstructor
