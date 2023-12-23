@@ -20,7 +20,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
 
     // jpql
     @Query("SELECT p FROM Policy p " +
-            "WHERE p.supportPolicyTypes in (:policyType) " +
+            "WHERE (:policyType) MEMBER OF p.supportPolicyTypes  " +
             "AND p.applyEndDate >= :currentDate " +
             "AND NOT EXISTS (SELECT up FROM UserPolicy up WHERE up.policy = p AND up.user.userId = :userId AND up.applyFlag=true) " +
             "ORDER BY p.applyEndDate ASC ")
