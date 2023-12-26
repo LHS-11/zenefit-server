@@ -11,6 +11,7 @@ import com.cmc.zenefitserver.domain.policy.dto.*;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.dto.HomeInfoResponseDto;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
+import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -66,15 +67,18 @@ public class PolicyService {
         Policy policy = policyRepository.findById(policyId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_POLICY));
 
+        UserPolicy userPolicy = userPolicyRepository.findByUser_userIdAndPolicy_Id(user.getUserId(), policyId)
+                .orElseGet(null);
+
         // 신청 불가 사유 로직
-        String denialReason = "null";
         PolicyMethodType findPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(policy.getApplicationProcedureContent());
+        DenialReasonType denialReasonType = PolicyDenialReasonClassifier.getDenialReasonType(user, policy);
 
         PolicyInfoResponseDto dto = PolicyInfoResponseDto.builder()
                 .policyId(policy.getId())
                 .policyName(policy.getPolicyName())
                 .policyIntroduction(policy.getPolicyIntroduction())
-                .policyApplyDenialReason(PolicyDenialReasonClassifier.getDenialReasonType(user, policy).getText())
+                .policyApplyDenialReason(denialReasonType != null ? denialReasonType.getText() : null)
                 .policyApplyDocument(policy.getSubmissionDocumentContent())
                 .policyApplyMethod(policy.getApplicationProcedureContent())
                 .policyApplyDate(policy.getApplicationPeriodContent())
@@ -83,6 +87,8 @@ public class PolicyService {
                 .applicationSite(policy.getApplicationSiteAddress())
                 .referenceSite(policy.getReferenceSiteUrlAddress())
                 .benefit(policy.getBenefit())
+                .applyFlag(userPolicy.isApplyFlag())
+                .interestFlag(userPolicy.isInterestFlag())
                 .policyMethodType(findPolicyMethodType)
                 .policyMethodTypeDescription(findPolicyMethodType.getDescription())
                 .build();
