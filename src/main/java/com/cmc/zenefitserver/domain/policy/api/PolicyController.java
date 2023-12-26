@@ -29,7 +29,7 @@ public class PolicyController {
     private final PolicyService policyService;
 
     // 정책 리스트 조회 API
-    @GetMapping
+    @PostMapping
     @Operation(summary = "정책 목록 조회 API", description = "정책 목록을 무한 스크롤해서 보여줍니다.")
     public CommonResponse<Page<PolicyListResponseDto>> getPolices(@AuthUser User user, @RequestBody PolicyListRequestDto policyListRequestDto, @RequestParam int page, @RequestParam int size, @RequestParam String sortField,
                                                                   @RequestParam String sortOrder) {
@@ -38,7 +38,7 @@ public class PolicyController {
     }
 
     // 정책 검색 API
-    @GetMapping("/search")
+    @PostMapping("/search")
     @Operation(summary = "정책 검색 API", description = "키워드를 사용하여 해당하는 정책 목록을 무한 스크롤해서 보여줍니다.")
     public CommonResponse<Slice<PolicyListResponseDto>> getSearchPolices(@AuthUser User user, @RequestBody SearchPolicyListRequestDto policyListRequestDto, @RequestParam int page, @RequestParam int size, @RequestParam String sortField,
                                                                          @RequestParam String sortOrder) {
@@ -63,7 +63,7 @@ public class PolicyController {
 
     @GetMapping("/calendar/date")
     @Operation(summary = "특정 날짜에 따른 관심 정책 리스트 조회 API", description = "달력에서 해당 날짜에 신청 시작일 또는 신청 종료일을 가지는 정책을 조회합니다.")
-    public CommonResponse<List<CalendarPolicyListResponseDto>> getPolicesBySearchDate(@AuthUser User user, @RequestParam("searchDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate, @RequestParam SearchDateType searchDateType) {
+    public CommonResponse<List<CalendarPolicyListResponseDto>> getPolicesBySearchDate(@AuthUser User user, @RequestParam("searchDate") @DateTimeFormat(pattern = "yyyy-MM") LocalDate searchDate, @RequestParam SearchDateType searchDateType) {
         List<CalendarPolicyListResponseDto> result = policyService.getPolicyListBySearchDate(user, searchDate, searchDateType);
         return CommonResponse.success(result);
     }
