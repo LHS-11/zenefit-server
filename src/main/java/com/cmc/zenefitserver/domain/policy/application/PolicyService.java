@@ -38,7 +38,8 @@ public class PolicyService {
         return policyQueryRepository.searchByPaging(user, policyListRequestDto.getSupportPolicyType(), policyListRequestDto.getPolicyType(), null, pageable)
                 .map(dto -> {
                     Policy findPolicy = policyRepository.findById(dto.getPolicyId()).get();
-                    dto.updatePolicyApplyDenialReason(PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy).getText());
+                    DenialReasonType denialReasonType = PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy);
+                    dto.updatePolicyApplyDenialReason(denialReasonType != null ? denialReasonType.getText() : null);
                     dto.updatePolicyDateTypeDescription(dto.getPolicyDateType());
                     dto.updateAreaCode(dto.getAreaCode());
                     dto.updateCityCode(dto.getCityCode());
