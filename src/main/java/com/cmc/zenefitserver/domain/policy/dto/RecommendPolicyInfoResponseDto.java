@@ -56,6 +56,12 @@ public class RecommendPolicyInfoResponseDto {
         @ApiModelProperty(notes = "지원 정책 별 정책 수", example = "24")
         private int supportTypePolicyCnt;
 
+        @ApiModelProperty(notes = "수혜(신청) 정책 여부")
+        private boolean applyFlag;
+
+        @ApiModelProperty(notes = "관심 정책 여부")
+        private boolean interestFlag;
+
         @ApiModelProperty(notes = "정책 수혜금액", example = "1560000")
         private int benefit;
 
@@ -69,7 +75,7 @@ public class RecommendPolicyInfoResponseDto {
         private String policyMethodTypeDescription;
 
         @Builder
-        public recommendPolicyInfo(SupportPolicyType supportType, String supportTypeDescription, Long policyId, String policyName, String policyLogo, String policyAreaCode, String policyCityCode, String policyIntroduction, int supportTypePolicyCnt, int benefit, String policyDateType, PolicyMethodType policyMethodType, String policyMethodTypeDescription) {
+        public recommendPolicyInfo(SupportPolicyType supportType, String supportTypeDescription, Long policyId, String policyName, String policyLogo, String policyAreaCode, String policyCityCode, String policyIntroduction, int supportTypePolicyCnt, boolean applyFlag, boolean interestFlag, int benefit, String policyDateType, PolicyMethodType policyMethodType, String policyMethodTypeDescription) {
             this.supportType = supportType;
             this.supportTypeDescription = supportTypeDescription;
             this.policyId = policyId;
@@ -79,6 +85,8 @@ public class RecommendPolicyInfoResponseDto {
             this.policyCityCode = policyCityCode;
             this.policyIntroduction = policyIntroduction;
             this.supportTypePolicyCnt = supportTypePolicyCnt;
+            this.applyFlag = applyFlag;
+            this.interestFlag = interestFlag;
             this.benefit = benefit;
             this.policyDateType = policyDateType;
             this.policyMethodType = policyMethodType;

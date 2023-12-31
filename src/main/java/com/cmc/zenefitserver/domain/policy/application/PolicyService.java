@@ -167,6 +167,8 @@ public class PolicyService {
                 .map(supportPolicyType -> {
                     Policy policy = supportPolicyTypePolicyMap.get(supportPolicyType);
                     PolicyMethodType findPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(policy.getApplicationProcedureContent());
+                    UserPolicy userPolicy = userPolicyRepository.findByUser_userIdAndPolicy_Id(user.getUserId(), policy.getId())
+                            .orElseGet(null);
 
                     RecommendPolicyInfoResponseDto.recommendPolicyInfo dto = RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
                             .policyId(policy.getId())
@@ -177,6 +179,8 @@ public class PolicyService {
                             .policyIntroduction(policy.getPolicyIntroduction())
                             .supportTypePolicyCnt(policyRepository.getPolicyCntBySupportPolicyType(supportPolicyType))
                             .benefit(10000000)
+                            .applyFlag(userPolicy.isApplyFlag())
+                            .interestFlag(userPolicy.isInterestFlag())
                             .policyDateType(policy.getPolicyDateType().getDescription())
                             .policyMethodType(findPolicyMethodType)
                             .policyMethodTypeDescription(findPolicyMethodType.getDescription())
@@ -235,6 +239,8 @@ public class PolicyService {
                         .policyIntroduction(loansPolicy.getPolicyIntroduction())
                         .supportTypePolicyCnt(policyRepository.getPolicyCntBySupportPolicyType(SupportPolicyType.LOANS))
                         .benefit(10000000)
+                        .applyFlag(false)
+                        .interestFlag(false)
                         .policyDateType("기간 신청")
                         .policyMethodType(loansPolicyMethodType)
                         .policyMethodTypeDescription(loansPolicyMethodType.getDescription())
@@ -252,6 +258,8 @@ public class PolicyService {
                         .policyIntroduction(moneyPolicy.getPolicyIntroduction())
                         .supportTypePolicyCnt(policyRepository.getPolicyCntBySupportPolicyType(SupportPolicyType.MONEY))
                         .benefit(10000000)
+                        .applyFlag(true)
+                        .interestFlag(false)
                         .policyDateType("상시")
                         .policyMethodType(moneyPolicyMethodType)
                         .policyMethodTypeDescription(moneyPolicyMethodType.getDescription())
@@ -269,6 +277,8 @@ public class PolicyService {
                         .policyIntroduction(socialServicePolicy.getPolicyIntroduction())
                         .supportTypePolicyCnt(policyRepository.getPolicyCntBySupportPolicyType(SupportPolicyType.SOCIAL_SERVICE))
                         .benefit(10000000)
+                        .applyFlag(true)
+                        .interestFlag(true)
                         .policyDateType("미정")
                         .policyMethodType(socialServicePolicyMethodType)
                         .policyMethodTypeDescription(socialServicePolicyMethodType.getDescription())
