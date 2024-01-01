@@ -4,17 +4,19 @@ import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.global.infra.notification.dto.NotificationListInfoResponseDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static com.cmc.zenefitserver.domain.policy.domain.QPolicy.policy;
-import static com.cmc.zenefitserver.domain.userpolicy.domain.QUserPolicy.userPolicy;
 import static com.cmc.zenefitserver.global.infra.notification.domain.QNotification.notification;
 
 @RequiredArgsConstructor
@@ -23,8 +25,8 @@ public class NotificationQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public Slice<NotificationListInfoResponseDto> searchNotificationBySlice(User user, Long lastNotificationId, Pageable pageable) {
-        List<NotificationListInfoResponseDto> results = jpaQueryFactory.select(
+    public Page<NotificationListInfoResponseDto> searchNotificationBySlice(User user, Pageable pageable) {
+        JPAQuery<NotificationListInfoResponseDto> query = jpaQueryFactory.select(
                         Projections.constructor(NotificationListInfoResponseDto.class,
                                 notification.id,
                                 notification.title,
@@ -34,14 +36,16 @@ public class NotificationQueryRepository {
                 )
                 .from(notification)
                 .where(
-                        ltNotificationId(lastNotificationId),
-                        userPolicy.user.userId.eq(user.getUserId())
-                )
-                .orderBy(userPolicy.policy.id.desc())
+                        notification.user.userId.eq(user.getUserId())
+                );
+
+        List<NotificationListInfoResponseDto> results = query.orderBy(notification.createdDate.desc())
+                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
 
-        return checkLastPage(pageable, results);
+//        return checkLastPage(pageable, results);
+        return PageableExecutionUtils.getPage(results, pageable, query::fetchCount);
     }
 
     private BooleanExpression ltNotificationId(Long policyId) {
