@@ -39,8 +39,16 @@ public class PolicyQueryRepository {
                                 policy.cityCode.stringValue(),
                                 policy.policyDateType,
                                 policy.benefit,
-                                ExpressionUtils.as(Expressions.constant(false), "applyFlag"),
-                                ExpressionUtils.as(Expressions.constant(false), "interestFlag"),
+                                Expressions.cases()
+                                        .when(userPolicy.applyFlag.isNull())
+                                        .then(false)
+                                        .otherwise(userPolicy.applyFlag)
+                                        .as("applyFlag"),
+                                Expressions.cases()
+                                        .when(userPolicy.interestFlag.isNull())
+                                        .then(false)
+                                        .otherwise(userPolicy.interestFlag)
+                                        .as("interestFlag"),
                                 policy.applicationProcedureContent.as("policyMethodTypeDescription")
                         )
                 )
