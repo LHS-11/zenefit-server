@@ -27,10 +27,6 @@ import java.util.List;
 public class PolicyController {
 
     private final PolicyService policyService;
-//    private final PolicyLogoClassifier policyLogoClassifier;
-//    private final PolicySupportContentClassifier supportContentClassifier;
-//    private final PolicyMethodClassifier policyMethodClassifier;
-//    private final PolicyBenefitClassifier policyBenefitClassifier;
 
     // 정책 리스트 조회 API
     @PostMapping
@@ -86,47 +82,4 @@ public class PolicyController {
         return CommonResponse.success(result);
     }
 
-    @GetMapping("/test")
-    public void go() {
-
-        policyLogoClassifier.saveLogo();
-//        try {
-//            policyDateClassifier.go();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-
-    }
-
-    @GetMapping("/test1")
-    public void go1() {
-        supportContentClassifier.getSupportContent();
-//        System.setProperty("python.import.site", "false");
-//        pythonInterpreter = new PythonInterpreter();
-//        pythonInterpreter.execfile("/Users/supsup/Downloads/1. content/predict_content2.py");
-//        pythonInterpreter.exec("print(predict_content)");
-//        PyFunction pyFunction = pythonInterpreter.get("predict_content", PyFunction.class);
-//        PyObject pyObject = pyFunction.__call__(new PyString("전문강사 1:1 컨설팅\n" +
-//                "AI/VR 체험권\n" +
-//                "이미지메이킹\n" +
-//                "(퍼스널컬러진단)\n" +
-//                "면접정장대여"));
-//        System.out.println("pyObject = " + pyObject.toString());
-    }
-
-    @GetMapping("/test2")
-    public void go2() {
-        policyMethodClassifier.classify();
-//        System.setProperty("python.import.site", "false");
-//        pythonInterpreter = new PythonInterpreter();
-//        pythonInterpreter.execfile("/Users/supsup/Downloads/1. content/predict_content2.py");
-//        pythonInterpreter.exec("print(predict_content)");
-//        PyFunction pyFunction = pythonInterpreter.get("predict_content", PyFunction.class);
-//        PyObject pyObject = pyFunction.__call__(new PyString("전문강사 1:1 컨설팅\n" +
-//                "AI/VR 체험권\n" +
-//                "이미지메이킹\n" +
-//                "(퍼스널컬러진단)\n" +
-//                "면접정장대여"));
-//        System.out.println("pyObject = " + pyObject.toString());
-    }
 }
