@@ -68,7 +68,7 @@ public class PolicyService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_POLICY));
 
         UserPolicy userPolicy = userPolicyRepository.findByUser_userIdAndPolicy_Id(user.getUserId(), policyId)
-                .orElseGet(null);
+                .orElseGet(() -> null);
 
         // 신청 불가 사유 로직
         PolicyMethodType findPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(policy.getApplicationProcedureContent());
@@ -87,8 +87,8 @@ public class PolicyService {
                 .applicationSite(policy.getApplicationSiteAddress())
                 .referenceSite(policy.getReferenceSiteUrlAddress())
                 .benefit(policy.getBenefit())
-                .applyFlag(userPolicy.isApplyFlag())
-                .interestFlag(userPolicy.isInterestFlag())
+                .applyFlag(userPolicy == null ? false : userPolicy.isApplyFlag())
+                .interestFlag(userPolicy == null ? false : userPolicy.isInterestFlag())
                 .policyMethodType(findPolicyMethodType)
                 .policyMethodTypeDescription(findPolicyMethodType.getDescription())
                 .build();
