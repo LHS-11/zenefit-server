@@ -49,11 +49,11 @@ public class UserPolicyService {
         UserPolicy findUserPolicy = userPolicyRepository.findByUser_userIdAndPolicy_Id(findUser.getUserId(), findPolicy.getId())
                 .orElse(null);
 
-        if (findUserPolicy.isInterestFlag()) {
+        if (findUserPolicy != null && findUserPolicy.isInterestFlag()) {
             throw new BusinessException(ErrorCode.ALREADY_EXISTS_INTEREST_USER_POLICY);
         }
 
-        if (findUserPolicy != null && findUserPolicy == null) {
+        if (findUserPolicy == null) {
             findUserPolicy = UserPolicy.builder()
                     .user(findUser)
                     .policy(findPolicy)
