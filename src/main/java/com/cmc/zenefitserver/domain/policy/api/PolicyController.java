@@ -30,9 +30,10 @@ import java.util.List;
 public class PolicyController {
 
     private final PolicyService policyService;
-    private final PolicyLogoClassifier policyLogoClassifier;
-    private final PolicySupportContentClassifier supportContentClassifier;
-    private final PolicyMethodClassifier policyMethodClassifier;
+//    private final PolicyLogoClassifier policyLogoClassifier;
+//    private final PolicySupportContentClassifier supportContentClassifier;
+//    private final PolicyMethodClassifier policyMethodClassifier;
+//    private final PolicyBenefitClassifier policyBenefitClassifier;
 
     // 정책 리스트 조회 API
     @PostMapping
