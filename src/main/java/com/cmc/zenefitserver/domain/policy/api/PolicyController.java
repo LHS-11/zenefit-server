@@ -1,9 +1,6 @@
 package com.cmc.zenefitserver.domain.policy.api;
 
-import com.cmc.zenefitserver.domain.policy.application.PolicyLogoClassifier;
-import com.cmc.zenefitserver.domain.policy.application.PolicyMethodClassifier;
 import com.cmc.zenefitserver.domain.policy.application.PolicyService;
-import com.cmc.zenefitserver.domain.policy.application.PolicySupportContentClassifier;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
 import com.cmc.zenefitserver.domain.policy.dto.*;
 import com.cmc.zenefitserver.domain.user.domain.User;
