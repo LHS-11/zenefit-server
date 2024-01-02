@@ -53,7 +53,7 @@ public class UserPolicyService {
             throw new BusinessException(ErrorCode.ALREADY_EXISTS_INTEREST_USER_POLICY);
         }
 
-        if (findUserPolicy == null) {
+        if (findUserPolicy != null && findUserPolicy == null) {
             findUserPolicy = UserPolicy.builder()
                     .user(findUser)
                     .policy(findPolicy)
@@ -78,7 +78,7 @@ public class UserPolicyService {
         UserPolicy findUserPolicy = userPolicyRepository.findByUser_userIdAndPolicy_Id(findUser.getUserId(), findPolicy.getId())
                 .orElse(null);
 
-        if (findUserPolicy.isApplyFlag()) {
+        if (findUserPolicy != null && findUserPolicy.isApplyFlag()) {
             throw new BusinessException(ErrorCode.ALREADY_EXISTS_INTEREST_USER_POLICY);
         }
 
