@@ -3,6 +3,7 @@ package com.cmc.zenefitserver.global.infra.notification.api;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
+import com.cmc.zenefitserver.global.infra.fcm.FCMService;
 import com.cmc.zenefitserver.global.infra.notification.application.NotificationService;
 import com.cmc.zenefitserver.global.infra.notification.dto.NotificationListInfoResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +29,12 @@ public class NotificationController {
         log.info("알림 내역 조회 API, user = {}", user.getUserId());
 //        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortField);
         return CommonResponse.success(notificationService.findAllNotification(user, page, size));
+    }
+
+    @GetMapping("/test")
+    public String notify(@AuthUser User user){
+        notificationService.notifyAllTest();
+        return "success";
     }
 
 }
