@@ -3,7 +3,6 @@ package com.cmc.zenefitserver.global.infra.notification.api;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
-import com.cmc.zenefitserver.global.infra.fcm.FCMService;
 import com.cmc.zenefitserver.global.infra.notification.application.NotificationService;
 import com.cmc.zenefitserver.global.infra.notification.dto.NotificationListInfoResponseDto;
 import io.swagger.v3.oas.annotations.Operation;

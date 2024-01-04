@@ -42,53 +42,51 @@ public class NotificationScheduler {
 
     public void notifyUserByEndDate(LocalDate now) {
 
-        String imageUrl = getImageUrl(SearchDateType.END_DATE);
         // D-1
         notifyUser(
                 policyRepository.findAllByApplyEndDate(now.plusDays(1)),
                 NotificationType.APPLY_END_DATE_D_DAY_ONE.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_ONE.getContent(),
-                imageUrl
+                NotificationType.APPLY_END_DATE_D_DAY_ONE.getImageUrl()
         );
         // D-3
         notifyUser(
                 policyRepository.findAllByApplyEndDate(now.plusDays(3)),
                 NotificationType.APPLY_END_DATE_D_DAY_THREE.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_THREE.getContent(),
-                imageUrl
+                NotificationType.APPLY_END_DATE_D_DAY_THREE.getImageUrl()
         );
         // D-7
         notifyUser(
                 policyRepository.findAllByApplyEndDate(now.plusDays(7)),
                 NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getContent(),
-                imageUrl
+                NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getImageUrl()
         );
     }
 
     public void notifyUserBySttDate(LocalDate now) {
 
-        String imageUrl = getImageUrl(SearchDateType.STT_DATE);
         // D-1
         notifyUser(
                 policyRepository.findAllByApplySttDate(now.plusDays(1)),
                 NotificationType.APPLY_STT_DATE_D_DAY_ONE.getTitle(),
                 NotificationType.APPLY_STT_DATE_D_DAY_ONE.getContent(),
-                imageUrl
+                NotificationType.APPLY_STT_DATE_D_DAY_ONE.getImageUrl()
         );
         // D-3
         notifyUser(
                 policyRepository.findAllByApplySttDate(now.plusDays(3)),
                 NotificationType.APPLY_STT_DATE_D_DAY_THREE.getTitle(),
                 NotificationType.APPLY_STT_DATE_D_DAY_THREE.getContent(),
-                imageUrl
+                NotificationType.APPLY_STT_DATE_D_DAY_THREE.getImageUrl()
         );
         // D-7
         notifyUser(
                 policyRepository.findAllByApplySttDate(now.plusDays(7)),
                 NotificationType.APPLY_STT_DATE_D_DAY_SEVEN.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getContent(),
-                imageUrl
+                NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getImageUrl()
         );
     }
 
@@ -162,11 +160,5 @@ public class NotificationScheduler {
 //        URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
 //        return url.toString(); // 이미지 URL 반환
 //    }
-
-    public String getImageUrl(SearchDateType searchDateType) {
-        String baseUrl = "https://giftyyy.shop";
-        String imageName = searchDateType.name() + ".png"; // 'STT_DATE.png' 또는 'END_DATE.png'
-        return baseUrl + "/image/" + imageName; // 정적 이미지 URL 반환
-    }
 
 }
