@@ -1,11 +1,14 @@
 package com.cmc.zenefitserver.global.infra.fcm;
 
+import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -39,6 +42,34 @@ public class FCMService {
                         .build())
                 .build();
     }
+
+    public void sendFCMNotificationMulticast(List<User> users, Policy policy, String title, String body, String image) {
+        Notification notification = Notification.builder()
+                .setTitle(title)
+                .setBody(body)
+                .setImage(image)
+                .build();
+
+        Map<String, String> data = new HashMap<>();
+        data.put("policyId", policy.getId().toString());
+
+        MulticastMessage multicastMessage = MulticastMessage.builder()
+                .putAllData(data)
+                .putData("policyId", policy.getId().toString())
+                .setNotification(notification)
+                .setAndroidConfig(androidConfig(title, body))
+                .setApnsConfig(apnsConfig(title, body))
+                .addAllTokens(
+                        users.stream()
+                                .map(User::getFcmToken)
+                                .filter(Objects::nonNull)
+                                .collect(Collectors.toList())
+                )
+                .build();
+
+        firebaseMessaging.sendMulticastAsync(multicastMessage);
+    }
+
 
     public void sendFCMNotificationMulticast(List<User> users, String title, String body, String image) {
         Notification notification = Notification.builder()
