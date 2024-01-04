@@ -131,10 +131,12 @@ public class UserPolicyService {
 
     }
 
+    @Transactional
     public void deleteAllInterestPolicy(User user) {
         userPolicyRepository.deleteAllByUserAndInterestFlag(user, true);
     }
 
+    @Transactional
     public void deleteAllApplyPolicy(User user) {
         userPolicyRepository.deleteAllByUserAndApplyFlag(user, true);
     }
