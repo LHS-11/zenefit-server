@@ -41,7 +41,7 @@ public class NotificationQueryRepository {
 
         List<NotificationListInfoResponseDto> results = query.orderBy(notification.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1)
+                .limit(pageable.getPageSize())
                 .fetch();
 
 //        return checkLastPage(pageable, results);

@@ -71,7 +71,7 @@ public class PolicyQueryRepository {
 
         List<PolicyListResponseDto> results = query.orderBy(policySort(pageable))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1)
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return PageableExecutionUtils.getPage(results, pageable, query::fetchCount);
