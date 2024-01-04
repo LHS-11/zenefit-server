@@ -10,6 +10,7 @@ import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
 import com.cmc.zenefitserver.global.infra.fcm.FCMService;
 import com.cmc.zenefitserver.global.infra.notification.dao.NotificationRepository;
 import com.cmc.zenefitserver.global.infra.notification.domain.Notification;
+import com.cmc.zenefitserver.global.infra.notification.domain.NotificationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -45,22 +46,22 @@ public class NotificationScheduler {
         // D-1
         notifyUser(
                 policyRepository.findAllByApplyEndDate(now.plusDays(1)),
-                "신청마감일 D-1",
-                "내일이 신청 마감일이에요.\n서둘러 신청하세요!",
+                NotificationType.APPLY_END_DATE_D_DAY_ONE.getTitle(),
+                NotificationType.APPLY_END_DATE_D_DAY_ONE.getContent(),
                 imageUrl
         );
         // D-3
         notifyUser(
                 policyRepository.findAllByApplyEndDate(now.plusDays(3)),
-                "신청마감일 D-3",
-                "신청일이 얼마 남지 않았어요.\n서둘러 신청하세요!",
+                NotificationType.APPLY_END_DATE_D_DAY_THREE.getTitle(),
+                NotificationType.APPLY_END_DATE_D_DAY_THREE.getContent(),
                 imageUrl
         );
         // D-7
         notifyUser(
                 policyRepository.findAllByApplyEndDate(now.plusDays(7)),
-                "신청마감일 D-7",
-                "일주일 뒤 신청이 마감돼요.",
+                NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getTitle(),
+                NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getContent(),
                 imageUrl
         );
     }
@@ -71,27 +72,27 @@ public class NotificationScheduler {
         // D-1
         notifyUser(
                 policyRepository.findAllByApplySttDate(now.plusDays(1)),
-                "신청시작일 D-1",
-                "내일부터 신청이 시작돼요!",
+                NotificationType.APPLY_STT_DATE_D_DAY_ONE.getTitle(),
+                NotificationType.APPLY_STT_DATE_D_DAY_ONE.getContent(),
                 imageUrl
         );
         // D-3
         notifyUser(
                 policyRepository.findAllByApplySttDate(now.plusDays(3)),
-                "신청시작일 D-3",
-                "신청시작일이 얼마 남지 않았어요.",
+                NotificationType.APPLY_STT_DATE_D_DAY_THREE.getTitle(),
+                NotificationType.APPLY_STT_DATE_D_DAY_THREE.getContent(),
                 imageUrl
         );
         // D-7
         notifyUser(
                 policyRepository.findAllByApplySttDate(now.plusDays(7)),
-                "신청시작일 D-7",
-                "일주일 뒤 신청이 시작돼요.",
+                NotificationType.APPLY_STT_DATE_D_DAY_SEVEN.getTitle(),
+                NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getContent(),
                 imageUrl
         );
     }
 
-//    public void notifyUserByApplyDate(LocalDate now) {
+    //    public void notifyUserByApplyDate(LocalDate now) {
 //        String imageUrl = getImageUrl(SearchDateType.STT_DATE);
 //        // D-1
 //        notifyUser(
@@ -127,7 +128,7 @@ public class NotificationScheduler {
                     .map(up -> up.getUser())
                     .collect(Collectors.toList());
 
-            fcmService.sendFCMNotificationMulticast(users, title, content, imageUrl);
+            fcmService.sendFCMNotificationMulticast(users, policy, title, content, imageUrl);
 
             List<Notification> notifications = users.stream()
                     .map(user ->
@@ -145,21 +146,27 @@ public class NotificationScheduler {
     }
 
 
+//    public String getImageUrl(SearchDateType searchDateType) {
+//
+//        String bucketName = "zenefit-bucket";
+//        String folderName = "alarm";
+//
+//        String bucketImageUrl = searchDateType.name();
+//
+//        String s3ObjectKey = folderName + "/" + bucketImageUrl + ".png"; // 이미지 파일의 객체 키
+//
+//        Date expiration = new Date(System.currentTimeMillis() + 3600000); // URL의 만료 시간 (1시간)
+//        GeneratePresignedUrlRequest generatePresignedUrlRequest =
+//                new GeneratePresignedUrlRequest(bucketName, s3ObjectKey).withExpiration(expiration);
+//
+//        URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
+//        return url.toString(); // 이미지 URL 반환
+//    }
+
     public String getImageUrl(SearchDateType searchDateType) {
-
-        String bucketName = "zenefit-bucket";
-        String folderName = "alarm";
-
-        String bucketImageUrl = searchDateType.name();
-
-        String s3ObjectKey = folderName + "/" + bucketImageUrl + ".png"; // 이미지 파일의 객체 키
-
-        Date expiration = new Date(System.currentTimeMillis() + 3600000); // URL의 만료 시간 (1시간)
-        GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(bucketName, s3ObjectKey).withExpiration(expiration);
-
-        URL url = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
-        return url.toString(); // 이미지 URL 반환
+        String baseUrl = "https://giftyyy.shop";
+        String imageName = searchDateType.name() + ".png"; // 'STT_DATE.png' 또는 'END_DATE.png'
+        return baseUrl + "/image/" + imageName; // 정적 이미지 URL 반환
     }
 
 }

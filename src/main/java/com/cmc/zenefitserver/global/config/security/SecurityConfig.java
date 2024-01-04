@@ -69,6 +69,7 @@ public class SecurityConfig {
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/notify/test").permitAll()
+                .antMatchers("/image/STT_DATE.png").permitAll()
 //                .antMatchers("/gpt").permitAll()
                 .anyRequest().authenticated()
                 .and()
