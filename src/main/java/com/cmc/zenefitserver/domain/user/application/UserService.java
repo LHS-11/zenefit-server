@@ -155,7 +155,14 @@ public class UserService {
         LocalDate currentTime = LocalDate.now();
         List<HomeInfoResponseDto.HomePolicyInfo> endDateHomePolicyInfoList = Arrays.stream(SupportPolicyType.values())
                 .map(type -> {
-                    Policy findPolicy = policyRepository.findMostImminentNonAppliedPolicy(user.getUserId(), type, currentTime, PageRequest.of(0, 1)).get(0);
+                    List<Policy> nonAppliedPolicy = policyRepository.findMostImminentNonAppliedPolicy(user.getUserId(), type, currentTime, PageRequest.of(0, 1));
+                    Policy findPolicy = null;
+                    if (nonAppliedPolicy.size() == 0) {
+                        findPolicy = policyRepository.findAllBySupportPolicyTypesContains(type).get(0);
+                    }
+                    if (nonAppliedPolicy.size() != 0) {
+                        findPolicy = nonAppliedPolicy.get(0);
+                    }
                     HomeInfoResponseDto.HomePolicyInfo homePolicyInfo = HomeInfoResponseDto.HomePolicyInfo.builder()
                             .policyId(findPolicy.getId())
                             .policyName(findPolicy.getPolicyName())
