@@ -297,4 +297,8 @@ public class UserService {
                 .supportPolicyType(supportPolicyType)
                 .build();
     }
+
+    public UserAlarmStatusResponseDto getAlarm(User user){
+        return UserAlarmStatusResponseDto.builder().alarmStatus(user.isPushNotificationStatus()).build();
+    }
 }

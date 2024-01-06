@@ -106,6 +106,13 @@ public class UserController {
         return CommonResponse.success(null);
     }
 
+    @GetMapping("/notification")
+    @Operation(summary = "알람 수신 여부 업데이트 API", description = "유저의 알림 수신 여부를 조회합니다..")
+    public CommonResponse<UserAlarmStatusResponseDto> getAlarmStatus(@AuthUser User user) {
+        log.info("알림 수신 여부 업데이트 API, user = {}", user.getUserId());
+        return CommonResponse.success(userService.getAlarm(user));
+    }
+
     @GetMapping("/manual")
     @Operation(summary = "메뉴얼 상태 조회 API", description = "유저의 알림 수신 여부를 업데이트 합니다.")
     public CommonResponse<UserManualStatusResponseDto> getManualStatus(@AuthUser User user){
