@@ -8,7 +8,7 @@ import com.cmc.zenefitserver.global.infra.notification.dto.NotificationListInfoR
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +24,7 @@ public class NotificationController {
 
     @GetMapping
     @Operation(summary = "유저의 알림 내역 조회 API", description = "유저의 알림 내역을 조회합니다.")
-    public CommonResponse<Slice<NotificationListInfoResponseDto>> findAllNotification(@AuthUser User user, @RequestParam int page, @RequestParam int size) {
+    public CommonResponse<Page<NotificationListInfoResponseDto>> findAllNotification(@AuthUser User user, @RequestParam int page, @RequestParam int size) {
         log.info("알림 내역 조회 API, user = {}", user.getUserId());
 //        Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortField);
         return CommonResponse.success(notificationService.findAllNotification(user, page, size));
