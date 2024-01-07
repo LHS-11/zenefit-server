@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.global.infra.notification.domain;
 
+import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.global.common.BaseEntity;
 import lombok.AccessLevel;
@@ -14,6 +15,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "zenefit_notification")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SequenceGenerator(
+        name = "NOTIFICATION_SEQ_GENERATOR",
+        sequenceName = "notification_seq",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class Notification extends BaseEntity {
 
     @Id
@@ -36,12 +43,16 @@ public class Notification extends BaseEntity {
 
     private String image;
 
+    @Enumerated(EnumType.STRING)
+    private SearchDateType searchDateType;
+
     @Builder
-    public Notification(User user, boolean readFlag, String title, String content,String image) {
+    public Notification(User user, boolean readFlag, String title, String content, String image, SearchDateType searchDateType) {
         this.user = user;
         this.readFlag = readFlag;
         this.title = title;
         this.content = content;
         this.image = image;
+        this.searchDateType = searchDateType;
     }
 }

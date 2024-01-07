@@ -11,6 +11,12 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SequenceGenerator(
+        name = "USER_POLICY_SEQ_GENERATOR",
+        sequenceName = "user_policy_seq",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class UserPolicy extends BaseEntity {
 
     @Id

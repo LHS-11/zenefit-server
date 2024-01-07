@@ -20,6 +20,12 @@ import java.util.Set;
 @Entity
 @Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SequenceGenerator(
+        name = "USER_SEQ_GENERATOR",
+        sequenceName = "user_seq",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class User extends BaseEntity {
 
     @Id
