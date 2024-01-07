@@ -11,6 +11,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -80,8 +81,17 @@ public class User extends BaseEntity {
 
     private int benefit; // 유저 수혜 금액
 
+    @Column
+    private boolean termsOfServiceStatus; // 이용약관 동의 여부
+
+    @Column
+    private boolean privacyStatus; // 개인정보처리방침 동의 여부
+
     @Column(name = "marketingStatus")
     private boolean marketingStatus; // 마켓팅 동의 여부
+
+    @Column
+    private LocalDate marketingStatusDate; // 마켓팅 동의 날짜
 
     @Column(name = "manualStatus")
     private boolean manualStatus; // 메뉴얼 확인 여부

@@ -126,6 +126,14 @@ public class UserController {
         return CommonResponse.success(null);
     }
 
+    @GetMapping("/privacy")
+    @Operation(summary = "이용약관 조회 API", description = "유저의 이용약관을 조회합니다.")
+    public CommonResponse<PrivacyInfoResponseDto> getPrivacy(@AuthUser User user){
+        PrivacyInfoResponseDto result = userService.getPrivacyInfo(user);
+        return CommonResponse.success(result);
+    }
+
+
     @DeleteMapping
     public CommonResponse<String> delete(@AuthUser User user){
         userService.delete(user);

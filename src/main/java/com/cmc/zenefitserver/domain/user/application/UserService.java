@@ -301,4 +301,14 @@ public class UserService {
     public UserAlarmStatusResponseDto getAlarm(User user){
         return UserAlarmStatusResponseDto.builder().alarmStatus(user.isPushNotificationStatus()).build();
     }
+
+    public PrivacyInfoResponseDto getPrivacyInfo(User user) {
+
+        return PrivacyInfoResponseDto.builder()
+                .termsOfServiceDate(user.getCreatedDate().toLocalDate())
+                .privacyDate(user.getCreatedDate().toLocalDate())
+                .marketingDate(user.getMarketingStatusDate())
+                .build();
+
+    }
 }
