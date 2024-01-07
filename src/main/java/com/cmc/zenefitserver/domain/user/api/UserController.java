@@ -116,39 +116,39 @@ public class UserController {
 
     @GetMapping("/manual")
     @Operation(summary = "메뉴얼 상태 조회 API", description = "유저의 알림 수신 여부를 업데이트 합니다.")
-    public CommonResponse<UserManualStatusResponseDto> getManualStatus(@AuthUser User user){
+    public CommonResponse<UserManualStatusResponseDto> getManualStatus(@AuthUser User user) {
         return CommonResponse.success(UserManualStatusResponseDto.builder().manualStatus(user.isManualStatus()).build());
     }
 
     @PatchMapping("/manual")
     @Operation(summary = "메뉴얼 상태 업데이트 API", description = "유저의 알림 수신 여부를 업데이트 합니다.")
-    public CommonResponse<String> updateManualStatus(@AuthUser User user){
+    public CommonResponse<String> updateManualStatus(@AuthUser User user) {
         userService.updateManualStatus(user);
         return CommonResponse.success(null);
     }
 
     @GetMapping("/privacy")
     @Operation(summary = "이용약관 조회 API", description = "유저의 이용약관을 조회합니다.")
-    public CommonResponse<PrivacyInfoResponseDto> getPrivacy(@AuthUser User user){
+    public CommonResponse<PrivacyInfoResponseDto> getPrivacy(@AuthUser User user) {
         PrivacyInfoResponseDto result = userService.getPrivacyInfo(user);
         return CommonResponse.success(result);
     }
 
-    @GetMapping("/privacy/url")
-    @Operation(summary = "이용약관 URL 조회 API", description = "이용약관 URL을 조회합니다.")
-    public CommonResponse<String> getPrivacy(@AuthUser User user, @RequestParam PrivacyType privacyType){
-        String result = userService.getPrivacyInfoUrl(user, privacyType);
-        return CommonResponse.success(result);
-    }
+//    @GetMapping("/privacy/url")
+//    @Operation(summary = "이용약관 URL 조회 API", description = "이용약관 URL을 조회합니다.")
+//    public CommonResponse<String> getPrivacy(@AuthUser User user, @RequestParam PrivacyType privacyType) {
+//        String result = userService.getPrivacyInfoUrl(user, privacyType);
+//        return CommonResponse.success(result);
+//    }
 
     @DeleteMapping
-    public CommonResponse<String> delete(@AuthUser User user){
+    public CommonResponse<String> delete(@AuthUser User user) {
         userService.delete(user);
         return CommonResponse.success(null);
     }
 
     @GetMapping("/dummy")
-    public CommonResponse<String> addDummy(@AuthUser User user){
+    public CommonResponse<String> addDummy(@AuthUser User user) {
         userService.addPolicyDummy(user);
         return CommonResponse.success(null);
     }

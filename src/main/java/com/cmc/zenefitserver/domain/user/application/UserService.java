@@ -299,7 +299,7 @@ public class UserService {
                 .build();
     }
 
-    public UserAlarmStatusResponseDto getAlarm(User user){
+    public UserAlarmStatusResponseDto getAlarm(User user) {
         return UserAlarmStatusResponseDto.builder().alarmStatus(user.isPushNotificationStatus()).build();
     }
 
@@ -309,6 +309,9 @@ public class UserService {
                 .termsOfServiceDate(user.getCreatedDate().toLocalDate())
                 .privacyDate(user.getCreatedDate().toLocalDate())
                 .marketingDate(user.getMarketingStatusDate())
+                .termsOfServiceUrl(PrivacyType.TERMS_OF_SERVICE.getUrl())
+                .privacyUrl(PrivacyType.PRIVACY.getUrl())
+                .marketingUrl(PrivacyType.MARKETING.getUrl())
                 .build();
 
     }
