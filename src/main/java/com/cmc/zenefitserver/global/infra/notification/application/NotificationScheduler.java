@@ -47,21 +47,24 @@ public class NotificationScheduler {
                 policyRepository.findAllByApplyEndDate(now.plusDays(1)),
                 NotificationType.APPLY_END_DATE_D_DAY_ONE.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_ONE.getContent(),
-                NotificationType.APPLY_END_DATE_D_DAY_ONE.getImageUrl()
+                NotificationType.APPLY_END_DATE_D_DAY_ONE.getImageUrl(),
+                SearchDateType.STT_DATE
         );
         // D-3
         notifyUser(
                 policyRepository.findAllByApplyEndDate(now.plusDays(3)),
                 NotificationType.APPLY_END_DATE_D_DAY_THREE.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_THREE.getContent(),
-                NotificationType.APPLY_END_DATE_D_DAY_THREE.getImageUrl()
+                NotificationType.APPLY_END_DATE_D_DAY_THREE.getImageUrl(),
+                SearchDateType.STT_DATE
         );
         // D-7
         notifyUser(
                 policyRepository.findAllByApplyEndDate(now.plusDays(7)),
                 NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getContent(),
-                NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getImageUrl()
+                NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getImageUrl(),
+                SearchDateType.STT_DATE
         );
     }
 
@@ -72,21 +75,24 @@ public class NotificationScheduler {
                 policyRepository.findAllByApplySttDate(now.plusDays(1)),
                 NotificationType.APPLY_STT_DATE_D_DAY_ONE.getTitle(),
                 NotificationType.APPLY_STT_DATE_D_DAY_ONE.getContent(),
-                NotificationType.APPLY_STT_DATE_D_DAY_ONE.getImageUrl()
+                NotificationType.APPLY_STT_DATE_D_DAY_ONE.getImageUrl(),
+                SearchDateType.END_DATE
         );
         // D-3
         notifyUser(
                 policyRepository.findAllByApplySttDate(now.plusDays(3)),
                 NotificationType.APPLY_STT_DATE_D_DAY_THREE.getTitle(),
                 NotificationType.APPLY_STT_DATE_D_DAY_THREE.getContent(),
-                NotificationType.APPLY_STT_DATE_D_DAY_THREE.getImageUrl()
+                NotificationType.APPLY_STT_DATE_D_DAY_THREE.getImageUrl(),
+                SearchDateType.END_DATE
         );
         // D-7
         notifyUser(
                 policyRepository.findAllByApplySttDate(now.plusDays(7)),
                 NotificationType.APPLY_STT_DATE_D_DAY_SEVEN.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getContent(),
-                NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getImageUrl()
+                NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getImageUrl(),
+                SearchDateType.END_DATE
         );
     }
 
@@ -116,7 +122,7 @@ public class NotificationScheduler {
 //
 //    }
 //
-    private void notifyUser(List<Policy> policies, String titlePrefix, String content, String imageUrl) {
+    private void notifyUser(List<Policy> policies, String titlePrefix, String content, String imageUrl, SearchDateType searchDateType) {
         for (Policy policy : policies) {
             String policyName = policy.getPolicyName();
             String title = "[" + policyName + "] " + titlePrefix;
@@ -135,6 +141,8 @@ public class NotificationScheduler {
                                     .title(title)
                                     .content(content)
                                     .image(imageUrl)
+                                    .searchDateType(searchDateType)
+                                    .policyId(policy.getId())
                                     .build()
                     )
                     .collect(Collectors.toList());

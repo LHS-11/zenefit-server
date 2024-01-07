@@ -31,7 +31,9 @@ public class NotificationQueryRepository {
                                 notification.id,
                                 notification.title,
                                 notification.content,
-                                notification.image
+                                notification.image,
+                                notification.searchDateType,
+                                notification.policyId
                         )
                 )
                 .from(notification)

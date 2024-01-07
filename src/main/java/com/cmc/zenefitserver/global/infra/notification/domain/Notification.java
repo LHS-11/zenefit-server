@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.global.infra.notification.domain;
 
+import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.global.common.BaseEntity;
@@ -31,6 +32,8 @@ public class Notification extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private Long policyId;
+
     @Column(nullable = false)
     @ColumnDefault("false")
     private boolean readFlag;
@@ -47,8 +50,9 @@ public class Notification extends BaseEntity {
     private SearchDateType searchDateType;
 
     @Builder
-    public Notification(User user, boolean readFlag, String title, String content, String image, SearchDateType searchDateType) {
+    public Notification(User user, Long policyId, boolean readFlag, String title, String content, String image, SearchDateType searchDateType) {
         this.user = user;
+        this.policyId = policyId;
         this.readFlag = readFlag;
         this.title = title;
         this.content = content;
