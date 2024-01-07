@@ -19,6 +19,7 @@ import com.cmc.zenefitserver.global.auth.jwt.JwtService;
 import com.cmc.zenefitserver.global.common.request.TokenRequestDto;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
+import com.cmc.zenefitserver.global.infra.notification.dao.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class UserService {
     private final AmazonS3Client amazonS3Client;
     private final JwtService jwtService;
     private final PolicyService policyService;
+    private final NotificationRepository notificationRepository;
 
     // 회원가입
     @Transactional
@@ -225,6 +227,7 @@ public class UserService {
     @Transactional
     public void delete(User user) {
         userPolicyRepository.deleteAllByUser(user);
+        notificationRepository.deleteAllByUser(user);
         userRepository.delete(user);
     }
 
