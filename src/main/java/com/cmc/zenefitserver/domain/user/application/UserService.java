@@ -10,6 +10,7 @@ import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.Character;
 import com.cmc.zenefitserver.domain.user.domain.Gender;
+import com.cmc.zenefitserver.domain.user.domain.PrivacyType;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.dto.*;
 import com.cmc.zenefitserver.domain.userpolicy.dao.UserPolicyRepository;
@@ -310,5 +311,9 @@ public class UserService {
                 .marketingDate(user.getMarketingStatusDate())
                 .build();
 
+    }
+
+    public String getPrivacyInfoUrl(User user, PrivacyType privacyType) {
+        return privacyType.getUrl();
     }
 }

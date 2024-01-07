@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.domain.user.api;
 
 import com.cmc.zenefitserver.domain.user.application.UserService;
+import com.cmc.zenefitserver.domain.user.domain.PrivacyType;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.user.dto.*;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
@@ -133,6 +134,12 @@ public class UserController {
         return CommonResponse.success(result);
     }
 
+    @GetMapping("/privacy/url")
+    @Operation(summary = "이용약관 URL 조회 API", description = "이용약관 URL을 조회합니다.")
+    public CommonResponse<String> getPrivacy(@AuthUser User user, @RequestParam PrivacyType privacyType){
+        String result = userService.getPrivacyInfoUrl(user, privacyType);
+        return CommonResponse.success(result);
+    }
 
     @DeleteMapping
     public CommonResponse<String> delete(@AuthUser User user){
