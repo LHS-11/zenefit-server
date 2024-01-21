@@ -131,7 +131,7 @@ public class Policy extends BaseEntity implements Serializable {
 
     private int benefit; // 수혜 금액
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<ApplyPeriod> applyPeriods = new ArrayList<>();
 
     public void updateAgeInfo(int minAge, int maxAge) {
@@ -180,8 +180,12 @@ public class Policy extends BaseEntity implements Serializable {
         this.applyPeriods = applyPeriods;
     }
 
-    public void updateDateType(PolicyDateType policyDateType) {
+    public void updatePolicyDateType(PolicyDateType policyDateType) {
         this.policyDateType = policyDateType;
+    }
+
+    public void updateBenefit(int benefit){
+        this.benefit = benefit;
     }
 
     @Builder
