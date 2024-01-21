@@ -1,10 +1,7 @@
 package com.cmc.zenefitserver.batch.chunk;
 
 import com.cmc.zenefitserver.batch.service.YouthPolicyService;
-import com.cmc.zenefitserver.domain.policy.application.PolicyAgeClassifier;
-import com.cmc.zenefitserver.domain.policy.application.PolicyEduClassifier;
-import com.cmc.zenefitserver.domain.policy.application.PolicyEmpmClassifier;
-import com.cmc.zenefitserver.domain.policy.application.PolicySplzClassifier;
+import com.cmc.zenefitserver.domain.policy.application.*;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.YouthPolicy;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +42,8 @@ public class PolicyCreateJobConfig {
 
     private final PolicySplzClassifier policySplzClassifier;
 
+    private final PolicyMethodClassifier policyMethodClassifier;
+
     /**
      * Job 1 - 완료
      * 1.	정책 xml 가져오기
@@ -68,9 +67,28 @@ public class PolicyCreateJobConfig {
     public Job job() {
         return jobBuilderFactory.get(JOB_NAME)
                 .start(policyCreateJob())
+//                .next(policyClassifyDateJob())
                 .incrementer(new RunIdIncrementer())
                 .build();
     }
+
+//    @Bean
+//    public Step policyClassifyDateJob() {
+//        return stepBuilderFactory.get("PolicyClassifyDateJob")
+//                .<Policy, Policy>chunk(CHUNK_SIZE)
+//                .reader(policyPagingItemReader())
+//                .build();
+//    }
+//
+//    private ItemReader<? extends Policy> policyPagingItemReader() {
+//        return new JpaPagingItemReaderBuilder<Policy>()
+//                .name("JpaPagingPolicyItemReader")
+//                .entityManagerFactory(entityManagerFactory)
+//                .pageSize(CHUNK_SIZE)
+//                .queryString("select p from Policy p")
+//                .build();
+//    }
+//
 
     @Bean
     public Step policyCreateJob() {
@@ -92,7 +110,7 @@ public class PolicyCreateJobConfig {
 
     @Bean
     public YouthPolicyItemProcessor youthPolicyItemProcessor() {
-        return new YouthPolicyItemProcessor(policyAgeClassifier, policyEmpmClassifier, policyEduClassifier, policySplzClassifier);
+        return new YouthPolicyItemProcessor(policyAgeClassifier, policyEmpmClassifier, policyEduClassifier, policySplzClassifier, policyMethodClassifier);
     }
 
     @Bean

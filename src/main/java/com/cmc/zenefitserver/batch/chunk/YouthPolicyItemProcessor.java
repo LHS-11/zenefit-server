@@ -1,9 +1,6 @@
 package com.cmc.zenefitserver.batch.chunk;
 
-import com.cmc.zenefitserver.domain.policy.application.PolicyAgeClassifier;
-import com.cmc.zenefitserver.domain.policy.application.PolicyEduClassifier;
-import com.cmc.zenefitserver.domain.policy.application.PolicyEmpmClassifier;
-import com.cmc.zenefitserver.domain.policy.application.PolicySplzClassifier;
+import com.cmc.zenefitserver.domain.policy.application.*;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.YouthPolicy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
@@ -19,6 +16,7 @@ public class YouthPolicyItemProcessor implements ItemProcessor<YouthPolicy, Poli
     private final PolicyEmpmClassifier policyEmpmClassifier;
     private final PolicyEduClassifier policyEduClassifier;
     private final PolicySplzClassifier policySplzClassifier;
+    private final PolicyMethodClassifier policyMethodClassifier;
 
     @Override
     public Policy process(YouthPolicy item) throws Exception {
@@ -57,6 +55,7 @@ public class YouthPolicyItemProcessor implements ItemProcessor<YouthPolicy, Poli
         policy.updateJobTypes(policyEmpmClassifier.mapToJobTypesFromEmpmContent(youthPolicy.getEmpmSttsCn()));
         policy.updateEducationTypes(policyEduClassifier.mapToEducationTypeFromEduContent(youthPolicy.getAccrRqisCn()));
         policy.updateSplzTypes(policySplzClassifier.mapToSplzCodeFromSplzContent(youthPolicy.getSplzRlmRqisCn()));
+        policyMethodClassifier.classify(policy);
         policyAgeClassifier.setMaxAgeAndMinAge(policy);
         return policy;
     }
