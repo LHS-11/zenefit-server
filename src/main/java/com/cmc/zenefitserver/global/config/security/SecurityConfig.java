@@ -23,7 +23,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-
 public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -71,6 +70,7 @@ public class SecurityConfig {
                 .antMatchers("/notify/test").permitAll()
                 .antMatchers("/image/alarm/STT_DATE.png").permitAll()
                 .antMatchers("/image/alarm/END_DATE.png").permitAll()
+                .antMatchers("/image/charcter/**").permitAll()
 //                .antMatchers("/gpt").permitAll()
                 .anyRequest().authenticated()
                 .and()
