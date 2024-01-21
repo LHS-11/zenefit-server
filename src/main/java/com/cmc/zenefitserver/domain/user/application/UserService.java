@@ -148,7 +148,7 @@ public class UserService {
         Character findCharacter = Character.getCharacter(sumPolicyCount);
 
         // 캐릭터 이미지
-        String characterImageUrl = getCharacterImageUrl(gender, findCharacter);
+        String characterImageUrl = getCharactereUrl(gender, findCharacter);
 
         // 지원 정책 유형에 따른 추천 정책 조회 - recommendPolicy
 //        List<HomeInfoResponseDto.HomePolicyInfo> recommendPolicyInfoList = policyService.recommendPolicy(user);
@@ -192,6 +192,22 @@ public class UserService {
                 .build();
     }
 
+    /**
+     * 프로젝트 내에서 이미지 관리
+     * @param gender
+     * @param character
+     * @return
+     */
+    public String getCharactereUrl(Gender gender, Character character) {
+        return gender.getUrl() + "-" + character.name().toLowerCase();
+    }
+
+    /**
+     * S3 에서 이미지 관리 ( url 이 계속 바껴 캐싱 처리 불가 )
+     * @param gender
+     * @param character
+     * @return
+     */
     public String getCharacterImageUrl(Gender gender, Character character) {
 
         String bucketName = "zenefit-bucket";

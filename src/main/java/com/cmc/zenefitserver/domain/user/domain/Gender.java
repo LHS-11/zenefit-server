@@ -10,15 +10,17 @@ import java.util.Arrays;
 
 @Getter
 public enum Gender {
-    MALE("남성", "m"),
-    FEMALE("여성", "f");
+    MALE("남성", "m", "https://giftyyy.shop/image/charcter/m"),
+    FEMALE("여성", "f", "https://giftyyy.shop/image/charcter/f");
 
     private String description;
     private String code;
+    private String url;
 
-    Gender(String description, String code) {
+    Gender(String description, String code, String url) {
         this.description = description;
         this.code = code;
+        this.url = url;
     }
 
     @JsonCreator
