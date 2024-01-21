@@ -2,6 +2,8 @@ package com.cmc.zenefitserver.batch.service;
 
 import com.cmc.zenefitserver.domain.policy.domain.YouthPolicy;
 import com.cmc.zenefitserver.domain.policy.domain.YouthPolicyList;
+import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,8 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,8 +40,34 @@ public class YouthPolicyService {
     }
 
     public List<YouthPolicy> getYouthPolices(int pageIndex) {
+        List<YouthPolicy> youthPolices = new ArrayList<>();
+        Set<String> existingBizIds = new HashSet<>();
+
+        for (AreaCode areaCode : AreaCode.values()) {
+            List<YouthPolicy> youthPolicesByAreaCode = getYouthPolices(pageIndex, areaCode, null);
+
+            for (CityCode cityCode : areaCode.getCities()) {
+                List<YouthPolicy> youthPolicesByCityCode = getYouthPolices(pageIndex, areaCode, cityCode);
+
+                if (youthPolicesByCityCode != null) {
+                    youthPolices.addAll(youthPolicesByCityCode);
+                    existingBizIds.addAll(youthPolicesByCityCode.stream().map(YouthPolicy::getBizId).collect(Collectors.toList()));
+                }
+            }
+
+            if (youthPolicesByAreaCode != null) {
+                List<YouthPolicy> filterYouthPolices = youthPolicesByAreaCode.stream().filter(youthPolicy -> !existingBizIds.contains(youthPolicy.getBizId())).collect(Collectors.toList());
+                youthPolices.addAll(filterYouthPolices);
+            }
+
+        }
+        return youthPolices;
+    }
+
+    private List<YouthPolicy> getYouthPolices(int pageIndex, AreaCode areaCode, CityCode cityCode) {
         try {
-            String xmlData = getXmlDataFromApi(String.valueOf(pageIndex));
+
+            String xmlData = getXmlDataFromApi(String.valueOf(pageIndex), cityCode == null ? areaCode : cityCode);
             xmlData = removeInvalidCharacters(xmlData);
 
             JAXBContext jaxbContext = JAXBContext.newInstance(YouthPolicyList.class);
@@ -48,23 +75,26 @@ public class YouthPolicyService {
 
             InputStream inputStream = new ByteArrayInputStream(xmlData.getBytes(StandardCharsets.UTF_8));
             YouthPolicyList youthPolicyList = (YouthPolicyList) unmarshaller.unmarshal(inputStream);
-            List<YouthPolicy> youthPolicies = Arrays.stream(youthPolicyList.getYouthPolicies())
-                    .collect(Collectors.toList());
-            return youthPolicies;
+            if (youthPolicyList.getYouthPolicies() != null) {
+                List<YouthPolicy> youthPolicies = Arrays.stream(youthPolicyList.getYouthPolicies()).collect(Collectors.toList());
+                youthPolicies.stream().forEach(youthPolicy -> youthPolicy.updateRegion(areaCode, cityCode));
+                return youthPolicies;
+            }
+            return null;
         } catch (IOException | JAXBException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public String getXmlDataFromApi(String pageIndex) throws IOException {
+    public String getXmlDataFromApi(String pageIndex, Enum<?> codeEnum) throws IOException {
 
         HttpHeaders headers = new HttpHeaders();
-
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(apiUrl)
                 .queryParam("openApiVlak", key)
                 .queryParam("display", displayCnt)
-                .queryParam("pageIndex", pageIndex);
+                .queryParam("pageIndex", pageIndex)
+                .queryParam("srchPolyBizSecd", getCodeFromEnum(codeEnum));
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
@@ -78,7 +108,7 @@ public class YouthPolicyService {
             return response.getBody();
 
         } catch (RestClientException e) {
-            return getXmlDataFromApi(pageIndex);
+            return getXmlDataFromApi(pageIndex, codeEnum);
         }
 
     }
@@ -89,6 +119,15 @@ public class YouthPolicyService {
         }
         // 유효하지 않은 문자(범위 [0x00-0x08], [0x0B-0x0C], [0x0E-0x1F])를 삭제
         return xmlData.replaceAll("[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F]", "");
+    }
+
+    private String getCodeFromEnum(Enum<?> codeEnum) {
+        if (codeEnum instanceof AreaCode) {
+            return ((AreaCode) codeEnum).getCode();
+        } else if (codeEnum instanceof CityCode) {
+            return ((CityCode) codeEnum).getCode();
+        }
+        throw new IllegalArgumentException("Unsupported enum type");
     }
 
 }

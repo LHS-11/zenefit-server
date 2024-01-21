@@ -52,6 +52,9 @@ public class YouthPolicyItemProcessor implements ItemProcessor<YouthPolicy, Poli
                 .policyCode(PolicyCode.findPolicyCode(youthPolicy.getPolyRlmCd()))
                 .build();
 
+        if (youthPolicy.getCityCode() != null) policy.updateCityCode(youthPolicy.getCityCode());
+
+        policy.updateAreaCode(youthPolicy.getAreaCode());
         policy.updateJobTypes(policyEmpmClassifier.mapToJobTypesFromEmpmContent(youthPolicy.getEmpmSttsCn()));
         policy.updateEducationTypes(policyEduClassifier.mapToEducationTypeFromEduContent(youthPolicy.getAccrRqisCn()));
         policy.updateSplzTypes(policySplzClassifier.mapToSplzCodeFromSplzContent(youthPolicy.getSplzRlmRqisCn()));

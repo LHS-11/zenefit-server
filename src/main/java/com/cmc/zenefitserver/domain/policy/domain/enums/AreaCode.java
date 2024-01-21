@@ -4,6 +4,7 @@ import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,9 @@ import static com.cmc.zenefitserver.global.error.ErrorCode.NOT_FOUND_AREA_ENUM_V
 
 @Getter
 public enum AreaCode {
+
+    CENTRAL_GOVERNMENT("003001", "중앙부처", new ArrayList<>()),
+
     SEOUL("003002001", "서울", Arrays.asList(
             JONGRO, JUNG, YONGSAN, SUNGDONG, GWANGJIN,
             DONGDAEMUN, JUNGNANG, SUNGBUK, GANGBUK, DOBONG,
@@ -110,9 +114,7 @@ public enum AreaCode {
     )),
     SEJONG("003002017", "세종", Arrays.asList(
             SEJONG_SEONG
-    )),
-    CENTRAL_GOVERNMENT("003002000", "중앙부처", null);
-
+    ));
     private final String code;
     private final String name;
 

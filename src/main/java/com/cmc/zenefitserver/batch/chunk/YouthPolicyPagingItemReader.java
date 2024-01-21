@@ -16,7 +16,7 @@ public class YouthPolicyPagingItemReader extends AbstractPagingItemReader<YouthP
     @Override
     protected void doReadPage() {
 
-        List<YouthPolicy> youthPolices = youthPolicyService.getYouthPolices(getPage() + 1);
+        List<YouthPolicy> youthPolices = youthPolicyService.getYouthPolices(getPage()+1);
 
         if (results == null) {
             results = new CopyOnWriteArrayList<>();
@@ -24,7 +24,9 @@ public class YouthPolicyPagingItemReader extends AbstractPagingItemReader<YouthP
             results.clear();
         }
 
-        results.addAll(youthPolices);
+        if (youthPolices != null) {
+            results.addAll(youthPolices);
+        }
     }
 
     @Override

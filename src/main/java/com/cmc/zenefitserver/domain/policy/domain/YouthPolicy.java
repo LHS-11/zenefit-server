@@ -1,5 +1,7 @@
 package com.cmc.zenefitserver.domain.policy.domain;
 
+import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import lombok.*;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -75,4 +77,22 @@ public class YouthPolicy {
 
     @XmlElement(name = "error")
     private String error;
+
+    private AreaCode areaCode;
+
+    private CityCode cityCode;
+
+    public void updateRegion(AreaCode areaCode, CityCode cityCode){
+        if(cityCode != null){
+            updateCityCode(cityCode);
+        }
+        updateAreaCode(areaCode);
+    }
+
+    public void updateAreaCode(AreaCode areaCode){
+        this.areaCode = areaCode;
+    }
+    public void updateCityCode(CityCode cityCode){
+        this.cityCode = cityCode;
+    }
 }
