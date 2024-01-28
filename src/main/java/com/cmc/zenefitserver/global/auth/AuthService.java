@@ -136,7 +136,7 @@ public class AuthService {
 
             User user = User.builder()
                     .email(email)
-                    .nickname(nickname == null ? RandomStringUtils.random(15, true, true) : nickname)
+                    .nickname(nickname == null ? RandomStringUtils.random(10, true, true) : nickname)
                     .provider(authRequestDto.getProviderType())
                     .userDetail(userDetail)
                     .build();
