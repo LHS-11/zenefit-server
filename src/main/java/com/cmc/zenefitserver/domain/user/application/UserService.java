@@ -100,7 +100,7 @@ public class UserService {
     // AreaCode 가져오기
     public List<String> getAreaCodes() {
         return Arrays.stream(AreaCode.values())
-                .filter(areaCode -> !areaCode.getCode().equals("003002000"))
+                .filter(areaCode -> !areaCode.getCode().equals("003001"))
                 .map(areaCode -> areaCode.getName())
                 .collect(Collectors.toList());
     }
