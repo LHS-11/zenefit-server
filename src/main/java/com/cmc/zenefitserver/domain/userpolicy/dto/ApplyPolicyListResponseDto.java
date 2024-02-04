@@ -1,14 +1,14 @@
 package com.cmc.zenefitserver.domain.userpolicy.dto;
 
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
-import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyDateType;
-import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.math.BigDecimal;
 
 @ToString
 @Getter
@@ -29,10 +29,10 @@ public class ApplyPolicyListResponseDto {
     private String policyLogo;
 
     @ApiModelProperty(notes = "정책 수혜 금액", example = "1000000")
-    private int benefit;
+    private BigDecimal benefit;
 
     @Builder
-    public ApplyPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, String policyLogo, int benefit) {
+    public ApplyPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, String policyLogo, BigDecimal benefit) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
