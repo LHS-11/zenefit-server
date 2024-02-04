@@ -20,6 +20,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +59,7 @@ public class AuthService {
 
     @Transactional(noRollbackFor = BusinessException.class)
     public TokenResponseDto appleLogin(AuthRequestDto authRequestDto) {
-        String token = authRequestDto.getToken();
+        String token = authRequestDto.getToken().replaceAll("–", "--");
         JsonParser parser = new JsonParser();
 
         // 통신 결과에서 공개키 목록 가져오기
@@ -135,7 +136,7 @@ public class AuthService {
 
             User user = User.builder()
                     .email(email)
-                    .nickname(nickname)
+                    .nickname(nickname == null ? RandomStringUtils.random(10, true, true) : nickname)
                     .provider(authRequestDto.getProviderType())
                     .userDetail(userDetail)
                     .build();
