@@ -31,19 +31,20 @@ public class PolicyRecommender {
         List<Policy> recommendPolicy = matchPolicy(user);
 
         System.out.println("recommendPolicy.size() = " + recommendPolicy.size());
-
+        LocalDate now = LocalDate.now();
 
         Policy maxBenefitMoneyPolicy = recommendPolicy.stream()
                 .filter(p -> p.getSupportPolicyTypes().contains((SupportPolicyType.MONEY)))
+                .filter(p -> p.getApplySttDate() == null || now.isBefore(p.getApplyEndDate()))
                 .max(Comparator.comparing(Policy::getBenefit))
                 .orElse(null);
 
         Policy maxBenefitLoansPolicy = recommendPolicy.stream()
                 .filter(p -> p.getSupportPolicyTypes().contains(SupportPolicyType.LOANS))
+                .filter(p -> p.getApplySttDate() == null || now.isBefore(p.getApplyEndDate()))
                 .max(Comparator.comparing(Policy::getBenefit))
                 .orElse(null);
 
-        LocalDate now = LocalDate.now();
         Policy mostImminentEndDateSocialServicePolicy = recommendPolicy.stream()
                 .filter(p -> p.getSupportPolicyTypes().contains(SupportPolicyType.SOCIAL_SERVICE))
                 .filter(p -> p.getApplyEndDate().isAfter(now))
@@ -61,6 +62,14 @@ public class PolicyRecommender {
             result.put(SupportPolicyType.LOANS, maxBenefitLoansPolicy);
         }
         if (mostImminentEndDateSocialServicePolicy != null) {
+            result.put(SupportPolicyType.SOCIAL_SERVICE, mostImminentEndDateSocialServicePolicy);
+        }
+
+        if (mostImminentEndDateSocialServicePolicy == null) {
+            mostImminentEndDateSocialServicePolicy = recommendPolicy.stream()
+                    .filter(p -> p.getSupportPolicyTypes().contains(SupportPolicyType.SOCIAL_SERVICE))
+                    .findFirst()
+                    .orElse(null);
             result.put(SupportPolicyType.SOCIAL_SERVICE, mostImminentEndDateSocialServicePolicy);
         }
 
