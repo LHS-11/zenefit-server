@@ -21,7 +21,6 @@ public class PolicySupportContentClassifier {
 
     private final PolicyContentFeignService policyContentFeignService;
 
-    @Transactional
     public void getSupportContent(Policy policy) {
 
         // 100개씩 데이터를 쪼개어 처리
@@ -37,6 +36,8 @@ public class PolicySupportContentClassifier {
                     .map(String::trim)
                     .map(SupportPolicyType::findSupportPolicyTypeByOrder)
                     .collect(Collectors.toSet());
+
+            supportPolicyTypes.removeAll(policy.getSupportPolicyTypes());
 
             policy.updateSupportTypes(supportPolicyTypes);
 

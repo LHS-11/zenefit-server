@@ -71,4 +71,12 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
             "AND P.applyEndDate = :searchEndDate")
     List<Policy> findAllBySearchEndDate(@Param("userId") Long userId, @Param("searchEndDate") LocalDate searchEndDate);
 
+    @Query("select distinct p from Policy p " +
+            "left join fetch p.jobTypes jt " +
+            "left join fetch p.educationTypes et " +
+            "left join fetch p.policySplzTypes pst " +
+            "left join fetch p.supportPolicyTypes spt " +
+            "left join fetch p.userPolicies up")
+    List<Policy> findAllWithBatch(Pageable pageable);
+
 }

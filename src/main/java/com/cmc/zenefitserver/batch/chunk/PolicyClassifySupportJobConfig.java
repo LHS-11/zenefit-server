@@ -2,6 +2,7 @@ package com.cmc.zenefitserver.batch.chunk;
 
 import com.cmc.zenefitserver.batch.service.PolicySupportContentClassifier;
 import com.cmc.zenefitserver.domain.policy.application.PolicyBenefitClassifier;
+import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,16 +11,16 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.database.JpaItemWriter;
-import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
+import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Sort;
 
 import javax.persistence.EntityManagerFactory;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class PolicyClassifySupportJobConfig {
 
     private static final String JOB_NAME = "PolicyClassifySupportJob";
     private static final String STEP_NAME = "PolicyClassifySupportJob";
-    private static final int CHUNK_SIZE = 300;
+    private static final int CHUNK_SIZE = 100;
 
     private final JobBuilderFactory jobBuilderFactory;
 
@@ -39,6 +40,8 @@ public class PolicyClassifySupportJobConfig {
     private final PolicySupportContentClassifier policySupportContentClassifier;
 
     private final PolicyBenefitClassifier policyBenefitClassifier;
+
+    private final PolicyRepository policyRepository;
 
 //    @Bean
     public Job policyClassifySupportJob() {
@@ -52,7 +55,7 @@ public class PolicyClassifySupportJobConfig {
     public Step policyClassifySupportStep() {
         return stepBuilderFactory.get(STEP_NAME)
                 .<Policy, Policy>chunk(CHUNK_SIZE)
-                .reader(policyPagingItemReader())
+                .reader(policyRepositoryItemReader(policyRepository))
                 .processor(policySupportItemProcessor())
                 .writer(policyPagingSupportItemWriter())
                 .build();
@@ -71,19 +74,18 @@ public class PolicyClassifySupportJobConfig {
         return policyJpaItemWriter;
     }
 
-    private ItemReader<? extends Policy> policyPagingItemReader() {
-        return new JpaPagingItemReaderBuilder<Policy>()
-                .name("JpaPagingPolicyItemReader")
-                .entityManagerFactory(entityManagerFactory)
-                .pageSize(CHUNK_SIZE)
-                .queryString("select p from Policy p "
-                        + "left join fetch p.jobTypes jt "
-                        + "left join fetch p.educationTypes et "
-                        + "left join fetch p.policySplzTypes pst "
-                        + "left join fetch p.supportPolicyTypes spt "
-                        + "left join fetch p.userPolicies up "
-                        + "left join fetch p.applyPeriods ap")
-                .build();
-    }
+    @Bean
+    public RepositoryItemReader<Policy> policyRepositoryItemReader(PolicyRepository policyRepository) {
+        RepositoryItemReader<Policy> reader = new RepositoryItemReader<>();
+        reader.setRepository(policyRepository);
+        reader.setMethodName("findAll");
+        reader.setPageSize(CHUNK_SIZE);
 
+        // 정렬 방식 설정 (예: ID 기준 오름차순 정렬)
+        Map<String, Sort.Direction> sorts = new HashMap<>();
+        sorts.put("id", Sort.Direction.ASC);
+        reader.setSort(sorts);
+
+        return reader;
+    }
 }
