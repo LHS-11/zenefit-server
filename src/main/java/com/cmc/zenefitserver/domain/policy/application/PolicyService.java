@@ -218,8 +218,8 @@ public class PolicyService {
     }
 
     public RecommendPolicyInfoResponseDto getRecommendPolicyDummy() {
-        Policy loansPolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.LOANS).get(0);
         Policy moneyPolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.MONEY).get(0);
+        Policy loansPolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.LOANS).get(0);
         Policy socialServicePolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.SOCIAL_SERVICE).get(0);
 
         PolicyMethodType loansPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(loansPolicy.getApplicationProcedureContent());
@@ -227,25 +227,6 @@ public class PolicyService {
         PolicyMethodType socialServicePolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(socialServicePolicy.getApplicationProcedureContent());
 
         List<RecommendPolicyInfoResponseDto.recommendPolicyInfo> result = new ArrayList<>();
-        result.add(
-                RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
-                        .supportTypeDescription(SupportPolicyType.LOANS.getDescription())
-                        .supportType(SupportPolicyType.LOANS)
-                        .policyId(loansPolicy.getId())
-                        .policyName(loansPolicy.getPolicyName())
-                        .policyLogo(loansPolicy.getPolicyLogo())
-                        .policyAreaCode(loansPolicy.getAreaCode().getName())
-                        .policyCityCode(loansPolicy.getAreaCode().getCities().size() != 0 ? loansPolicy.getCityCode().getName() : null)
-                        .policyIntroduction(loansPolicy.getPolicyIntroduction())
-                        .supportTypePolicyCnt(policyRepository.getPolicyCntBySupportPolicyType(SupportPolicyType.LOANS))
-                        .benefit(10000000)
-                        .applyFlag(false)
-                        .interestFlag(false)
-                        .policyDateType("기간 신청")
-                        .policyMethodType(loansPolicyMethodType)
-                        .policyMethodTypeDescription(loansPolicyMethodType.getDescription())
-                        .build()
-        );
         result.add(
                 RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
                         .supportType(SupportPolicyType.MONEY)
@@ -263,6 +244,25 @@ public class PolicyService {
                         .policyDateType("상시")
                         .policyMethodType(moneyPolicyMethodType)
                         .policyMethodTypeDescription(moneyPolicyMethodType.getDescription())
+                        .build()
+        );
+        result.add(
+                RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
+                        .supportTypeDescription(SupportPolicyType.LOANS.getDescription())
+                        .supportType(SupportPolicyType.LOANS)
+                        .policyId(loansPolicy.getId())
+                        .policyName(loansPolicy.getPolicyName())
+                        .policyLogo(loansPolicy.getPolicyLogo())
+                        .policyAreaCode(loansPolicy.getAreaCode().getName())
+                        .policyCityCode(loansPolicy.getAreaCode().getCities().size() != 0 ? loansPolicy.getCityCode().getName() : null)
+                        .policyIntroduction(loansPolicy.getPolicyIntroduction())
+                        .supportTypePolicyCnt(policyRepository.getPolicyCntBySupportPolicyType(SupportPolicyType.LOANS))
+                        .benefit(10000000)
+                        .applyFlag(false)
+                        .interestFlag(false)
+                        .policyDateType("기간 신청")
+                        .policyMethodType(loansPolicyMethodType)
+                        .policyMethodTypeDescription(loansPolicyMethodType.getDescription())
                         .build()
         );
         result.add(
