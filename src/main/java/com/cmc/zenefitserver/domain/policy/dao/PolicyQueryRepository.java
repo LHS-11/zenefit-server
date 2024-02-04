@@ -49,7 +49,8 @@ public class PolicyQueryRepository {
                                         .then(false)
                                         .otherwise(userPolicy.interestFlag)
                                         .as("interestFlag"),
-                                policy.applicationProcedureContent.as("policyMethodTypeDescription")
+                                policy.applicationProcedureContent.as("policyMethodTypeDescription"),
+                                policy.applicationSiteAddress.as("policyUrl")
                         )
                 )
                 .from(policy)

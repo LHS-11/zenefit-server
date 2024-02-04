@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -45,7 +46,7 @@ public class PolicyListResponseDto {
     private boolean applyStatus;
 
     @ApiModelProperty(notes = "수혜 금액")
-    private int benefit;
+    private BigDecimal benefit;
 
     @ApiModelProperty(notes = "수혜(신청) 정책 여부")
     private boolean applyFlag;
@@ -58,6 +59,9 @@ public class PolicyListResponseDto {
 
     @ApiModelProperty(notes = "정책 신청 방법 설명", example = "우편신청, 방문신청, 온라인신청 등")
     private String policyMethodTypeDescription;
+
+    @ApiModelProperty(notes = "정책 신청 URL", example = "www.naver.com")
+    private String policyUrl;
 
     public void updateAreaCode(String areaCode) {
         this.areaCode = AreaCode.findName(areaCode);
@@ -83,7 +87,7 @@ public class PolicyListResponseDto {
     }
 
     @Builder
-    public PolicyListResponseDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, String policyDateTypeDescription, String policyApplyDenialReason, boolean applyStatus, int benefit, boolean applyFlag, boolean interestFlag, PolicyMethodType policyMethodType, String policyMethodTypeDescription) {
+    public PolicyListResponseDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, String policyDateTypeDescription, String policyApplyDenialReason, boolean applyStatus, BigDecimal benefit, boolean applyFlag, boolean interestFlag, PolicyMethodType policyMethodType, String policyMethodTypeDescription, String policyUrl) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyLogo = policyLogo;
@@ -99,9 +103,10 @@ public class PolicyListResponseDto {
         this.interestFlag = interestFlag;
         this.policyMethodType = policyMethodType;
         this.policyMethodTypeDescription = policyMethodTypeDescription;
+        this.policyUrl = policyUrl;
     }
 
-    public PolicyListResponseDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, int benefit, boolean applyFlag, boolean interestFlag, String policyMethodTypeDescription) {
+    public PolicyListResponseDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, BigDecimal benefit, boolean applyFlag, boolean interestFlag, String policyMethodTypeDescription, String policyUrl) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyLogo = policyLogo;
@@ -113,6 +118,7 @@ public class PolicyListResponseDto {
         this.applyFlag = applyFlag;
         this.interestFlag = interestFlag;
         this.policyMethodTypeDescription = policyMethodTypeDescription;
+        this.policyUrl = policyUrl;
     }
 
     public void updatePolicyMethodType(String applicationProcedureContent) {
