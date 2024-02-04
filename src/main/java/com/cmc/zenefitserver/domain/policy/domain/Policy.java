@@ -130,7 +130,7 @@ public class Policy extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "policy", fetch = FetchType.LAZY)
     private Set<UserPolicy> userPolicies = new HashSet<>();
 
-    private BigDecimal benefit; // 수혜 금액
+    private BigDecimal benefit = BigDecimal.ZERO; // 수혜 금액
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<ApplyPeriod> applyPeriods = new ArrayList<>();
