@@ -1,137 +1,137 @@
 buildscript {
-	ext {
-		queryDslVersion = "5.0.0"
-	}
+    ext {
+        queryDslVersion = "5.0.0"
+    }
 }
 
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.13'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	//querydsl 추가
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    id 'java'
+    id 'org.springframework.boot' version '2.7.13'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    //querydsl 추가
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.cmc'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '11'
+    sourceCompatibility = '11'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
-bootJar{
-	archiveFileName='app.jar'
+bootJar {
+    archiveFileName = 'app.jar'
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 ext {
-	/**
-	 * Spring Boot and springCloudVersion must be compatible.
-	 * 2.6.x, 2.7.x (Starting with 2021.0.3) = 2021.0.x
-	 * ref : https://spring.io/projects/spring-cloud
-	 */
-	// Feign
-	set('springCloudVersion', '2021.0.3')
+    /**
+     * Spring Boot and springCloudVersion must be compatible.
+     * 2.6.x, 2.7.x (Starting with 2021.0.3) = 2021.0.x
+     * ref : https://spring.io/projects/spring-cloud
+     */
+    // Feign
+    set('springCloudVersion', '2021.0.3')
 }
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
-	implementation 'com.amazonaws:aws-java-sdk-s3'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
+    implementation 'com.amazonaws:aws-java-sdk-s3'
 
-	// crawling
-	implementation 'org.jsoup:jsoup:1.15.3'
+    // crawling
+    implementation 'org.jsoup:jsoup:1.15.3'
 
-	// batch
-	implementation 'org.springframework.boot:spring-boot-starter-batch'
+    // batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
 
-	// scheduler
-	implementation 'org.springframework.boot:spring-boot-starter-quartz'
+    // scheduler
+    implementation 'org.springframework.boot:spring-boot-starter-quartz'
 
-	// gpt
-	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+    // gpt
+    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
 
-	// random util
-	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
+	  // random util
+	  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
 
-	// 엑셀
-	implementation 'org.apache.poi:poi:3.15'
-	implementation 'org.apache.poi:poi-ooxml:3.15'
+	  // 엑셀
+	  implementation 'org.apache.poi:poi:3.15'
+	  implementation 'org.apache.poi:poi-ooxml:3.15'
 
-	// json
-	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    // json
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
-	// jwt
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
-	// feign client
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    // feign client
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
-	//querydsl 추가
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+    //querydsl 추가
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 
-	// database
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    // database
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
-	// swagger
-	implementation 'io.springfox:springfox-boot-starter:3.0.0'
-	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+    // swagger
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 
-	// firebase
-	implementation 'com.google.firebase:firebase-admin:9.1.1'
+    // firebase
+    implementation 'com.google.firebase:firebase-admin:9.1.1'
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	//테스트에서 lombok 사용
-	testCompileOnly 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
+    //테스트에서 lombok 사용
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 jar {
-	enabled = false
+    enabled = false
 }
 //querydsl 추가 시작
 def querydslDir = "$buildDir/generated/querydsl"
 querydsl {
-	jpa = true
-	querydslSourcesDir = querydslDir
+    jpa = true
+    querydslSourcesDir = querydslDir
 }
 sourceSets {
-	main.java.srcDir querydslDir
+    main.java.srcDir querydslDir
 }
 configurations {
-	querydsl.extendsFrom compileClasspath
+    querydsl.extendsFrom compileClasspath
 }
 compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
+    options.annotationProcessorPath = configurations.querydsl
 }

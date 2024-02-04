@@ -35,12 +35,12 @@ public class PolicyRecommender {
 
         Policy maxBenefitMoneyPolicy = recommendPolicy.stream()
                 .filter(p -> p.getSupportPolicyTypes().contains((SupportPolicyType.MONEY)))
-                .max(Comparator.comparingInt(Policy::getBenefit))
+                .max(Comparator.comparing(Policy::getBenefit))
                 .orElse(null);
 
         Policy maxBenefitLoansPolicy = recommendPolicy.stream()
                 .filter(p -> p.getSupportPolicyTypes().contains(SupportPolicyType.LOANS))
-                .max(Comparator.comparingInt(Policy::getBenefit))
+                .max(Comparator.comparing(Policy::getBenefit))
                 .orElse(null);
 
         LocalDate now = LocalDate.now();
