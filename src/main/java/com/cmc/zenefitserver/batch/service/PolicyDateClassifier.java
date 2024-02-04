@@ -41,6 +41,8 @@ public class PolicyDateClassifier {
 
         LocalDate now = LocalDate.now();
 
+        final String year = now.getYear() + "년";
+
         final String newUrl = URL + policy.getBizId();
 
         Document document = null;
@@ -88,10 +90,10 @@ public class PolicyDateClassifier {
                 while (matcher.find()) {
                     String[] splited = matcher.group().split("~");
                     StringBuilder sttDate = new StringBuilder();
-                    sttDate.append("2023년");
+                    sttDate.append(year);
                     sttDate.append(splited[0]);
                     StringBuilder endDate = new StringBuilder();
-                    endDate.append("2023년");
+                    endDate.append(year);
                     endDate.append(splited[1]);
 
                     applyPeriods.add(ApplyPeriod.builder().sttDate(LocalDate.parse(sttDate, formatter)).endDate(LocalDate.parse(endDate, formatter)).build());
@@ -115,8 +117,8 @@ public class PolicyDateClassifier {
                     for (int i = 1; i <= 12; i++) {
                         StringBuilder sttDate = new StringBuilder();
                         StringBuilder endDate = new StringBuilder();
-                        sttDate.append("2023년");
-                        endDate.append("2023년");
+                        sttDate.append(year);
+                        endDate.append(year);
                         String month = String.format("%02d", i);
                         sttDate.append(month + "월").append(splited[0]);
                         endDate.append(month + "월").append(splited[1]);
@@ -126,7 +128,7 @@ public class PolicyDateClassifier {
                 }
                 policy.updatePolicyDateType(PolicyDateType.PERIOD);
                 updateApplySttDateAndApplyEndDate(policy, applyPeriods, now);
-                policy.updateApplyPeriods(applyPeriods);
+//                policy.updateApplyPeriods(applyPeriods);
                 break;
             }
 
@@ -148,11 +150,11 @@ public class PolicyDateClassifier {
             if (applyPeriods.size() > 0) {
                 policy.updatePolicyDateType(PolicyDateType.PERIOD);
                 updateApplySttDateAndApplyEndDate(policy, applyPeriods, now);
-                policy.updateApplyPeriods(applyPeriods);
+//                policy.updateApplyPeriods(applyPeriods);
                 break;
             }
 
-            log.debug("policyXXId : {}", policy.getId());
+            log.debug("policyId : {}", policy.getId());
             log.debug("businessApplicationPeriodText : {}", businessApplicationPeriodText);
         }
 
@@ -167,7 +169,6 @@ public class PolicyDateClassifier {
 
         if (period != null) {
             policy.updateApplySttDateAndApplyEndDate(period.getSttDate(), period.getEndDate());
-
         }
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,7 @@ import javax.persistence.EntityManagerFactory;
 public class PolicyClassifyDateJobConfig {
 
     private static final String JOB_NAME = "PolicyClassifyDateJob";
-    private static final String STEP_NAME = "PolicyCreateStep";
+    private static final String STEP_NAME = "PolicyClassifyDateStep";
     private static final int CHUNK_SIZE = 100;
 
     private final JobBuilderFactory jobBuilderFactory;
@@ -55,21 +56,21 @@ public class PolicyClassifyDateJobConfig {
      * 2.	수혜 금액 분류하기
      */
 
-    @Bean
-    public Job job() {
+//    @Bean
+    public Job policyClassifyDateJob() {
         return jobBuilderFactory.get(JOB_NAME)
-                .start(policyClassifyDateJob())
+                .start(policyClassifyDateStep())
                 .incrementer(new RunIdIncrementer())
                 .build();
     }
 
     @Bean
-    public Step policyClassifyDateJob() {
-        return stepBuilderFactory.get("PolicyClassifyDateJob")
+    public Step policyClassifyDateStep() {
+        return stepBuilderFactory.get(STEP_NAME)
                 .<Policy, Policy>chunk(CHUNK_SIZE)
                 .reader(policyPagingItemReader())
                 .processor(policyDateItemProcessor())
-                .writer(policyPagingItemWriter())
+                .writer(policyPagingDateItemWriter())
                 .build();
 
     }
@@ -79,9 +80,11 @@ public class PolicyClassifyDateJobConfig {
         return new PolicyDateItemProcessor(policyDateClassifier);
     }
 
-    private ItemWriter<Policy> policyPagingItemWriter() {
-        return items -> {
-        };
+    @Bean
+    public JpaItemWriter<Policy> policyPagingDateItemWriter() {
+        JpaItemWriter<Policy> policyJpaItemWriter = new JpaItemWriter<>();
+        policyJpaItemWriter.setEntityManagerFactory(entityManagerFactory);
+        return policyJpaItemWriter;
     }
 
     private ItemReader<? extends Policy> policyPagingItemReader() {
