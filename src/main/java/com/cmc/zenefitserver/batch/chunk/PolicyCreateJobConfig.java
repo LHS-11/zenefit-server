@@ -2,6 +2,7 @@ package com.cmc.zenefitserver.batch.chunk;
 
 import com.cmc.zenefitserver.batch.service.YouthPolicyService;
 import com.cmc.zenefitserver.domain.policy.application.*;
+import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.YouthPolicy;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class PolicyCreateJobConfig {
 
     private static final String JOB_NAME = "PolicyCreateJob";
     private static final String STEP_NAME = "PolicyCreateStep";
-    private static final int CHUNK_SIZE = 100;
+    private static final int CHUNK_SIZE = 500;
 
     private final JobBuilderFactory jobBuilderFactory;
 
@@ -43,6 +44,8 @@ public class PolicyCreateJobConfig {
     private final PolicySplzClassifier policySplzClassifier;
 
     private final PolicyMethodClassifier policyMethodClassifier;
+
+    private final PolicyRepository policyRepository;
 
     /**
      * Job 1 - 완료
@@ -63,35 +66,17 @@ public class PolicyCreateJobConfig {
      * 2.	수혜 금액 분류하기
      */
 
-    @Bean
-    public Job job() {
+//    @Bean
+    public Job policyCreateJob() {
         return jobBuilderFactory.get(JOB_NAME)
-                .start(policyCreateJob())
+                .start(policyCreateStep())
 //                .next(policyClassifyDateJob())
                 .incrementer(new RunIdIncrementer())
                 .build();
     }
 
-//    @Bean
-//    public Step policyClassifyDateJob() {
-//        return stepBuilderFactory.get("PolicyClassifyDateJob")
-//                .<Policy, Policy>chunk(CHUNK_SIZE)
-//                .reader(policyPagingItemReader())
-//                .build();
-//    }
-//
-//    private ItemReader<? extends Policy> policyPagingItemReader() {
-//        return new JpaPagingItemReaderBuilder<Policy>()
-//                .name("JpaPagingPolicyItemReader")
-//                .entityManagerFactory(entityManagerFactory)
-//                .pageSize(CHUNK_SIZE)
-//                .queryString("select p from Policy p")
-//                .build();
-//    }
-//
-
     @Bean
-    public Step policyCreateJob() {
+    public Step policyCreateStep() {
         return stepBuilderFactory.get(STEP_NAME)
                 .<YouthPolicy, Policy>chunk(CHUNK_SIZE)
                 .reader(youthPolicyPagingItemReader())
@@ -110,7 +95,7 @@ public class PolicyCreateJobConfig {
 
     @Bean
     public YouthPolicyItemProcessor youthPolicyItemProcessor() {
-        return new YouthPolicyItemProcessor(policyAgeClassifier, policyEmpmClassifier, policyEduClassifier, policySplzClassifier, policyMethodClassifier);
+        return new YouthPolicyItemProcessor(policyAgeClassifier, policyEmpmClassifier, policyEduClassifier, policySplzClassifier, policyMethodClassifier, policyRepository);
     }
 
     @Bean

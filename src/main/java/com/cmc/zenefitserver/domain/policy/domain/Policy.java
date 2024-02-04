@@ -10,6 +10,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -129,7 +130,7 @@ public class Policy extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "policy", fetch = FetchType.LAZY)
     private Set<UserPolicy> userPolicies = new HashSet<>();
 
-    private int benefit; // 수혜 금액
+    private BigDecimal benefit; // 수혜 금액
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<ApplyPeriod> applyPeriods = new ArrayList<>();
@@ -184,12 +185,34 @@ public class Policy extends BaseEntity implements Serializable {
         this.policyDateType = policyDateType;
     }
 
-    public void updateBenefit(int benefit){
+    public void updateBenefit(BigDecimal benefit) {
         this.benefit = benefit;
     }
 
+    public void updateYouthPolicyInfo(YouthPolicy youthPolicy) {
+        this.bizId = youthPolicy.getBizId();
+        this.policyName = youthPolicy.getPolyBizSjnm();
+        this.policyIntroduction = youthPolicy.getPolyItcnCn();
+        this.operatingAgencyName = youthPolicy.getCnsgNmor();
+        this.applicationPeriodContent = youthPolicy.getRqutPrdCn();
+        this.organizationType = youthPolicy.getPolyBizTy();
+        this.supportContent = youthPolicy.getSporCn();
+        this.ageInfo = youthPolicy.getAgeInfo();
+        this.employmentStatusContent = youthPolicy.getEmpmSttsCn();
+        this.specializedFieldContent = youthPolicy.getSplzRlmRqisCn();
+        this.educationalRequirementContent = youthPolicy.getAccrRqisCn();
+        this.residentialAndIncomeRequirementContent = youthPolicy.getPrcpCn();
+        this.additionalClauseContent = youthPolicy.getAditRscn();
+        this.eligibilityTargetContent = youthPolicy.getPrcpLmttTrgtCn();
+        this.applicationSiteAddress = youthPolicy.getRqutUrla();
+        this.referenceSiteUrlAddress = youthPolicy.getRfcSiteUrla1();
+        this.applicationProcedureContent = youthPolicy.getRqutProcCn();
+        this.submissionDocumentContent = youthPolicy.getPstnPaprCn();
+        this.policyCode = PolicyCode.findPolicyCode(youthPolicy.getPolyRlmCd());
+    }
+
     @Builder
-    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, AreaCode areaCode, CityCode cityCode, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, String policyLogo, String policyApplyDenialReason, String applyStatus, LocalDate applySttDate, LocalDate applyEndDate, Set<UserPolicy> userPolicies, int benefit, String remark, List<ApplyPeriod> applyPeriods, PolicyDateType policyDateType) {
+    public Policy(String bizId, String policyName, String policyIntroduction, String operatingAgencyName, String applicationPeriodContent, String organizationType, String supportContent, String ageInfo, String employmentStatusContent, String specializedFieldContent, String educationalRequirementContent, String residentialAndIncomeRequirementContent, String additionalClauseContent, String eligibilityTargetContent, String duplicatePolicyCode, String applicationSiteAddress, String referenceSiteUrlAddress, String applicationProcedureContent, String submissionDocumentContent, int minAge, int maxAge, AreaCode areaCode, CityCode cityCode, Set<JobType> jobTypes, Set<EducationType> educationTypes, Set<PolicySplzType> policySplzTypes, PolicyCode policyCode, String policyLogo, String policyApplyDenialReason, String applyStatus, LocalDate applySttDate, LocalDate applyEndDate, Set<UserPolicy> userPolicies, BigDecimal benefit, String remark, List<ApplyPeriod> applyPeriods, PolicyDateType policyDateType) {
         this.bizId = bizId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
@@ -225,5 +248,4 @@ public class Policy extends BaseEntity implements Serializable {
         this.applyPeriods = applyPeriods;
         this.policyDateType = policyDateType;
     }
-
 }
