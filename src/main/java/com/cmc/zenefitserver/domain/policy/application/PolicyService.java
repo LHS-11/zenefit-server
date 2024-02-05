@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -194,8 +195,7 @@ public class PolicyService {
     public List<HomeInfoResponseDto.HomePolicyInfo> recommendPolicy(User user) {
         Map<SupportPolicyType, Policy> supportPolicyTypePolicyMap = policyRecommender.recommendPolicy(user);
 
-        return supportPolicyTypePolicyMap.keySet()
-                .stream()
+        return Arrays.stream(SupportPolicyType.values())
                 .map(supportPolicyType -> {
                     Policy policy = supportPolicyTypePolicyMap.get(supportPolicyType);
 
