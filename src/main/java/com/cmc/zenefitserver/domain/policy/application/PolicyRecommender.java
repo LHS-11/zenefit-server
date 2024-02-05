@@ -47,7 +47,7 @@ public class PolicyRecommender {
 
         Policy mostImminentEndDateSocialServicePolicy = recommendPolicy.stream()
                 .filter(p -> p.getSupportPolicyTypes().contains(SupportPolicyType.SOCIAL_SERVICE))
-                .filter(p -> p.getApplyEndDate().isAfter(now))
+                .filter(p -> p.getApplyEndDate() != null && p.getApplyEndDate().isAfter(now))
                 .min(Comparator.comparing(p -> ChronoUnit.DAYS.between(now, p.getApplyEndDate())))
                 .orElse(null);
 
@@ -64,7 +64,6 @@ public class PolicyRecommender {
         if (mostImminentEndDateSocialServicePolicy != null) {
             result.put(SupportPolicyType.SOCIAL_SERVICE, mostImminentEndDateSocialServicePolicy);
         }
-
         if (mostImminentEndDateSocialServicePolicy == null) {
             mostImminentEndDateSocialServicePolicy = recommendPolicy.stream()
                     .filter(p -> p.getSupportPolicyTypes().contains(SupportPolicyType.SOCIAL_SERVICE))
@@ -72,6 +71,7 @@ public class PolicyRecommender {
                     .orElse(null);
             result.put(SupportPolicyType.SOCIAL_SERVICE, mostImminentEndDateSocialServicePolicy);
         }
+
 
         return result;
     }
@@ -147,15 +147,21 @@ public class PolicyRecommender {
         Set<JobType> policyJobTypes = policy.getJobTypes();
         Set<JobType> userJobTypes = user.getJobs();
         userJobTypes.retainAll(policyJobTypes);
-        return userJobTypes.isEmpty() && !(policy.getJobTypes().contains(JobType.UNLIMITED));
+        return userJobTypes.isEmpty() && (!(policy.getJobTypes().contains(JobType.UNLIMITED) || policy.getJobTypes() == null));
     }
 
     private static boolean isEducationDenial(User user, Policy policy) {
         return !policy.getEducationTypes().contains(user.getEducationType()) && !policy.getEducationTypes().contains(EducationType.UNLIMITED);
     }
 
+    /**
+     *  1. 정책의 지역코드가 중앙부처가 아니어야함
+     *  1-1. 정책의 지역코드와 유저의 지역코드가 틀려야함
+     *  1-2. 정책의
+     */
     private static boolean isLocalDenial(User user, Policy policy) {
-        return user.getAddress().getAreaCode() != policy.getAreaCode()
-                || (policy.getCityCode() != null && policy.getCityCode() != user.getAddress().getCityCode());
+        return !policy.getAreaCode().equals(AreaCode.CENTRAL_GOVERNMENT)
+                && (user.getAddress().getAreaCode() != policy.getAreaCode()
+                || (policy.getCityCode() != null && policy.getCityCode() != user.getAddress().getCityCode()));
     }
 }
