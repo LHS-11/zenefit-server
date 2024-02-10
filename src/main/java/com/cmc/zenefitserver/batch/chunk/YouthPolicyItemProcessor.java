@@ -1,5 +1,9 @@
 package com.cmc.zenefitserver.batch.chunk;
 
+import com.cmc.zenefitserver.batch.service.PolicyAgeClassifier;
+import com.cmc.zenefitserver.batch.service.PolicyEduClassifier;
+import com.cmc.zenefitserver.batch.service.PolicyEmpmClassifier;
+import com.cmc.zenefitserver.batch.service.PolicySplzClassifier;
 import com.cmc.zenefitserver.domain.policy.application.*;
 import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
@@ -42,8 +46,8 @@ public class YouthPolicyItemProcessor implements ItemProcessor<YouthPolicy, Poli
                 policy.updateJobTypes(policyEmpmClassifier.mapToJobTypesFromEmpmContent(item.getEmpmSttsCn()));
                 policy.updateEducationTypes(policyEduClassifier.mapToEducationTypeFromEduContent(item.getAccrRqisCn()));
                 policy.updateSplzTypes(policySplzClassifier.mapToSplzCodeFromSplzContent(item.getSplzRlmRqisCn()));
-                policyMethodClassifier.classify(policy);
                 policyAgeClassifier.setMaxAgeAndMinAge(policy);
+//                policyMethodClassifier.classify(policy);
                 return null;
             }
         }
@@ -80,8 +84,8 @@ public class YouthPolicyItemProcessor implements ItemProcessor<YouthPolicy, Poli
         policy.updateJobTypes(policyEmpmClassifier.mapToJobTypesFromEmpmContent(youthPolicy.getEmpmSttsCn()));
         policy.updateEducationTypes(policyEduClassifier.mapToEducationTypeFromEduContent(youthPolicy.getAccrRqisCn()));
         policy.updateSplzTypes(policySplzClassifier.mapToSplzCodeFromSplzContent(youthPolicy.getSplzRlmRqisCn()));
-        policyMethodClassifier.classify(policy);
         policyAgeClassifier.setMaxAgeAndMinAge(policy);
+//        policyMethodClassifier.classify(policy);
         return policy;
     }
 }

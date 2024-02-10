@@ -15,6 +15,5 @@ public class PolicyMethodClassifier {
     public void classify(Policy policy) {
 
         PolicyMethodType.findPolicyMethodTypeByKeywords(policy.getApplicationProcedureContent());
-//        System.out.println("policyID : " + policy.getId() + " 방법 = " + policyMethodTypeByKeywords.getDescription());
     }
 }

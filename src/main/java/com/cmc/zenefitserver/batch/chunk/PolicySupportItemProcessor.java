@@ -1,8 +1,7 @@
 package com.cmc.zenefitserver.batch.chunk;
 
-//import com.cmc.zenefitserver.batch.service.PolicyDateClassifier;
 import com.cmc.zenefitserver.batch.service.PolicySupportContentClassifier;
-import com.cmc.zenefitserver.domain.policy.application.PolicyBenefitClassifier;
+import com.cmc.zenefitserver.batch.service.PolicyBenefitClassifier;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.ItemProcessor;

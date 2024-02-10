@@ -1,4 +1,4 @@
-package com.cmc.zenefitserver.domain.policy.application;
+package com.cmc.zenefitserver.batch.service;
 
 import com.cmc.zenefitserver.domain.user.domain.EducationType;
 import com.cmc.zenefitserver.domain.user.domain.JobType;
