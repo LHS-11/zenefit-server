@@ -151,8 +151,7 @@ public class UserService {
         String characterImageUrl = getCharactereUrl(gender, findCharacter);
 
         // 지원 정책 유형에 따른 추천 정책 조회 - recommendPolicy
-//        List<HomeInfoResponseDto.HomePolicyInfo> recommendPolicyInfoList = policyService.recommendPolicy(user);
-        List<HomeInfoResponseDto.HomePolicyInfo> recommendPolicyInfoList = getRecommendPolicyDummy();
+        List<HomeInfoResponseDto.HomePolicyInfo> recommendPolicyInfoList = policyService.recommendPolicy(user);
 
         // 지원 정책 유형에 따른 신청 마감일에 임박한 정책 조회
         LocalDate currentTime = LocalDate.now();
