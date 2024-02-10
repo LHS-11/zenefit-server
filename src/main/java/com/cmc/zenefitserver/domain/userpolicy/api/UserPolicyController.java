@@ -2,9 +2,9 @@ package com.cmc.zenefitserver.domain.userpolicy.api;
 
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.domain.userpolicy.application.UserPolicyService;
-import com.cmc.zenefitserver.domain.userpolicy.dto.ApplyPolicyListResponseDto;
-import com.cmc.zenefitserver.domain.userpolicy.dto.InterestPolicyListResponseDto;
-import com.cmc.zenefitserver.domain.userpolicy.dto.PolicySizeResponseDto;
+import com.cmc.zenefitserver.domain.userpolicy.dto.response.ApplyPolicyListResponseDto;
+import com.cmc.zenefitserver.domain.userpolicy.dto.response.InterestPolicyListResponseDto;
+import com.cmc.zenefitserver.domain.userpolicy.dto.response.PolicySizeResponseDto;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
 import io.swagger.annotations.Api;

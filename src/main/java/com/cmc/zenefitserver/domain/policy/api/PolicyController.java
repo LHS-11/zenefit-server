@@ -2,7 +2,9 @@ package com.cmc.zenefitserver.domain.policy.api;
 
 import com.cmc.zenefitserver.domain.policy.application.PolicyService;
 import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
-import com.cmc.zenefitserver.domain.policy.dto.*;
+import com.cmc.zenefitserver.domain.policy.dto.request.PolicyListRequestDto;
+import com.cmc.zenefitserver.domain.policy.dto.request.SearchPolicyListRequestDto;
+import com.cmc.zenefitserver.domain.policy.dto.response.*;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
@@ -40,7 +42,7 @@ public class PolicyController {
     @PostMapping("/search")
     @Operation(summary = "정책 검색 API", description = "키워드를 사용하여 해당하는 정책 목록을 무한 스크롤해서 보여줍니다.")
     public CommonResponse<PolicyListResponseDto> getSearchPolices(@AuthUser User user, @RequestBody SearchPolicyListRequestDto policyListRequestDto, @RequestParam int page, @RequestParam int size, @RequestParam String sortField,
-                                                                             @RequestParam String sortOrder) {
+                                                                  @RequestParam String sortOrder) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortField);
         return CommonResponse.success(policyService.getSearchPolicyList(user, policyListRequestDto, page, size, sort));
     }

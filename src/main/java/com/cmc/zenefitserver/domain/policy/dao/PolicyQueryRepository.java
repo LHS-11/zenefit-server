@@ -4,7 +4,7 @@ import static com.cmc.zenefitserver.domain.policy.domain.QPolicy.policy;
 import static com.cmc.zenefitserver.domain.userpolicy.domain.QUserPolicy.userPolicy;
 
 import com.cmc.zenefitserver.domain.policy.domain.enums.*;
-import com.cmc.zenefitserver.domain.policy.dto.PolicyListInfoDto;
+import com.cmc.zenefitserver.domain.policy.dto.response.PolicyListInfoDto;
 import com.cmc.zenefitserver.domain.user.domain.*;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;

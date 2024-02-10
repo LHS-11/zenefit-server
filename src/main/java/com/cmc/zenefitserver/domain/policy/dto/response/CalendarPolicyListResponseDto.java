@@ -1,4 +1,4 @@
-package com.cmc.zenefitserver.domain.policy.dto;
+package com.cmc.zenefitserver.domain.policy.dto.response;
 
 import com.cmc.zenefitserver.domain.policy.domain.enums.DenialReasonType;
 import io.swagger.annotations.ApiModel;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @ToString
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ApiModel(description = "특정 날짜에 따른 정책 리스트 검색 API response")
 public class CalendarPolicyListResponseDto {
 

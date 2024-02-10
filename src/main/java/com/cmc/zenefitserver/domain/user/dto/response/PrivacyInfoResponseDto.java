@@ -1,17 +1,14 @@
-package com.cmc.zenefitserver.domain.user.dto;
+package com.cmc.zenefitserver.domain.user.dto.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @ToString
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ApiModel(description = "약관 및 개인정보 처리 동의 조회 API response")
 public class PrivacyInfoResponseDto {
 

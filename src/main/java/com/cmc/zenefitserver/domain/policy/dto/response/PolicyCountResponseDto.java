@@ -1,16 +1,13 @@
-package com.cmc.zenefitserver.domain.policy.dto;
+package com.cmc.zenefitserver.domain.policy.dto.response;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @ToString
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ApiModel(description = "지원할 수 있는 정책의 수와 유저 닉네임 조회 API response")
 public class PolicyCountResponseDto {
 

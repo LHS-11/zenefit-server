@@ -1,4 +1,4 @@
-package com.cmc.zenefitserver.domain.userpolicy.dto;
+package com.cmc.zenefitserver.domain.userpolicy.dto.response;
 
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import io.swagger.annotations.ApiModel;
@@ -8,13 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @ToString
 @Getter
 @NoArgsConstructor
 @ApiModel(description = "관심 정책 리스트 정보 조회 API response")
-public class ApplyPolicyListResponseDto {
+public class InterestPolicyListResponseDto {
 
     @ApiModelProperty(notes = "정책 ID", example = "12")
     private Long policyId;
@@ -28,25 +28,25 @@ public class ApplyPolicyListResponseDto {
     @ApiModelProperty(notes = "정책 로고", example = "기관 로고 url")
     private String policyLogo;
 
-    @ApiModelProperty(notes = "정책 수혜 금액", example = "1000000")
-    private BigDecimal benefit;
+    @ApiModelProperty(notes = "정책 신청 마감일", example = "2023-12-30")
+    private LocalDate applyEndDate;
 
     @Builder
-    public ApplyPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, String policyLogo, BigDecimal benefit) {
+    public InterestPolicyListResponseDto(Long policyId, String policyName, String policyIntroduction, String policyLogo, LocalDate applyEndDate) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyIntroduction = policyIntroduction;
         this.policyLogo = policyLogo;
-        this.benefit = benefit;
+        this.applyEndDate = applyEndDate;
     }
 
-    public static ApplyPolicyListResponseDto of(Policy policy) {
-        return ApplyPolicyListResponseDto.builder()
+    public static InterestPolicyListResponseDto of(Policy policy) {
+        return InterestPolicyListResponseDto.builder()
                 .policyId(policy.getId())
                 .policyName(policy.getPolicyName())
                 .policyLogo(policy.getPolicyLogo())
                 .policyIntroduction(policy.getPolicyIntroduction())
-                .benefit(policy.getBenefit())
+                .applyEndDate(policy.getApplyEndDate())
                 .build();
     }
 }
