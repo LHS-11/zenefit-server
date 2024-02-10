@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +30,8 @@ public class PolicyController {
     // 정책 리스트 조회 API
     @PostMapping
     @Operation(summary = "정책 목록 조회 API", description = "정책 목록을 무한 스크롤해서 보여줍니다.")
-    public CommonResponse<Page<PolicyListResponseDto>> getPolices(@AuthUser User user, @RequestBody PolicyListRequestDto policyListRequestDto, @RequestParam int page, @RequestParam int size, @RequestParam String sortField,
-                                                                  @RequestParam String sortOrder) {
+    public CommonResponse<Page<PolicyListInfoDto>> getPolices(@AuthUser User user, @RequestBody PolicyListRequestDto policyListRequestDto, @RequestParam int page, @RequestParam int size, @RequestParam String sortField,
+                                                              @RequestParam String sortOrder) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortField);
         return CommonResponse.success(policyService.getPolicyList(user, policyListRequestDto, page, size, sort));
     }
@@ -40,8 +39,8 @@ public class PolicyController {
     // 정책 검색 API
     @PostMapping("/search")
     @Operation(summary = "정책 검색 API", description = "키워드를 사용하여 해당하는 정책 목록을 무한 스크롤해서 보여줍니다.")
-    public CommonResponse<Slice<PolicyListResponseDto>> getSearchPolices(@AuthUser User user, @RequestBody SearchPolicyListRequestDto policyListRequestDto, @RequestParam int page, @RequestParam int size, @RequestParam String sortField,
-                                                                         @RequestParam String sortOrder) {
+    public CommonResponse<PolicyListResponseDto> getSearchPolices(@AuthUser User user, @RequestBody SearchPolicyListRequestDto policyListRequestDto, @RequestParam int page, @RequestParam int size, @RequestParam String sortField,
+                                                                             @RequestParam String sortOrder) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortOrder), sortField);
         return CommonResponse.success(policyService.getSearchPolicyList(user, policyListRequestDto, page, size, sort));
     }

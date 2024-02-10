@@ -32,7 +32,7 @@ public class PolicySplzClassifier {
         if (splzContent.contains("농업인") || splzContent.contains("농업") || splzContent.contains("창업농") || splzContent.contains("농어업") || splzContent.contains("영농종사자")) {
             splzContentSplzCodes.add(PolicySplzType.FARMER);
         }
-        if (splzContent.contains("제한없음") || splzContent.contains("null") || splzContent.contains("제한 없음")) {
+        if (splzContent.contains("제한없음") || splzContent.contains("null") || splzContent.contains("제한 없음") || splzContent.equals("-")) {
             splzContentSplzCodes.add(PolicySplzType.UNLIMITED);
         }
         if (splzContent.contains("창업자") || splzContent.contains("스타트업") || splzContent.contains("예비창업자")

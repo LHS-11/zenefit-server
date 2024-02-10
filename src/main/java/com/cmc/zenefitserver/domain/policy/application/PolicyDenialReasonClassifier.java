@@ -1,9 +1,11 @@
 package com.cmc.zenefitserver.domain.policy.application;
 
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
+import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.DenialReasonType;
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyDateType;
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicySplzType;
+import com.cmc.zenefitserver.domain.user.domain.EducationType;
 import com.cmc.zenefitserver.domain.user.domain.Gender;
 import com.cmc.zenefitserver.domain.user.domain.JobType;
 import com.cmc.zenefitserver.domain.user.domain.User;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -23,7 +26,6 @@ public class PolicyDenialReasonClassifier {
         if (isDateDenial(user, policy)) {
             return DenialReasonType.DATE;
         }
-
         // 장애인 12
         if (isDisabledDenial(user, policy)) {
             return DenialReasonType.SPECIAL_CONTENT_DISABLED;
@@ -75,8 +77,9 @@ public class PolicyDenialReasonClassifier {
         LocalDate now = LocalDate.now();
         // 1. 현재 시각이 신청 시작일보다 이른 경우  or 2. 현재 시각이 신청 종료일보다 늦은 경우
         if (policy.getPolicyDateType() != null && policy.getPolicyDateType().equals(PolicyDateType.PERIOD)
-                && (policy.getApplyEndDate() != null && now.isAfter(policy.getApplyEndDate()))
-                || (policy.getApplySttDate() != null && now.isBefore(policy.getApplySttDate()))) {
+                && ((policy.getApplyEndDate() != null && now.isAfter(policy.getApplyEndDate()))
+                || (policy.getApplySttDate() != null && now.isBefore(policy.getApplySttDate()))
+                || (policy.getApplySttDate() == null && policy.getApplyEndDate() == null))) {
             return true;
         }
         return false;
@@ -118,16 +121,23 @@ public class PolicyDenialReasonClassifier {
     private static boolean isJobDenial(User user, Policy policy) {
         Set<JobType> policyJobTypes = policy.getJobTypes();
         Set<JobType> userJobTypes = user.getJobs();
-        userJobTypes.retainAll(policyJobTypes);
-        return userJobTypes.isEmpty();
+        userJobTypes.contains(policyJobTypes);
+//        userJobTypes.retainAll(policyJobTypes);
+        return Collections.disjoint(userJobTypes, policyJobTypes) && (!(policy.getJobTypes().contains(JobType.UNLIMITED) || policy.getJobTypes() == null));
     }
 
     private static boolean isEducationDenial(User user, Policy policy) {
-        return !policy.getEducationTypes().contains(user.getEducationType());
+        return !policy.getEducationTypes().contains(user.getEducationType()) && !policy.getEducationTypes().contains(EducationType.UNLIMITED);
     }
 
+    /**
+     * 1. 정책의 지역코드가 중앙부처가 아니어야함
+     * 1-1. 정책의 지역코드와 유저의 지역코드가 틀려야함
+     * 1-2. 정책의
+     */
     private static boolean isLocalDenial(User user, Policy policy) {
-        return user.getAddress().getAreaCode() != policy.getAreaCode()
-                || (policy.getCityCode() != null && policy.getCityCode() != user.getAddress().getCityCode());
+        return !policy.getAreaCode().equals(AreaCode.CENTRAL_GOVERNMENT)
+                && (user.getAddress().getAreaCode() != policy.getAreaCode()
+                || (policy.getCityCode() != null && policy.getCityCode() != user.getAddress().getCityCode()));
     }
 }

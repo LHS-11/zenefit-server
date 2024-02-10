@@ -16,28 +16,29 @@ import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class PolicyService {
 
+
+    private final RedisTemplate redisTemplate;
     private final PolicyQueryRepository policyQueryRepository;
     private final PolicyRepository policyRepository;
     private final UserPolicyRepository userPolicyRepository;
     private final PolicyRecommender policyRecommender;
 
     // 정책 리스트 조회 비즈니스 로직
-    public Page<PolicyListResponseDto> getPolicyList(User user, PolicyListRequestDto policyListRequestDto, int page, int size, Sort sort) {
+    public Page<PolicyListInfoDto> getPolicyList(User user, PolicyListRequestDto policyListRequestDto, int page, int size, Sort sort) {
         PageRequest pageable = PageRequest.of(page, size, sort);
-        return policyQueryRepository.searchByPaging(user, policyListRequestDto.getSupportPolicyType(), policyListRequestDto.getPolicyType(), null, pageable)
+
+        return policyQueryRepository.searchByAppliedPaging(user, policyListRequestDto.getSupportPolicyType(), policyListRequestDto.getPolicyType(), null, pageable)
                 .map(dto -> {
                     Policy findPolicy = policyRepository.findById(dto.getPolicyId()).get();
                     DenialReasonType denialReasonType = PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy);
@@ -50,18 +51,74 @@ public class PolicyService {
                 });
     }
 
-    public Page<PolicyListResponseDto> getSearchPolicyList(User user, SearchPolicyListRequestDto searchPolicyDto, int page, int size, Sort sort) {
-        PageRequest pageable = PageRequest.of(page, size, sort);
-        return policyQueryRepository.searchByPaging(user, searchPolicyDto.getSupportPolicyType(), searchPolicyDto.getPolicyType(), searchPolicyDto.getKeyword(), pageable)
+    public PolicyListResponseDto getSearchPolicyList(User user, SearchPolicyListRequestDto searchPolicyDto, int page, int size, Sort sort) {
+        PageRequest appliedPageable = PageRequest.of(page, size, sort);
+
+        // 유저가 신청 가능한 정책 가져오기
+        Page<PolicyListInfoDto> appliedPolicyListInfo = policyQueryRepository.searchByAppliedPaging(user, searchPolicyDto.getSupportPolicyType(), searchPolicyDto.getPolicyType(), searchPolicyDto.getKeyword(), appliedPageable)
                 .map(dto -> {
                     Policy findPolicy = policyRepository.findById(dto.getPolicyId()).get();
-                    dto.updatePolicyApplyDenialReason(PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy).getText());
+                    DenialReasonType denialReasonType = PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy);
+                    dto.updatePolicyApplyDenialReason(denialReasonType != null ? denialReasonType.getText() : null);
                     dto.updatePolicyDateTypeDescription(dto.getPolicyDateType());
                     dto.updateAreaCode(dto.getAreaCode());
                     dto.updateCityCode(dto.getCityCode());
                     dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
                     return dto;
                 });
+
+        // 신청할 수 있는 정책 총 페이지
+        int totalPages = appliedPolicyListInfo.getTotalPages();
+
+        // 신청할 수 있는 정책 리스트의 마지막 페이지 일때
+        if (totalPages - 1 < page) {
+
+            List<Long> savedPolicyIds = getPolicyIdsByRedis(user);
+
+            //신청 불가능한 정책 가져오기
+            PageRequest nonAppliedPageable = PageRequest.of(page - totalPages, size, sort);
+
+            Page<PolicyListInfoDto> nonAppliedPolicyListInfo = policyQueryRepository.searchByNonAppliedPaging(user, searchPolicyDto.getSupportPolicyType(), searchPolicyDto.getPolicyType(), searchPolicyDto.getKeyword(), nonAppliedPageable, savedPolicyIds)
+                    .map(dto -> {
+                        Policy findPolicy = policyRepository.findById(dto.getPolicyId()).get();
+                        DenialReasonType denialReasonType = PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy);
+                        dto.updatePolicyApplyDenialReason(denialReasonType != null ? denialReasonType.getText() : null);
+                        dto.updatePolicyDateTypeDescription(dto.getPolicyDateType());
+                        dto.updateAreaCode(dto.getAreaCode());
+                        dto.updateCityCode(dto.getCityCode());
+                        dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
+                        return dto;
+                    });
+
+            return PolicyListResponseDto.builder()
+                    .policyListInfoResponseDto(nonAppliedPolicyListInfo)
+                    .pageNumber(page)
+                    .last(nonAppliedPolicyListInfo.isLast())
+                    .build();
+        } else {
+            savePolicyIdsToRedis(user, appliedPolicyListInfo);
+        }
+
+        return PolicyListResponseDto.builder()
+                .policyListInfoResponseDto(appliedPolicyListInfo)
+                .pageNumber(page)
+                .last(false)
+                .build();
+
+    }
+
+    private void savePolicyIdsToRedis(User user, Page<PolicyListInfoDto> policyListResponseDtos) {
+        List<Long> policyIds = policyListResponseDtos.stream()
+                .map(PolicyListInfoDto::getPolicyId)
+                .collect(Collectors.toList());
+
+        redisTemplate.opsForSet().add(String.valueOf(user.getUserId()), policyIds.toArray(new Long[0]));
+//        redisTemplate.expire(user.getUserId(), 24, TimeUnit.HOURS);
+    }
+
+    private List<Long> getPolicyIdsByRedis(User user) {
+        Set<Long> policyIds = redisTemplate.opsForSet().members(user.getUserId().toString());
+        return policyIds.stream().collect(Collectors.toList());
     }
 
     public PolicyInfoResponseDto getPolicy(User user, Long policyId) {
