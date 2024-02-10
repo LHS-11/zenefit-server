@@ -10,7 +10,6 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableFeignClients
 @EnableJpaAuditing
 @EnableBatchProcessing
-@EnableRedisRepositories
 @SpringBootApplication
 public class ZenefitServerApplication {
 
