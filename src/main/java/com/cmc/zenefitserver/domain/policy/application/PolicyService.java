@@ -33,6 +33,7 @@ public class PolicyService {
     private final PolicyRepository policyRepository;
     private final UserPolicyRepository userPolicyRepository;
     private final PolicyRecommender policyRecommender;
+    private final PolicyImageClassifier policyImageClassifier;
 
     // 정책 리스트 조회 비즈니스 로직
     public Page<PolicyListInfoDto> getPolicyList(User user, PolicyListRequestDto policyListRequestDto, int page, int size, Sort sort) {
@@ -171,7 +172,7 @@ public class PolicyService {
                                 .policyId(policy.getId())
                                 .policyName(policy.getPolicyName())
                                 .applyProcedure("더미데이터 (방문신청, 우편신청, 홈페이지 신청등)")
-                                .policyAgencyLogo(policy.getPolicyLogo())
+                                .policyAgencyLogo(policyImageClassifier.getLogo(policy))
                                 .applySttDate(policy.getApplySttDate())
                                 .applyEndDate(policy.getApplyEndDate())
                                 .build();
@@ -203,7 +204,7 @@ public class PolicyService {
                             .policyId(policy.getId())
                             .policyName(policy.getPolicyName())
                             .applyProcedure("더미데이터 (방문신청, 우편신청, 홈페이지 신청등)")
-                            .policyAgencyLogo(policy.getPolicyLogo())
+                            .policyAgencyLogo(policyImageClassifier.getLogo(policy))
                             .applySttDate(policy.getApplySttDate())
                             .applyEndDate(policy.getApplyEndDate())
                             .build();
@@ -231,7 +232,7 @@ public class PolicyService {
                     RecommendPolicyInfoResponseDto.recommendPolicyInfo dto = RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
                             .policyId(policy.getId())
                             .policyName(policy.getPolicyName())
-                            .policyLogo(policy.getPolicyLogo())
+                            .policyLogo(policyImageClassifier.getLogo(policy))
                             .policyAreaCode(policy.getAreaCode().getName())
                             .policyCityCode(policy.getCityCode().getName())
                             .policyIntroduction(policy.getPolicyIntroduction())
@@ -259,7 +260,7 @@ public class PolicyService {
                     HomeInfoResponseDto.HomePolicyInfo dto = HomeInfoResponseDto.HomePolicyInfo.builder()
                             .policyId(policy.getId())
                             .policyName(policy.getPolicyName())
-                            .policyLogo(policy.getPolicyLogo())
+                            .policyLogo(policyImageClassifier.getLogo(policy))
                             .supportPolicyType(supportPolicyType)
                             .supportPolicyTypeName(supportPolicyType.getDescription())
                             .build();
