@@ -1,4 +1,4 @@
-package com.cmc.zenefitserver.domain.policy.dto;
+package com.cmc.zenefitserver.domain.policy.dto.response;
 
 import com.cmc.zenefitserver.domain.policy.domain.enums.*;
 import io.swagger.annotations.ApiModel;
@@ -124,18 +124,5 @@ public class PolicyListInfoDto {
         this.policyMethodType = findPolicyMethodType;
         this.policyMethodTypeDescription = findPolicyMethodType.getDescription();
     }
-
-//    public PolicyListResponseDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, int benefit, boolean applyFlag, boolean interestFlag) {
-//        this.policyId = policyId;
-//        this.policyName = policyName;
-//        this.policyLogo = policyLogo;
-//        this.policyIntroduction = policyIntroduction;
-//        this.areaCode = areaCode;
-//        this.cityCode = cityCode;
-//        this.policyDateType = policyDateType;
-//        this.benefit = benefit;
-//        this.applyFlag = applyFlag;
-//        this.interestFlag = interestFlag;
-//    }
 
 }

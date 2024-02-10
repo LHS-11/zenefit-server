@@ -1,4 +1,4 @@
-package com.cmc.zenefitserver.domain.user.dto;
+package com.cmc.zenefitserver.domain.user.dto.request;
 
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;

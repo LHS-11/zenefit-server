@@ -1,8 +1,8 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
 
-import com.cmc.zenefitserver.domain.user.dto.ModifyRequestDto;
-import com.cmc.zenefitserver.domain.user.dto.SignUpRequestDto;
+import com.cmc.zenefitserver.domain.user.dto.request.ModifyRequestDto;
+import com.cmc.zenefitserver.domain.user.dto.request.SignUpRequestDto;
 import com.cmc.zenefitserver.domain.userpolicy.domain.UserPolicy;
 import com.cmc.zenefitserver.global.auth.ProviderType;
 import com.cmc.zenefitserver.global.common.BaseEntity;

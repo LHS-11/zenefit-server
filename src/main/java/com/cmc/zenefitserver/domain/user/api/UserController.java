@@ -1,9 +1,10 @@
 package com.cmc.zenefitserver.domain.user.api;
 
 import com.cmc.zenefitserver.domain.user.application.UserService;
-import com.cmc.zenefitserver.domain.user.domain.PrivacyType;
 import com.cmc.zenefitserver.domain.user.domain.User;
-import com.cmc.zenefitserver.domain.user.dto.*;
+import com.cmc.zenefitserver.domain.user.dto.request.ModifyRequestDto;
+import com.cmc.zenefitserver.domain.user.dto.request.SignUpRequestDto;
+import com.cmc.zenefitserver.domain.user.dto.response.*;
 import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
@@ -17,8 +18,6 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.List;
-
-import static com.cmc.zenefitserver.global.error.ErrorCode.INVALID_NICKNAME;
 
 @Slf4j
 @Api(tags = "2. user", description = "user API")

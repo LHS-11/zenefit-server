@@ -1,9 +1,10 @@
-package com.cmc.zenefitserver.domain.user.dto;
+package com.cmc.zenefitserver.domain.user.dto.response;
 
 
 import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 
 //@ToString
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ApiModel(description = "홈 정보 조회 API response")
 public class HomeInfoResponseDto {
 

@@ -1,4 +1,4 @@
-package com.cmc.zenefitserver.domain.policy.dto;
+package com.cmc.zenefitserver.domain.policy.dto.response;
 
 import io.swagger.annotations.ApiModel;
 import lombok.*;

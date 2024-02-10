@@ -1,4 +1,4 @@
-package com.cmc.zenefitserver.domain.policy.dto;
+package com.cmc.zenefitserver.domain.policy.dto.request;
 
 
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyCode;
