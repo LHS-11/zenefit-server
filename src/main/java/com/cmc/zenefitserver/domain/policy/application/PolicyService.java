@@ -223,25 +223,26 @@ public class PolicyService {
 
         Map<SupportPolicyType, Policy> supportPolicyTypePolicyMap = policyRecommender.recommendPolicy(user);
 
-        List<RecommendPolicyInfoResponseDto.recommendPolicyInfo> recommendPolicyInfos = supportPolicyTypePolicyMap.keySet()
-                .stream()
+        List<RecommendPolicyInfoResponseDto.recommendPolicyInfo> recommendPolicyInfos = Arrays.stream(SupportPolicyType.values())
                 .map(supportPolicyType -> {
                     Policy policy = supportPolicyTypePolicyMap.get(supportPolicyType);
                     PolicyMethodType findPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(policy.getApplicationProcedureContent());
                     UserPolicy userPolicy = userPolicyRepository.findByUser_userIdAndPolicy_Id(user.getUserId(), policy.getId())
-                            .orElseGet(null);
+                            .orElse(null);
 
                     RecommendPolicyInfoResponseDto.recommendPolicyInfo dto = RecommendPolicyInfoResponseDto.recommendPolicyInfo.builder()
                             .policyId(policy.getId())
                             .policyName(policy.getPolicyName())
                             .policyLogo(policyImageClassifier.getLogo(policy))
                             .policyAreaCode(policy.getAreaCode().getName())
-                            .policyCityCode(policy.getCityCode().getName())
+                            .policyCityCode(policy.getAreaCode().getCities().size() != 0 ? policy.getCityCode().getName() : null)
+                            .supportType(supportPolicyType)
+                            .supportTypeDescription(supportPolicyType.getDescription())
                             .policyIntroduction(policy.getPolicyIntroduction())
                             .supportTypePolicyCnt(policyRepository.getPolicyCntBySupportPolicyType(supportPolicyType))
                             .benefit(10000000)
-                            .applyFlag(userPolicy.isApplyFlag())
-                            .interestFlag(userPolicy.isInterestFlag())
+                            .applyFlag(userPolicy == null ? false : userPolicy.isApplyFlag())
+                            .interestFlag(userPolicy == null ? false  : userPolicy.isInterestFlag())
                             .policyDateType(policy.getPolicyDateType().getDescription())
                             .policyMethodType(findPolicyMethodType)
                             .policyMethodTypeDescription(findPolicyMethodType.getDescription())
