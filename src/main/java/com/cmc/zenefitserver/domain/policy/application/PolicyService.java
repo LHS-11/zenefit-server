@@ -67,6 +67,7 @@ public class PolicyService {
                     dto.updateAreaCode(dto.getAreaCode());
                     dto.updateCityCode(dto.getCityCode());
                     dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
+                    dto.updatePolicyLogo(policyImageClassifier.getLogo(findPolicy));
                     return dto;
                 });
 
@@ -90,6 +91,7 @@ public class PolicyService {
                         dto.updateAreaCode(dto.getAreaCode());
                         dto.updateCityCode(dto.getCityCode());
                         dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
+                        dto.updatePolicyLogo(policyImageClassifier.getLogo(findPolicy));
                         return dto;
                     });
 

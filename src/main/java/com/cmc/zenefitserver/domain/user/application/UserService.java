@@ -2,6 +2,7 @@ package com.cmc.zenefitserver.domain.user.application;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.cmc.zenefitserver.domain.policy.application.PolicyImageClassifier;
 import com.cmc.zenefitserver.domain.policy.application.PolicyService;
 import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
@@ -49,6 +50,7 @@ public class UserService {
     private final JwtService jwtService;
     private final PolicyService policyService;
     private final NotificationRepository notificationRepository;
+    private final PolicyImageClassifier policyImageClassifier;
 
     // 회원가입
     @Transactional
@@ -170,7 +172,7 @@ public class UserService {
                     HomeInfoResponseDto.HomePolicyInfo homePolicyInfo = HomeInfoResponseDto.HomePolicyInfo.builder()
                             .policyId(findPolicy.getId())
                             .policyName(findPolicy.getPolicyName())
-                            .policyLogo(findPolicy.getPolicyLogo())
+                            .policyLogo(policyImageClassifier.getLogo(findPolicy))
                             .supportPolicyType(type)
                             .supportPolicyTypeName(type.getDescription())
                             .dueDate(ChronoUnit.DAYS.between(currentTime, findPolicy.getApplyEndDate()))
@@ -195,16 +197,18 @@ public class UserService {
 
     /**
      * 프로젝트 내에서 이미지 관리
+     *
      * @param gender
      * @param character
      * @return
      */
     public String getCharactereUrl(Gender gender, Character character) {
-        return gender.getUrl() + "-" + character.name().toLowerCase();
+        return gender.getUrl() + "-" + character.name().toLowerCase() + ".png";
     }
 
     /**
      * S3 에서 이미지 관리 ( url 이 계속 바껴 캐싱 처리 불가 )
+     *
      * @param gender
      * @param character
      * @return
