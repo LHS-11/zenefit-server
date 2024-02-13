@@ -33,7 +33,7 @@ public class NotificationScheduler {
 
 
 //    @Scheduled(cron = "0 0 0 * * *") // 매일 오전 12시에 실행
-    @Scheduled(cron = "0 0/2 * * * ?")// 매일 오전 12시에 실행
+    @Scheduled(cron = "0 0/10 * 1/1 * ?")// 10분 주기로 실행
     public void notifyUser() {
         System.out.println("LocalDate.now() = " + LocalDate.now());
         notifyUserBySttDate(LocalDate.now()); // 신청 시작일 기준
