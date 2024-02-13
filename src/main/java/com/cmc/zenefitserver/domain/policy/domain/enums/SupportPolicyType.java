@@ -10,9 +10,9 @@ import static com.cmc.zenefitserver.global.error.ErrorCode.NOT_FOUND_SUPPORT_POL
 @Getter
 public enum SupportPolicyType {
 
-    MONEY("현금", "money", "1"),
-    LOANS("대출", "loan", "2"),
-    SOCIAL_SERVICE("사회복지", "social service", "3");
+    MONEY("현금", "MONEY", "1"),
+    LOANS("대출", "LOANS", "2"),
+    SOCIAL_SERVICE("사회복지", "SOCIAL_SERVICE", "3");
 
     private String description;
     private String name;
