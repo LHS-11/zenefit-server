@@ -2,7 +2,7 @@ package com.cmc.zenefitserver.domain.user.application;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
-import com.cmc.zenefitserver.domain.policy.application.PolicyImageClassifier;
+import com.cmc.zenefitserver.domain.userpolicy.application.ImageClassifier;
 import com.cmc.zenefitserver.domain.policy.application.PolicyService;
 import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
@@ -50,7 +50,7 @@ public class UserService {
     private final JwtService jwtService;
     private final PolicyService policyService;
     private final NotificationRepository notificationRepository;
-    private final PolicyImageClassifier policyImageClassifier;
+    private final ImageClassifier imageClassifier;
 
     // 회원가입
     @Transactional
@@ -172,7 +172,7 @@ public class UserService {
                     HomeInfoResponseDto.HomePolicyInfo homePolicyInfo = HomeInfoResponseDto.HomePolicyInfo.builder()
                             .policyId(findPolicy.getId())
                             .policyName(findPolicy.getPolicyName())
-                            .policyLogo(policyImageClassifier.getLogo(findPolicy))
+                            .policyLogo(imageClassifier.getLogo(findPolicy))
                             .supportPolicyType(type)
                             .supportPolicyTypeName(type.getDescription())
                             .dueDate(ChronoUnit.DAYS.between(currentTime, findPolicy.getApplyEndDate()))
