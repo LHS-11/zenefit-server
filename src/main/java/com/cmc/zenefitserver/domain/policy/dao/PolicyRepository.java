@@ -36,9 +36,10 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
                     "LIMIT 1", nativeQuery = true)
     Policy findMostImminentNonAppliedPolicyNative(@Param("userId") Long userId, @Param("policyType") SupportPolicyType policyType, @Param("currentDate") LocalDate currentDate);
 
-
+    @EntityGraph(attributePaths = {"jobTypes", "educationTypes", "policySplzTypes", "supportPolicyTypes"})
     List<Policy> findAllByApplyEndDate(LocalDate endDate);
 
+    @EntityGraph(attributePaths = {"jobTypes", "educationTypes", "policySplzTypes", "supportPolicyTypes"})
     List<Policy> findAllByApplySttDate(LocalDate sttDate);
 
     List<Policy> findAllBySupportPolicyTypesContains(SupportPolicyType supportPolicyType);

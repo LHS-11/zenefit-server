@@ -53,21 +53,25 @@ public class FCMService {
         Map<String, String> data = new HashMap<>();
         data.put("policyId", policy.getId().toString());
 
-        MulticastMessage multicastMessage = MulticastMessage.builder()
-                .putAllData(data)
-                .putData("policyId", policy.getId().toString())
-                .setNotification(notification)
-                .setAndroidConfig(androidConfig(title, body))
-                .setApnsConfig(apnsConfig(title, body))
-                .addAllTokens(
-                        users.stream()
-                                .map(User::getFcmToken)
-                                .filter(Objects::nonNull)
-                                .collect(Collectors.toList())
-                )
-                .build();
+        List<String> fcmTokens = users.stream()
+                .map(User::getFcmToken)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
-        firebaseMessaging.sendMulticastAsync(multicastMessage);
+        MulticastMessage multicastMessage = null;
+
+        if (fcmTokens.size() > 0) {
+            multicastMessage = MulticastMessage.builder()
+                    .putAllData(data)
+                    .putData("policyId", policy.getId().toString())
+                    .setNotification(notification)
+                    .setAndroidConfig(androidConfig(title, body))
+                    .setApnsConfig(apnsConfig(title, body))
+                    .addAllTokens(fcmTokens)
+                    .build();
+
+            firebaseMessaging.sendMulticastAsync(multicastMessage);
+        }
     }
 
 
