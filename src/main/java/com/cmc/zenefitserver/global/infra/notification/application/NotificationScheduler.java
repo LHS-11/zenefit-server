@@ -12,17 +12,17 @@ import com.cmc.zenefitserver.global.infra.notification.dao.NotificationRepositor
 import com.cmc.zenefitserver.global.infra.notification.domain.Notification;
 import com.cmc.zenefitserver.global.infra.notification.domain.NotificationType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.net.URL;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class NotificationScheduler {
 
     private final PolicyRepository policyRepository;
@@ -32,8 +32,10 @@ public class NotificationScheduler {
     private final NotificationRepository notificationRepository;
 
 
-    @Scheduled(cron = "0 0 0 * * *") // 매일 오전 12시에 실행
+//    @Scheduled(cron = "0 0 0 * * *") // 매일 오전 12시에 실행
+    @Scheduled(cron = "0 0/3 * 1/1 * ? *") // 매일 오전 12시에 실행
     public void notifyUser() {
+        System.out.println("LocalDate.now() = " + LocalDate.now());
         notifyUserBySttDate(LocalDate.now()); // 신청 시작일 기준
         notifyUserByEndDate(LocalDate.now()); // 신청 종료일 기준
 //        notifyUserByApplyDate(LocalDate.now()); 신청일 기준
