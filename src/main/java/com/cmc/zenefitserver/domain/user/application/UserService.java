@@ -152,7 +152,7 @@ public class UserService {
         Character findCharacter = Character.getCharacter(sumPolicyCount);
 
         // 캐릭터 이미지
-        String characterImageUrl = getCharactereUrl(gender, findCharacter);
+        String characterImageUrl = imageClassifier.getCharacterImage(gender, findCharacter);
 
         // 지원 정책 유형에 따른 추천 정책 조회 - recommendPolicy
         List<HomeInfoResponseDto.HomePolicyInfo> recommendPolicyInfoList = policyService.recommendPolicy(user);

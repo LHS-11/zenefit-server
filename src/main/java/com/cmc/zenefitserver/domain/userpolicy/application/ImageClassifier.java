@@ -1,20 +1,24 @@
-package com.cmc.zenefitserver.domain.policy.application;
+package com.cmc.zenefitserver.domain.userpolicy.application;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
+import com.cmc.zenefitserver.domain.user.domain.Character;
+import com.cmc.zenefitserver.domain.user.domain.Gender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class PolicyImageClassifier {
+public class ImageClassifier {
 
     @Value("${s3.url}")
     private String s3Url;
+
+    public String getCharacterImage(Gender gender, Character character){
+        return s3Url + gender.getUrl() + "-" + character.name().toLowerCase() + ".png";
+    }
 
     public String getLogo(Policy policy) {
         if (policy.getAreaCode() != null && policy.getCityCode() != null) {

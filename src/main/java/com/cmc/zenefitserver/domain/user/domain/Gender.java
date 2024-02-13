@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 @Getter
 public enum Gender {
-    MALE("남성", "m", "https://giftyyy.shop/image/charcter/m"),
-    FEMALE("여성", "f", "https://giftyyy.shop/image/charcter/f");
+    MALE("남성", "m", "character/m"),
+    FEMALE("여성", "f", "character/f");
 
     private String description;
     private String code;
