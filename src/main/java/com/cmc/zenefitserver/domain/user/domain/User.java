@@ -18,7 +18,12 @@ import java.util.Set;
 @ToString
 @Getter
 @Entity
-@Table(name = "user")
+@Table(name = "user", uniqueConstraints = {
+        @UniqueConstraint(
+                name = "EMAIL_PROVIDER_UNIQUE",
+                columnNames = {"email", "provider"}
+        )
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SequenceGenerator(
         name = "USER_SEQ_GENERATOR",
@@ -33,7 +38,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long userId;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     private String email;
 
     @Column(name = "nickname", unique = true)
@@ -53,7 +58,7 @@ public class User extends BaseEntity {
     private EducationType educationType; // 학력 요건 내용
 
     @ElementCollection
-    @CollectionTable(name = "user_jobs", joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "user_id"))
+    @CollectionTable(name = "user_jobs", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<JobType> jobs = new HashSet<>();
 
