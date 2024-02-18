@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.global.infra.notification.dao;
 
+import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.global.infra.notification.dto.NotificationListInfoResponseDto;
 import com.querydsl.core.types.Projections;
@@ -25,7 +26,7 @@ public class NotificationQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public Page<NotificationListInfoResponseDto> searchNotificationBySlice(User user, Pageable pageable) {
+    public Page<NotificationListInfoResponseDto> searchNotificationBySlice(User user, Pageable pageable, SearchDateType searchDateType) {
         JPAQuery<NotificationListInfoResponseDto> query = jpaQueryFactory.select(
                         Projections.constructor(NotificationListInfoResponseDto.class,
                                 notification.id,
@@ -40,6 +41,10 @@ public class NotificationQueryRepository {
                 .where(
                         notification.user.userId.eq(user.getUserId())
                 );
+
+        if (searchDateType != null) {
+            query.where(notification.searchDateType.eq(searchDateType));
+        }
 
         List<NotificationListInfoResponseDto> results = query.orderBy(notification.createdDate.desc())
                 .offset(pageable.getOffset())

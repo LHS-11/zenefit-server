@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.global.infra.notification.application;
 
+import com.cmc.zenefitserver.domain.policy.domain.enums.SearchDateType;
 import com.cmc.zenefitserver.domain.user.dao.UserRepository;
 import com.cmc.zenefitserver.domain.user.domain.User;
 import com.cmc.zenefitserver.global.infra.fcm.FCMService;
@@ -25,18 +26,21 @@ public class NotificationService {
     private final FCMService fcmService;
 
 
-    public Page<NotificationListInfoResponseDto> findAllNotification(User user, int page, int size) {
+    public Page<NotificationListInfoResponseDto> findAllNotification(User user, int page, int size, SearchDateType searchDateType) {
         PageRequest pageable = PageRequest.of(page, size);
-        return notificationQueryRepository.searchNotificationBySlice(user, pageable);
+        if(SearchDateType.NONE == searchDateType){
+            return notificationQueryRepository.searchNotificationBySlice(user, pageable, null);
+        }
+        return notificationQueryRepository.searchNotificationBySlice(user, pageable, searchDateType);
     }
 
-    public void notifyAllTest(){
+    public void notifyAllTest() {
         List<User> findUsers = userRepository.findAll()
                 .stream()
                 .filter(user -> user.getFcmToken() != null)
                 .collect(Collectors.toList());
 
-        fcmService.sendFCMNotificationMulticast(findUsers,"test","test","test");
+        fcmService.sendFCMNotificationMulticast(findUsers, "test", "test", "test");
     }
 
 }
