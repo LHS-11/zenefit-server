@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.domain.policy.dto.response;
 
 import com.cmc.zenefitserver.domain.policy.domain.enums.DenialReasonType;
+import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyMethodType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -23,7 +24,7 @@ public class CalendarPolicyListResponseDto {
     private boolean applyStatus;
 
     @ApiModelProperty(notes = "정책 신청 방법", example = "방문 신청, 우편 신청, 홈페이지 신청")
-    private String applyProcedure;
+    private PolicyMethodType applyProcedure;
 
     @ApiModelProperty(notes = "정책 기관 로고 url")
     private String policyAgencyLogo;
@@ -43,7 +44,7 @@ public class CalendarPolicyListResponseDto {
     }
 
     @Builder
-    public CalendarPolicyListResponseDto(Long policyId, String policyName, boolean applyStatus, String applyProcedure, String policyAgencyLogo, LocalDate applySttDate, LocalDate applyEndDate) {
+    public CalendarPolicyListResponseDto(Long policyId, String policyName, boolean applyStatus, PolicyMethodType applyProcedure, String policyAgencyLogo, LocalDate applySttDate, LocalDate applyEndDate) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.applyStatus = applyStatus;
