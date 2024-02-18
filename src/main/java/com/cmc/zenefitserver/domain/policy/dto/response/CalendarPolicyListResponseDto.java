@@ -35,16 +35,21 @@ public class CalendarPolicyListResponseDto {
     @ApiModelProperty(notes = "정책 신청 종료일", example = "2023-06-15")
     private LocalDate applyEndDate;
 
+    @ApiModelProperty(notes = "정책 불가 사유", example = "신청 기간이 아니에요, ~조건이 맞지 않습니다.")
+    private String policyApplyDenialReason;
+
     public void upgradeApplyStatus(DenialReasonType denialReasonType) {
         if (denialReasonType != null) {
             this.applyStatus = false;
+            this.policyApplyDenialReason = denialReasonType.getText();
             return;
         }
+        this.policyApplyDenialReason = null;
         this.applyStatus = true;
     }
 
     @Builder
-    public CalendarPolicyListResponseDto(Long policyId, String policyName, boolean applyStatus, PolicyMethodType applyProcedure, String policyAgencyLogo, LocalDate applySttDate, LocalDate applyEndDate) {
+    public CalendarPolicyListResponseDto(Long policyId, String policyName, boolean applyStatus, PolicyMethodType applyProcedure, String policyAgencyLogo, LocalDate applySttDate, LocalDate applyEndDate, String policyApplyDenialReason, boolean applyStatus1) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.applyStatus = applyStatus;
@@ -52,5 +57,7 @@ public class CalendarPolicyListResponseDto {
         this.policyAgencyLogo = policyAgencyLogo;
         this.applySttDate = applySttDate;
         this.applyEndDate = applyEndDate;
+        this.policyApplyDenialReason = policyApplyDenialReason;
+        this.applyStatus = applyStatus1;
     }
 }

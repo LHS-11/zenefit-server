@@ -61,7 +61,7 @@ public class PolicyListInfoDto {
     @ApiModelProperty(notes = "정책 신청 URL", example = "www.naver.com")
     private String policyUrl;
 
-    public void updatePolicyLogo(String policyLogo){
+    public void updatePolicyLogo(String policyLogo) {
         this.policyLogo = policyLogo;
     }
 
@@ -86,6 +86,10 @@ public class PolicyListInfoDto {
             return;
         }
         this.applyStatus = true;
+    }
+
+    public void updatePolicyUrl(String policyUrl) {
+        this.policyUrl = policyUrl;
     }
 
     @Builder
