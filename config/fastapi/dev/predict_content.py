@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Query
 from urllib.parse import unquote
 import torch
 from transformers import BertTokenizer
-from custom_model import CustomModel
+# from custom_model import CustomModel
 import argparse
 import re
 import os
@@ -76,6 +76,7 @@ def predict(text: str = Query(...)):
 
         # Return the result as JSON
         return {"result": result}
+
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
