@@ -36,3 +36,11 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro # Share SSL certification
     restart: always
+
+  fastapi:
+    container_name: fastapi-dev
+    build:
+      dockerfile: Dockerfile
+      context: ./config/fastapi/dev
+    ports:
+      - "8000:8000"
