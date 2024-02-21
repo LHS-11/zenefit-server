@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Service
-public class PolicyBenefitClassifier {
+public class PolicyLoanClassifier {
 
     public void saveBenefit(Policy policy) {
 
