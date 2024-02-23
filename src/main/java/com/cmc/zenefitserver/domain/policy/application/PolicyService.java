@@ -151,6 +151,7 @@ public class PolicyService {
                 .applicationSite(policy.getApplicationSiteAddress())
                 .referenceSite(policy.getReferenceSiteUrlAddress())
                 .benefit(policy.getBenefit())
+                .benefitPeriod(CashBenefitType.findCashBenefit(policy.getBenefitPeriod()))
                 .applyFlag(userPolicy == null ? false : userPolicy.isApplyFlag())
                 .interestFlag(userPolicy == null ? false : userPolicy.isInterestFlag())
                 .policyMethodType(findPolicyMethodType)

@@ -50,6 +50,9 @@ public class PolicyInfoResponseDto {
     @ApiModelProperty(notes = "정책 수혜금액", example = "존재하면 숫자값, 없으면 null값")
     private BigDecimal benefit;
 
+    @ApiModelProperty(notes = "정책 수혜금액", example = "존재하면 숫자값, 없으면 null값")
+    private String benefitPeriod;
+
     @ApiModelProperty(notes = "수혜(신청) 정책 여부")
     private boolean applyFlag;
 
@@ -64,7 +67,7 @@ public class PolicyInfoResponseDto {
     private String policyMethodTypeDescription;
 
     @Builder
-    public PolicyInfoResponseDto(Long policyId, String policyName, String policyApplyDenialReason, String policyIntroduction, String policyApplyDocument, String policyApplyMethod, String policyApplyDate, PolicyDateType policyDateType, String policyDateTypeDescription, String applicationSite, String referenceSite, BigDecimal benefit, boolean applyFlag, boolean interestFlag, PolicyMethodType policyMethodType, String policyMethodTypeDescription) {
+    public PolicyInfoResponseDto(Long policyId, String policyName, String policyApplyDenialReason, String policyIntroduction, String policyApplyDocument, String policyApplyMethod, String policyApplyDate, PolicyDateType policyDateType, String policyDateTypeDescription, String applicationSite, String referenceSite, BigDecimal benefit, String benefitPeriod, boolean applyFlag, boolean interestFlag, PolicyMethodType policyMethodType, String policyMethodTypeDescription) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyApplyDenialReason = policyApplyDenialReason;
@@ -77,6 +80,7 @@ public class PolicyInfoResponseDto {
         this.applicationSite = applicationSite;
         this.referenceSite = referenceSite;
         this.benefit = benefit;
+        this.benefitPeriod = benefitPeriod;
         this.applyFlag = applyFlag;
         this.interestFlag = interestFlag;
         this.policyMethodType = policyMethodType;

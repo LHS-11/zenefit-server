@@ -132,6 +132,8 @@ public class Policy extends BaseEntity implements Serializable {
 
     private BigDecimal benefit = BigDecimal.ZERO; // 수혜 금액
 
+    private String benefitPeriod; // 현금 정책일 때 저장되는 기간 ( ~당, 월, 연, 원)
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<ApplyPeriod> applyPeriods = new ArrayList<>();
 
@@ -187,6 +189,11 @@ public class Policy extends BaseEntity implements Serializable {
 
     public void updateBenefit(BigDecimal benefit) {
         this.benefit = benefit;
+    }
+
+    public void updateCashBenefit(BigDecimal benefit, String benefitPeriod) {
+        this.benefit = benefit;
+        this.benefitPeriod = benefitPeriod;
     }
 
     public void updateYouthPolicyInfo(YouthPolicy youthPolicy) {
