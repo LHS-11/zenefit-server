@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.batch.chunk;
 
+import com.cmc.zenefitserver.batch.service.PolicyCashClassifier;
 import com.cmc.zenefitserver.batch.service.PolicySupportContentClassifier;
 import com.cmc.zenefitserver.batch.service.PolicyLoanClassifier;
 import com.cmc.zenefitserver.domain.policy.dao.PolicyRepository;
@@ -40,6 +41,8 @@ public class PolicyClassifySupportJobConfig {
 
     private final PolicyLoanClassifier policyLoanClassifier;
 
+    private final PolicyCashClassifier policyCashClassifier;
+
     private final PolicyRepository policyRepository;
 
 //    @Bean
@@ -62,7 +65,7 @@ public class PolicyClassifySupportJobConfig {
 
     @Bean
     public PolicySupportItemProcessor policySupportItemProcessor() {
-        return new PolicySupportItemProcessor(policySupportContentClassifier, policyLoanClassifier);
+        return new PolicySupportItemProcessor(policySupportContentClassifier, policyLoanClassifier, policyCashClassifier);
     }
 
 

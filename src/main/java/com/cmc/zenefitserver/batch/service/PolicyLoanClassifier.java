@@ -19,10 +19,8 @@ public class PolicyLoanClassifier {
 
         Set<SupportPolicyType> supportPolicyTypes = policy.getSupportPolicyTypes();
 
-        if (supportPolicyTypes != null && (supportPolicyTypes.contains(SupportPolicyType.LOANS) || supportPolicyTypes.contains(SupportPolicyType.MONEY))) {
-//            System.out.println("policy.getSupportContent() = " + policy.getSupportContent());
+        if (supportPolicyTypes != null && supportPolicyTypes.contains(SupportPolicyType.LOANS)) {
             long benefit = predict(policy.getSupportContent());
-//            System.out.println("predict(policy.getSupportContent()) = " + benefit);
             policy.updateBenefit(BigDecimal.valueOf(benefit));
         }
     }

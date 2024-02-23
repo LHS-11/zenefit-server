@@ -7,6 +7,7 @@ import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -21,21 +22,38 @@ import static com.cmc.zenefitserver.global.error.ErrorCode.NOT_FOUND_MONEY_VALUE
 public class PolicyCashClassifier {
 
 
+    public void saveBenefit(Policy policy) {
+
+        Set<SupportPolicyType> supportPolicyTypes = policy.getSupportPolicyTypes();
+
+        if (supportPolicyTypes != null && supportPolicyTypes.contains(SupportPolicyType.MONEY)) {
+            String[] predictInfo = predict(policy.getSupportContent());
+            String money = predictInfo[0];
+            String period = predictInfo[1];
+
+            if (!money.isEmpty()) {
+                long benefit = Long.parseLong(predictInfo[0]);
+                policy.updateCashBenefit(BigDecimal.valueOf(benefit), period);
+            }
+        }
+
+    }
+
     /**
      * todo
-     *
+     * <p>
      * 변경 전
      * 1. 한줄 씩 문장마다 쪼개기 ( * 삭제 후 )
      * 2. 만원, 천원, 원에 해당하는 리스트를 만들어서 각 문장마다 각각 찾아서 앞에 5글자까지 가져와서, 해당 숫자와 저장 ( 기존의 맨 처음에 찾았던 로직 -> 모두 찾는 것으로 변경 )
      * 3. 리스트들을 모두 하나의 리스트로 만들고, 해당 리스트들에서 당, 년, 월, 원(금액만 존재) 으로 나눠서 [ 금액, 기간 (금액만 존재할시 임의로) ] 하나의 최종 리스트에 저장
-     *  ( 우선 순위  1.당 2.월 3.년 4.원(금액만 존재) 순으로, 기존의 로직에서 당, 월, 년 순으로 찾으면 루프 종료하는 것을 참조 )
-     *  4. 최종 리스트들마다 당, 월, 년, 원(금액만 존재) 으로 따로 분류해서 각각 당, 월, 년, 원(금액만 존재) 리스트로 나눠서 저장
-     *  5. 당에 해당하는 리스트에 값이 존재시 해당 리스트에서 금액 최댓값을 해당 정책의 수혜금액으로 산출
-     *  5-1. 월에 해당하는 리스트에 값이 존재시 해당 리스트에서 금액 최댓값을 해당 정책의 수혜금액으로 산출
-     *  5-2. 년에 해당하는 리스트에 값이 존재시 해당 리스트에서 금액 최댓값을 해당 정책의 수혜금액으로 산출
-     *  5-3. 원(금액만 존재)에 해당하는 리스트에 값이 존재시 해당 리스트에서 금액 최댓값을 해당 정책의 수혜금액으로 산출
-     *
-     *
+     * ( 우선 순위  1.당 2.월 3.년 4.원(금액만 존재) 순으로, 기존의 로직에서 당, 월, 년 순으로 찾으면 루프 종료하는 것을 참조 )
+     * 4. 최종 리스트들마다 당, 월, 년, 원(금액만 존재) 으로 따로 분류해서 각각 당, 월, 년, 원(금액만 존재) 리스트로 나눠서 저장
+     * 5. 당에 해당하는 리스트에 값이 존재시 해당 리스트에서 금액 최댓값을 해당 정책의 수혜금액으로 산출
+     * 5-1. 월에 해당하는 리스트에 값이 존재시 해당 리스트에서 금액 최댓값을 해당 정책의 수혜금액으로 산출
+     * 5-2. 년에 해당하는 리스트에 값이 존재시 해당 리스트에서 금액 최댓값을 해당 정책의 수혜금액으로 산출
+     * 5-3. 원(금액만 존재)에 해당하는 리스트에 값이 존재시 해당 리스트에서 금액 최댓값을 해당 정책의 수혜금액으로 산출
+     * <p>
+     * <p>
      * 변경 후
      * 1. 한줄 씩 문장마다 쪼개기 ( * 삭제 후 )
      * 2. 천만원, 백만원, 십만원 ,억원, 천원, 원에 해당하는 정규식으로 각 문장마다 각각 찾아서 앞에 5글자까지 가져와서, 해당 숫자와 저장 ( 기존의 맨 처음에 찾았던 로직 -> 모두 찾는 것으로 변경 )
@@ -105,7 +123,7 @@ public class PolicyCashClassifier {
                 finalWol.add(new String[]{money, "월"});
             }
             if (found.contains("연")) {
-                finalNyeon.add(new String[]{money, "얀"});
+                finalNyeon.add(new String[]{money, "연\0-"});
             }
             finalWon.add(new String[]{parseAmount(money), "원"});
         }
@@ -136,8 +154,8 @@ public class PolicyCashClassifier {
 
         return new String[]{"", ""};
     }
-
     // '*'이 포함된 문장을 제거합니다.
+
     private List<String> removeStar(String text) {
         List<String> filteredSents = new ArrayList<>();
         String[] lines = text.split("\n");
@@ -148,8 +166,8 @@ public class PolicyCashClassifier {
         }
         return filteredSents;
     }
-
     // 모든 문장에서 금액 정보를 추출합니다.
+
     private List<String[]> getMoneyInfo(List<String> sents, Pattern moneyPattern) {
         List<String[]> moneyInfo = new ArrayList<>();
         for (String sent : sents) {
@@ -159,8 +177,8 @@ public class PolicyCashClassifier {
         }
         return moneyInfo;
     }
-
     // 문장에서 금액 정보를 찾습니다. => [ 금액 , 금액의 첫번쨰 문자 인덱스 - 5 까지의 문자 ]
+
     private List<String[]> findMoney(String sent, Pattern moneyPattern) {
         List<String[]> results = new ArrayList<>();
         Matcher matcher = moneyPattern.matcher(sent);
@@ -182,8 +200,8 @@ public class PolicyCashClassifier {
                 .findFirst()
                 .orElse("");
     }
-
     // '월'이 들어간 단어를 찾습니다.
+
     private String findWol(String sent) {
         // 첫 번째 조건을 스트림으로 처리
         String firstMatch = Stream.of("월", "개월")
@@ -201,8 +219,8 @@ public class PolicyCashClassifier {
                 .findFirst()
                 .orElse(""); // 첫 번째로 찾은 단어 반환, 없으면 빈 문자열
     }
-
     // '년'이 들어간 단어를 찾습니다.
+
     private String findNyeon(String sent) {
 
         String[] nyeons = {"연간", "년간", "년"};
@@ -223,9 +241,9 @@ public class PolicyCashClassifier {
                 .findFirst()
                 .orElse(""); // 첫 번째로 찾은 단어 반환, 없으면 빈 문자열
     }
-
     // 숫자를 찾고 형식을 변환합니다.
     // 숫자와 함께 있는 특정 단어가 있는지 확인합니다.
+
     private List<String> checkNumWord(String sent, String word) {
         return Pattern.compile("[0-9]+" + word)
                 .matcher(sent)
@@ -278,5 +296,4 @@ public class PolicyCashClassifier {
 
         return Long.toString(num);
     }
-
 }

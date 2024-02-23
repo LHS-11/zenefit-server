@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.batch.chunk;
 
+import com.cmc.zenefitserver.batch.service.PolicyCashClassifier;
 import com.cmc.zenefitserver.batch.service.PolicySupportContentClassifier;
 import com.cmc.zenefitserver.batch.service.PolicyLoanClassifier;
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
@@ -11,11 +12,13 @@ public class PolicySupportItemProcessor implements ItemProcessor<Policy, Policy>
 
     private final PolicySupportContentClassifier policySupportContentClassifier;
     private final PolicyLoanClassifier policyLoanClassifier;
+    private final PolicyCashClassifier policyCashClassifier;
 
     @Override
     public Policy process(Policy item) throws Exception {
         policySupportContentClassifier.getSupportContent(item);
         policyLoanClassifier.saveBenefit(item);
+        policyCashClassifier.saveBenefit(item);
         return item;
     }
 }
