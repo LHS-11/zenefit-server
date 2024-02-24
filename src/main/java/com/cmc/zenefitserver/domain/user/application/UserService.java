@@ -301,18 +301,6 @@ public class UserService {
 
     }
 
-    public List<HomeInfoResponseDto.HomePolicyInfo> getRecommendPolicyDummy() {
-        Policy loansPolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.LOANS).get(0);
-        Policy moneyPolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.MONEY).get(0);
-        Policy socialServicePolicy = policyRepository.findAllBySupportPolicyTypesContains(SupportPolicyType.SOCIAL_SERVICE).get(0);
-
-        List<HomeInfoResponseDto.HomePolicyInfo> result = new ArrayList<>();
-        result.add(get(loansPolicy, SupportPolicyType.LOANS));
-        result.add(get(moneyPolicy, SupportPolicyType.MONEY));
-        result.add(get(socialServicePolicy, SupportPolicyType.SOCIAL_SERVICE));
-        return result;
-    }
-
     public HomeInfoResponseDto.HomePolicyInfo get(Policy policy, SupportPolicyType supportPolicyType) {
         return HomeInfoResponseDto.HomePolicyInfo.builder()
                 .policyId(policy.getId())
