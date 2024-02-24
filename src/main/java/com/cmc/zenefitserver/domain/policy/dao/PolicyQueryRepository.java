@@ -42,6 +42,7 @@ public class PolicyQueryRepository {
                                 policy.cityCode.stringValue(),
                                 policy.policyDateType,
                                 policy.benefit,
+                                policy.benefitPeriod,
                                 Expressions.cases()
                                         .when(userPolicy.applyFlag.isNull())
                                         .then(false)
@@ -151,7 +152,6 @@ public class PolicyQueryRepository {
 
     public Page<PolicyListInfoDto> searchByNonAppliedPaging(User user, SupportPolicyType supportPolicyType, PolicyCode policyCode, String keyword, Pageable pageable, List<Long> appliedPolicyIds) {
 
-
         JPAQuery<PolicyListInfoDto> query = jpaQueryFactory.select(
                         Projections.constructor(PolicyListInfoDto.class,
                                 policy.id,
@@ -162,6 +162,7 @@ public class PolicyQueryRepository {
                                 policy.cityCode.stringValue(),
                                 policy.policyDateType,
                                 policy.benefit,
+                                policy.benefitPeriod,
                                 Expressions.cases()
                                         .when(userPolicy.applyFlag.isNull())
                                         .then(false)

@@ -46,6 +46,9 @@ public class PolicyListInfoDto {
     @ApiModelProperty(notes = "수혜 금액")
     private BigDecimal benefit;
 
+    @ApiModelProperty(notes = "수혜 금액 기간", example = "년 , 월")
+    private String benefitPeriod;
+
     @ApiModelProperty(notes = "수혜(신청) 정책 여부")
     private boolean applyFlag;
 
@@ -93,7 +96,7 @@ public class PolicyListInfoDto {
     }
 
     @Builder
-    public PolicyListInfoDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, String policyDateTypeDescription, String policyApplyDenialReason, boolean applyStatus, BigDecimal benefit, boolean applyFlag, boolean interestFlag, PolicyMethodType policyMethodType, String policyMethodTypeDescription, String policyUrl) {
+    public PolicyListInfoDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, String policyDateTypeDescription, String policyApplyDenialReason, boolean applyStatus, BigDecimal benefit, String benefitPeriod, boolean applyFlag, boolean interestFlag, PolicyMethodType policyMethodType, String policyMethodTypeDescription, String policyUrl) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyLogo = policyLogo;
@@ -105,6 +108,7 @@ public class PolicyListInfoDto {
         this.policyApplyDenialReason = policyApplyDenialReason;
         this.applyStatus = applyStatus;
         this.benefit = benefit;
+        this.benefitPeriod = benefitPeriod;
         this.applyFlag = applyFlag;
         this.interestFlag = interestFlag;
         this.policyMethodType = policyMethodType;
@@ -112,7 +116,7 @@ public class PolicyListInfoDto {
         this.policyUrl = policyUrl;
     }
 
-    public PolicyListInfoDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, BigDecimal benefit, boolean applyFlag, boolean interestFlag, String policyMethodTypeDescription, String policyUrl) {
+    public PolicyListInfoDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, BigDecimal benefit, String benefitPeriod, boolean applyFlag, boolean interestFlag, String policyMethodTypeDescription, String policyUrl) {
         this.policyId = policyId;
         this.policyName = policyName;
         this.policyLogo = policyLogo;
@@ -121,6 +125,7 @@ public class PolicyListInfoDto {
         this.cityCode = cityCode;
         this.policyDateType = policyDateType;
         this.benefit = benefit;
+        this.benefitPeriod = benefitPeriod;
         this.applyFlag = applyFlag;
         this.interestFlag = interestFlag;
         this.policyMethodTypeDescription = policyMethodTypeDescription;
@@ -131,6 +136,10 @@ public class PolicyListInfoDto {
         PolicyMethodType findPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(applicationProcedureContent);
         this.policyMethodType = findPolicyMethodType;
         this.policyMethodTypeDescription = findPolicyMethodType.getDescription();
+    }
+
+    public void updateBenefitPeriod(String benefitPeriod) {
+        this.benefitPeriod = benefitPeriod;
     }
 
 }

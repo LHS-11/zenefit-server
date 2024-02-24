@@ -66,6 +66,7 @@ public class PolicyService {
                     dto.updateCityCode(dto.getCityCode());
                     dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
                     dto.updatePolicyLogo(imageClassifier.getLogo(findPolicy));
+                    dto.updateBenefitPeriod(CashBenefitType.findCashBenefit(findPolicy));
 //                    dto.updatePolicyUrl(dto.getPolicyUrl().startsWith("http"));
                     return dto;
                 });
@@ -91,6 +92,7 @@ public class PolicyService {
                         dto.updateCityCode(dto.getCityCode());
                         dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
                         dto.updatePolicyLogo(imageClassifier.getLogo(findPolicy));
+                        dto.updateBenefitPeriod(CashBenefitType.findCashBenefit(findPolicy));
                         return dto;
                     });
 
