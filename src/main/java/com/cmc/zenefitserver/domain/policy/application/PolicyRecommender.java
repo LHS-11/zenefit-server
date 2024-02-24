@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -30,13 +31,12 @@ public class PolicyRecommender {
 
         List<Policy> recommendPolicy = matchPolicy(user);
 
-        System.out.println("recommendPolicy.size() = " + recommendPolicy.size());
         LocalDate now = LocalDate.now();
 
         Policy maxBenefitMoneyPolicy = recommendPolicy.stream()
                 .filter(p -> p.getSupportPolicyTypes().contains((SupportPolicyType.MONEY)))
                 .filter(p -> p.getApplySttDate() == null || now.isBefore(p.getApplyEndDate()))
-                .max(Comparator.comparing(Policy::getBenefit))
+                .max(Comparator.comparing(this::getBenefitToCompare))
                 .orElse(null);
 
         Policy maxBenefitLoansPolicy = recommendPolicy.stream()
@@ -155,13 +155,21 @@ public class PolicyRecommender {
     }
 
     /**
-     *  1. 정책의 지역코드가 중앙부처가 아니어야함
-     *  1-1. 정책의 지역코드와 유저의 지역코드가 틀려야함
-     *  1-2. 정책의
+     * 1. 정책의 지역코드가 중앙부처가 아니어야함
+     * 1-1. 정책의 지역코드와 유저의 지역코드가 틀려야함
+     * 1-2. 정책의
      */
     private static boolean isLocalDenial(User user, Policy policy) {
         return !policy.getAreaCode().equals(AreaCode.CENTRAL_GOVERNMENT)
                 && (user.getAddress().getAreaCode() != policy.getAreaCode()
                 || (policy.getCityCode() != null && policy.getCityCode() != user.getAddress().getCityCode()));
+    }
+
+    private BigDecimal getBenefitToCompare(Policy policy) {
+        CashBenefitType cashBenefitType = CashBenefitType.findCashBenefitType(policy);
+        if (cashBenefitType != null) {
+            return cashBenefitType.calculateBenefit(policy);
+        }
+        return BigDecimal.ZERO;
     }
 }
