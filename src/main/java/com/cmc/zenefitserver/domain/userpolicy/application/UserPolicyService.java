@@ -34,7 +34,7 @@ public class UserPolicyService {
     public Page<ApplyPolicyListResponseDto> getUserPoliciesByApplyFlag(User user, boolean applyFlag, int page, int size) {
         PageRequest pageable = PageRequest.of(page, size);
         return userPolicyRepository.findUserPoliciesByUserAndApplyFlag(user, applyFlag, pageable)
-                .map(userPolicy -> ApplyPolicyListResponseDto.of(userPolicy.getPolicy()));
+                .map(userPolicy -> ApplyPolicyListResponseDto.from(userPolicy.getPolicy()));
     }
 
     @Transactional
