@@ -49,7 +49,7 @@ public class NotificationScheduler {
                 NotificationType.APPLY_END_DATE_D_DAY_ONE.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_ONE.getContent(),
                 NotificationType.APPLY_END_DATE_D_DAY_ONE.getImageUrl(),
-                SearchDateType.STT_DATE
+                SearchDateType.END_DATE
         );
         // D-3
         notifyUser(
@@ -57,7 +57,7 @@ public class NotificationScheduler {
                 NotificationType.APPLY_END_DATE_D_DAY_THREE.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_THREE.getContent(),
                 NotificationType.APPLY_END_DATE_D_DAY_THREE.getImageUrl(),
-                SearchDateType.STT_DATE
+                SearchDateType.END_DATE
         );
         // D-7
         notifyUser(
@@ -65,7 +65,7 @@ public class NotificationScheduler {
                 NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getContent(),
                 NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getImageUrl(),
-                SearchDateType.STT_DATE
+                SearchDateType.END_DATE
         );
     }
 
@@ -77,7 +77,7 @@ public class NotificationScheduler {
                 NotificationType.APPLY_STT_DATE_D_DAY_ONE.getTitle(),
                 NotificationType.APPLY_STT_DATE_D_DAY_ONE.getContent(),
                 NotificationType.APPLY_STT_DATE_D_DAY_ONE.getImageUrl(),
-                SearchDateType.END_DATE
+                SearchDateType.STT_DATE
         );
         // D-3
         notifyUser(
@@ -85,7 +85,7 @@ public class NotificationScheduler {
                 NotificationType.APPLY_STT_DATE_D_DAY_THREE.getTitle(),
                 NotificationType.APPLY_STT_DATE_D_DAY_THREE.getContent(),
                 NotificationType.APPLY_STT_DATE_D_DAY_THREE.getImageUrl(),
-                SearchDateType.END_DATE
+                SearchDateType.STT_DATE
         );
         // D-7
         notifyUser(
@@ -93,7 +93,7 @@ public class NotificationScheduler {
                 NotificationType.APPLY_STT_DATE_D_DAY_SEVEN.getTitle(),
                 NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getContent(),
                 NotificationType.APPLY_END_DATE_D_DAY_SEVEN.getImageUrl(),
-                SearchDateType.END_DATE
+                SearchDateType.STT_DATE
         );
     }
 
