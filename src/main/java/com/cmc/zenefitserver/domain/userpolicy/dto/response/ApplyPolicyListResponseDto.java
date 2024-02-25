@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.domain.userpolicy.dto.response;
 
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
+import com.cmc.zenefitserver.domain.policy.domain.enums.CashBenefitType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -51,7 +52,7 @@ public class ApplyPolicyListResponseDto {
                 .policyLogo(policy.getPolicyLogo())
                 .policyIntroduction(policy.getPolicyIntroduction())
                 .benefit(policy.getBenefit())
-                .benefitPeriod(policy.getBenefitPeriod())
+                .benefitPeriod(CashBenefitType.findCashBenefit(policy))
                 .build();
     }
 }
