@@ -46,6 +46,14 @@ jobs:
         env:
           PROPERTIES_PROD: ${{ secrets.PROPERTIES_PROD }}
 
+      - name: Make firebase.json #firebase 키값 주입
+        run: |
+          mkdir -p ./src/main/resources/firebase
+          touch ./src/main/resources/firebase/zenefit-dbf19-firebase-adminsdk-iaour-b20189de47.json
+          echo "$FIREBASE_JSON" > ./src/main/resources/firebase/zenefit-dbf19-firebase-adminsdk-iaour-b20189de47.json
+        env:
+          FIREBASE_JSON: ${{ secrets.FIREBASE_JSON }}
+
       - name: Build with Gradle
         run: ./gradlew build -x test  #test 코드 빼고 돌리기
 

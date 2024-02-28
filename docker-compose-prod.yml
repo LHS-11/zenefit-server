@@ -11,13 +11,14 @@ services:
       - "6379:6379"
 
   backend-prod:
+    container_name: backend-prod
     image: limhwasup/gifty-server-prod
     build:
       dockerfile: Dockerfile.prod
-    container_name: backend-prod
+      context: .
     hostname: backend-prod
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
       - redis
     restart: always
@@ -32,8 +33,17 @@ services:
       - backend-prod
     ports:
       - "80:80"
-      - "443:443" # HTTPS를 위한 포트를 추가합니다.
+      - "443:443" # Add port for HTTPS
     volumes:
-      - /etc/letsencrypt:/etc/letsencrypt:ro # SSL 인증서를 공유합니다.
-      - /var/lib/letsencrypt:/var/lib/letsencrypt:ro # SSL 인증서를 공유합니다.
+      - ./config/nginx/prod/nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro # Share SSL certification
     restart: always
+
+#  fastapi:
+#    container_name: fastapi-dev
+#    build:
+#      dockerfile: Dockerfile
+#      context: ./config/fastapi/dev
+#    ports:
+#      - "8000:8000"
+
