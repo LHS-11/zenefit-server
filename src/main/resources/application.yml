@@ -1,9 +1,9 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
   profiles:
-    active: prod
+    active: dev
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

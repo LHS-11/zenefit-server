@@ -141,10 +141,10 @@ public class PolicyService {
         PolicyInfoResponseDto dto = PolicyInfoResponseDto.builder()
                 .policyId(policy.getId())
                 .policyName(policy.getPolicyName())
-                .policyIntroduction(policy.getPolicyIntroduction())
+                .policyIntroduction(removeNullOrHyphenStr(policy.getPolicyIntroduction()))
                 .policyApplyDenialReason(denialReasonType != null ? denialReasonType.getText() : null)
-                .policyApplyDocument(policy.getSubmissionDocumentContent())
-                .policyApplyMethod(policy.getApplicationProcedureContent())
+                .policyApplyDocument(removeNullOrHyphenStr(policy.getSubmissionDocumentContent()))
+                .policyApplyMethod(removeNullOrHyphenStr(policy.getApplicationProcedureContent()))
                 .policyApplyDate(policy.getApplicationPeriodContent())
                 .policyDateType(policy.getPolicyDateType())
                 .policyDateTypeDescription(policy.getPolicyDateType().getDescription())
@@ -159,6 +159,13 @@ public class PolicyService {
                 .build();
 
         return dto;
+    }
+
+    public String removeNullOrHyphenStr(String str){
+        if(str.trim().equals("-") || str.toLowerCase().trim().contains("null")){
+            return "";
+        }
+        return str;
     }
 
     public List<CalendarPolicyListResponseDto> getPolicyListBySearchMonth(User user, LocalDate searchDate) {
