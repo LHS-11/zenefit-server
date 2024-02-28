@@ -34,6 +34,7 @@ public class PolicySupportContentClassifier {
             }
             Set<SupportPolicyType> supportPolicyTypes = Arrays.stream(parts)
                     .map(String::trim)
+                    .filter(part -> !part.equals("0"))
                     .map(SupportPolicyType::findSupportPolicyTypeByOrder)
                     .collect(Collectors.toSet());
 
