@@ -25,32 +25,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if(SecurityContextHolder.getContext().getAuthentication()==null){
-            try{
-                String jwt= jwtService.getToken(request);
-                log.info("JWT : {}",jwt);
-                if(jwt==null){
-                    request.setAttribute("exception", ErrorCode.NOT_FOUND_TOKEN.getCode());
-                    filterChain.doFilter(request, response);
-                    return;
-                }
-
-                if(StringUtils.isNotBlank(jwt) && jwtService.validateToken(jwt)){
-                    System.out.println("validateToken = " + jwt);
-                    Authentication authentication= jwtService.getAuthentication(request,jwt);
-
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                } else if(StringUtils.isNotBlank(jwt)){
-                    request.setAttribute("exception", ErrorCode.NOT_FOUND_TOKEN.getCode());
-                    filterChain.doFilter(request, response);
-                    return;
-                }
-            }catch (Exception e){
-                log.error("Security Context 에 해당 토큰을 등록할 수 없습니다", e);
-            }
+        if (isAuthenticationAbsent()) {
+            processJwtAuthentication(request);
         }
 
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
+    }
+
+    private void processJwtAuthentication(HttpServletRequest request) {
+        String jwt = jwtService.getToken(request);
+        if (StringUtils.isBlank(jwt)) {
+            request.setAttribute("exception", ErrorCode.NOT_FOUND_TOKEN.getCode());
+            return;
+        }
+        validateJwt(request, jwt);
+    }
+
+    private void validateJwt(HttpServletRequest request, String jwt) {
+        try {
+            if (jwtService.validateToken(jwt)) {
+                authenticateUser(request, jwt);
+            } else {
+                log.info("Invalid JWT: {}", jwt);
+                request.setAttribute("exception", ErrorCode.INVALID_AUTH_TOKEN.getCode());
+            }
+        } catch (Exception e) {
+            request.setAttribute("exception", ErrorCode.JWT_PROCESSING_ERROR.getCode());
+        }
+    }
+
+    private void authenticateUser(HttpServletRequest request, String jwt) {
+        log.info("Valid JWT: {}", jwt);
+        Authentication authentication = jwtService.getAuthentication(request, jwt);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    private boolean isAuthenticationAbsent() {
+        return SecurityContextHolder.getContext().getAuthentication() == null;
     }
 
 }

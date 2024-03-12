@@ -24,6 +24,7 @@ public enum ErrorCode {
     MISMATCH_APPLE_KEY(1011, "애플 공개키와 맞지 않습니다.", UNAUTHORIZED),
     MISMATCH_ISSUER(1012, "애플에서 제공한 발행처와 맞지 않습니다.", UNAUTHORIZED),
     MISMATCH_AUDIENCE(1013, "애플에서 제공한 수신자와 맞지 않습니다.", UNAUTHORIZED),
+    JWT_PROCESSING_ERROR(1014, "토큰 처리 과정에 문제가 생겼습니다.", UNAUTHORIZED),
 
 
     /**

@@ -145,6 +145,7 @@ public class JwtService {
      * @return
      */
     public boolean validateToken(String token) {
+
         final String encodedKey = Base64.getEncoder().encodeToString(JWT_SECRET.getBytes());
         try {
             Jwts.parser().setSigningKey(encodedKey).parseClaimsJws(token);
