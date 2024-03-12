@@ -8,4 +8,7 @@
 ![6](https://github.com/TeamZenefit/zenefit-server/assets/77667212/82465002-5f5e-408a-958d-10e674dd0547)
 ![7](https://github.com/TeamZenefit/zenefit-server/assets/77667212/56607db5-1123-48f9-8f20-3298f8a354ae)
 
+-----
+<h3>시스템 구상도</h3>
+<img width="1183" alt="image" src="https://github.com/TeamZenefit/zenefit-server/assets/77667212/c0e18d5a-f8d5-4dd4-8f46-7915cdf384bd">
 
