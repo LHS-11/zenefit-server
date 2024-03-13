@@ -40,65 +40,33 @@ public class PolicyService {
         PageRequest pageable = PageRequest.of(page, size, sort);
 
         return policyQueryRepository.searchByAppliedPaging(user, policyListRequestDto.getSupportPolicyType(), policyListRequestDto.getPolicyType(), null, pageable)
-                .map(dto -> {
-                    Policy findPolicy = policyRepository.findById(dto.getPolicyId()).get();
-                    DenialReasonType denialReasonType = PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy);
-                    dto.updatePolicyApplyDenialReason(denialReasonType != null ? denialReasonType.getText() : null);
-                    dto.updatePolicyDateTypeDescription(dto.getPolicyDateType());
-                    dto.updateAreaCode(dto.getAreaCode());
-                    dto.updateCityCode(dto.getCityCode());
-                    dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
-                    return dto;
-                });
+                .map(dto -> getPolicyListInfoDto(user, dto));
     }
 
-    public PolicyListResponseDto getSearchPolicyList(User user, SearchPolicyListRequestDto searchPolicyDto, int page, int size, Sort sort) {
-        PageRequest appliedPageable = PageRequest.of(page, size, sort);
+    public PolicyListResponseDto getSearchPolicyList(User user, SearchPolicyListRequestDto searchPolicyDto, int currentPage, int size, Sort sort) {
+        PageRequest appliedPageable = PageRequest.of(currentPage, size, sort);
 
-        // 유저가 신청 가능한 정책 가져오기
         Page<PolicyListInfoDto> appliedPolicyListInfo = policyQueryRepository.searchByAppliedPaging(user, searchPolicyDto.getSupportPolicyType(), searchPolicyDto.getPolicyType(), searchPolicyDto.getKeyword(), appliedPageable)
-                .map(dto -> {
-                    Policy findPolicy = policyRepository.findById(dto.getPolicyId()).get();
-                    DenialReasonType denialReasonType = PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy);
-                    dto.updatePolicyApplyDenialReason(denialReasonType != null ? denialReasonType.getText() : null);
-                    dto.updatePolicyDateTypeDescription(dto.getPolicyDateType());
-                    dto.updateAreaCode(dto.getAreaCode());
-                    dto.updateCityCode(dto.getCityCode());
-                    dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
-                    dto.updatePolicyLogo(imageClassifier.getLogo(findPolicy));
-                    dto.updateBenefitPeriod(CashBenefitType.findCashBenefit(findPolicy));
-//                    dto.updatePolicyUrl(dto.getPolicyUrl().startsWith("http"));
-                    return dto;
-                });
+                .map(dto -> getPolicyListInfoDto(user, dto));
 
-        // 신청할 수 있는 정책 총 페이지
-        int totalPages = appliedPolicyListInfo.getTotalPages();
+        int appliedPolicyTotalPages = appliedPolicyListInfo.getTotalPages();
 
-        // 신청할 수 있는 정책 리스트의 마지막 페이지 일때
-        if (totalPages - 1 < page) {
+        boolean isNonAppliedPolicy = currentPage >= appliedPolicyTotalPages;
 
-            List<Long> savedPolicyIds = getPolicyIdsByRedis(user);
+        if (isNonAppliedPolicy) {
 
-            //신청 불가능한 정책 가져오기
-            PageRequest nonAppliedPageable = PageRequest.of(page - totalPages, size, sort);
+            List<Long> savedAppliedPolicyIds = getPolicyIdsByRedis(user);
 
-            Page<PolicyListInfoDto> nonAppliedPolicyListInfo = policyQueryRepository.searchByNonAppliedPaging(user, searchPolicyDto.getSupportPolicyType(), searchPolicyDto.getPolicyType(), searchPolicyDto.getKeyword(), nonAppliedPageable, savedPolicyIds)
-                    .map(dto -> {
-                        Policy findPolicy = policyRepository.findById(dto.getPolicyId()).get();
-                        DenialReasonType denialReasonType = PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy);
-                        dto.updatePolicyApplyDenialReason(denialReasonType != null ? denialReasonType.getText() : null);
-                        dto.updatePolicyDateTypeDescription(dto.getPolicyDateType());
-                        dto.updateAreaCode(dto.getAreaCode());
-                        dto.updateCityCode(dto.getCityCode());
-                        dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
-                        dto.updatePolicyLogo(imageClassifier.getLogo(findPolicy));
-                        dto.updateBenefitPeriod(CashBenefitType.findCashBenefit(findPolicy));
-                        return dto;
-                    });
+            int nonAppliedPolicyPage = currentPage - appliedPolicyTotalPages;
+
+            PageRequest nonAppliedPageable = PageRequest.of(nonAppliedPolicyPage, size, sort);
+
+            Page<PolicyListInfoDto> nonAppliedPolicyListInfo = policyQueryRepository.searchByNonAppliedPaging(user, searchPolicyDto.getSupportPolicyType(), searchPolicyDto.getPolicyType(), searchPolicyDto.getKeyword(), nonAppliedPageable, savedAppliedPolicyIds)
+                    .map(dto -> getPolicyListInfoDto(user, dto));
 
             return PolicyListResponseDto.builder()
                     .policyListInfoResponseDto(nonAppliedPolicyListInfo)
-                    .pageNumber(page)
+                    .pageNumber(currentPage)
                     .last(nonAppliedPolicyListInfo.isLast())
                     .build();
         } else {
@@ -107,10 +75,23 @@ public class PolicyService {
 
         return PolicyListResponseDto.builder()
                 .policyListInfoResponseDto(appliedPolicyListInfo)
-                .pageNumber(page)
+                .pageNumber(currentPage)
                 .last(false)
                 .build();
 
+    }
+
+    private PolicyListInfoDto getPolicyListInfoDto(User user, PolicyListInfoDto dto) {
+        Policy findPolicy = policyRepository.findById(dto.getPolicyId()).get();
+        DenialReasonType denialReasonType = PolicyDenialReasonClassifier.getDenialReasonType(user, findPolicy);
+        dto.updatePolicyApplyDenialReason(denialReasonType != null ? denialReasonType.getText() : null);
+        dto.updatePolicyDateTypeDescription(dto.getPolicyDateType());
+        dto.updateAreaCode(dto.getAreaCode());
+        dto.updateCityCode(dto.getCityCode());
+        dto.updatePolicyMethodType(dto.getPolicyMethodTypeDescription());
+        dto.updatePolicyLogo(imageClassifier.getLogo(findPolicy));
+        dto.updateBenefitPeriod(CashBenefitType.findCashBenefit(findPolicy));
+        return dto;
     }
 
     private void savePolicyIdsToRedis(User user, Page<PolicyListInfoDto> policyListResponseDtos) {
@@ -161,8 +142,8 @@ public class PolicyService {
         return dto;
     }
 
-    public String removeNullOrHyphenStr(String str){
-        if(str.trim().equals("-") || str.toLowerCase().trim().contains("null")){
+    public String removeNullOrHyphenStr(String str) {
+        if (str.trim().equals("-") || str.toLowerCase().trim().contains("null")) {
             return "";
         }
         return str;

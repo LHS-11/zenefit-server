@@ -91,9 +91,22 @@ public class PolicyListInfoDto {
         this.applyStatus = true;
     }
 
+    public void updatePolicyMethodType(String applicationProcedureContent) {
+        PolicyMethodType findPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(applicationProcedureContent);
+        this.policyMethodType = findPolicyMethodType;
+        this.policyMethodTypeDescription = findPolicyMethodType.getDescription();
+    }
+
+    public void updateBenefitPeriod(String benefitPeriod) {
+        this.benefitPeriod = benefitPeriod;
+    }
+
+
+
     public void updatePolicyUrl(String policyUrl) {
         this.policyUrl = policyUrl;
     }
+
 
     @Builder
     public PolicyListInfoDto(Long policyId, String policyName, String policyLogo, String policyIntroduction, String areaCode, String cityCode, PolicyDateType policyDateType, String policyDateTypeDescription, String policyApplyDenialReason, boolean applyStatus, BigDecimal benefit, String benefitPeriod, boolean applyFlag, boolean interestFlag, PolicyMethodType policyMethodType, String policyMethodTypeDescription, String policyUrl) {
@@ -130,16 +143,6 @@ public class PolicyListInfoDto {
         this.interestFlag = interestFlag;
         this.policyMethodTypeDescription = policyMethodTypeDescription;
         this.policyUrl = policyUrl;
-    }
-
-    public void updatePolicyMethodType(String applicationProcedureContent) {
-        PolicyMethodType findPolicyMethodType = PolicyMethodType.findPolicyMethodTypeByKeywords(applicationProcedureContent);
-        this.policyMethodType = findPolicyMethodType;
-        this.policyMethodTypeDescription = findPolicyMethodType.getDescription();
-    }
-
-    public void updateBenefitPeriod(String benefitPeriod) {
-        this.benefitPeriod = benefitPeriod;
     }
 
 }

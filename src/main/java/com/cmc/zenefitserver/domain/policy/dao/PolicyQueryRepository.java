@@ -88,6 +88,7 @@ public class PolicyQueryRepository {
                 .limit(pageable.getPageSize())
                 .fetch();
 
+        OrderSpecifier orderSpecifier = new OrderSpecifier(Order.ASC, policy.id);
 
         return PageableExecutionUtils.getPage(results, pageable, query::fetchCount);
     }
