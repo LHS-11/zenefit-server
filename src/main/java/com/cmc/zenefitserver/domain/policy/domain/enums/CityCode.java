@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
+import com.cmc.zenefitserver.global.common.EnumType;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -9,7 +10,7 @@ import java.util.Arrays;
 
 
 @Getter
-public enum CityCode {
+public enum CityCode implements EnumType {
 
     // 1. 서울
     JONGRO("003002001001", "종로구"),
@@ -305,5 +306,15 @@ public enum CityCode {
                 .filter(code -> code.getName().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_CITY_ENUM_VALUE));
+    }
+
+    @Override
+    public String getId() {
+        return this.name();
+    }
+
+    @Override
+    public String getText() {
+        return this.name;
     }
 }

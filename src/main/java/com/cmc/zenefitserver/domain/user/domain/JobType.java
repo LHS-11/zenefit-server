@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
+import com.cmc.zenefitserver.global.common.EnumType;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -8,7 +9,7 @@ import lombok.Getter;
 import java.util.Arrays;
 
 @Getter
-public enum JobType {
+public enum JobType implements EnumType {
 
     EMPLOYED("재직자"), // 재직자
     SELF_EMPLOYED("자영업자"), // 자영업자
@@ -34,5 +35,15 @@ public enum JobType {
                 .filter(v -> v.description.equalsIgnoreCase(value))
                 .findFirst()
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_JOB_ENUM_VALUE));
+    }
+
+    @Override
+    public String getId() {
+        return this.name();
+    }
+
+    @Override
+    public String getText() {
+        return this.description;
     }
 }

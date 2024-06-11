@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Zenefit REST API 문서</title>
+<title>회원가입</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,271 +435,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script>
-    function ready(callbackFunc) {
-        if (document.readyState !== 'loading') {
-            // Document is already ready, call the callback directly
-            callbackFunc();
-        } else if (document.addEventListener) {
-            // All modern browsers to register DOMContentLoaded
-            document.addEventListener('DOMContentLoaded', callbackFunc);
-        } else {
-            // Old IE browsers
-            document.attachEvent('onreadystatechange', function () {
-                if (document.readyState === 'complete') {
-                    callbackFunc();
-                }
-            });
-        }
-    }
-
-    function openPopup(event) {
-
-        const target = event.target;
-        if (target.className !== "popup") {
-            return;
-        }
-
-        event.preventDefault();
-        const screenX = event.screenX;
-        const screenY = event.screenY;
-        window.open(target.href, target.text, `left=${screenX}, top=${screenY}, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no`);
-    }
-
-    ready(function () {
-        const el = document.getElementById("content");
-        el.addEventListener("click", event => openPopup(event), false);
-    });
-</script>
 </head>
-<body class="book toc2 toc-left">
+<body class="article">
 <div id="header">
-<h1>Zenefit REST API 문서</h1>
-<div class="details">
-<span id="revnumber">version 0.0.1-SNAPSHOT</span>
-</div>
-<div id="toc" class="toc2">
-<div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#common">공통 사항</a>
-<ul class="sectlevel2">
-<li><a href="#_common_response">Common Response</a></li>
-</ul>
-</li>
-<li><a href="#USER-API">User API</a>
-<ul class="sectlevel2">
-<li><a href="#user-signup">회원가입</a></li>
-</ul>
-</li>
-</ul>
-</div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="common"><a class="link" href="#common">공통 사항</a></h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_common_response"><a class="link" href="#_common_response">Common Response</a></h3>
-<div class="paragraph">
-<p>공통응답</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">코드</th>
-<th class="tableblock halign-left valign-top">코드명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>result</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">데이터</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">응답코드</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">메시지</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>에러코드</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">코드</th>
-<th class="tableblock halign-left valign-top">코드명</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_GENDER_ENUM_VALUE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">gender 값이 올바르지 않은 값입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>MISMATCH_ISSUER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">애플에서 제공한 발행처와 맞지 않습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ALREADY_EXISTS_INTEREST_USER_POLICY</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미 등록된 관심 정책입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_JOB_ENUM_VALUE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">job 이 올바르지 않은 값입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_POLICY</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">데이터베이스에 없는 정책입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_USER_POLICY</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">데이터베이스에 없는 유저 정책입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_AREA_ENUM_VALUE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">area 값이 올바르지 않은 값입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>INVALID_SIGNATURE_TOKEN</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">토큰의 서명이 유효하지 않습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_SPLZ_ENUM_VALUE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">splzRlmRqisCn 이 올바르지 않은 값입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>MISMATCH_AUDIENCE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">애플에서 제공한 수신자와 맞지 않습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DUPLICATE_NICKNAME</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">중복된 닉네임 입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EXPIRED_REFRESH_TOKEN</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리프레시 토큰 기한이 만료되었습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ERROR</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">에러 발생</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FORBIDDEN_USER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">권한이 없는 유저입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>INVALID_AUTH_TOKEN</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">권한 정보가 없는 토큰입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>MISMATCH_APPLE_KEY</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">애플 공개키와 맞지 않습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FAIL_TO_MAKE_APPLE_PUBLIC_KEY</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">애플 공개키 생성에 실패했습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_USER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">데이터베이스에 없는 유저입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>MISMATCH_REFRESH_TOKEN</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">데이터베이스에 있는 리프레시 토큰과 다릅니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_POLICY_DATE_TYPE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">policyDateType 이 올바르지 않은 값입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>INVALID_REFRESH_TOKEN</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리프레시 토큰이 유효하지 않습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>INVALID_NICKNAME</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">닉네임은 1~7자의 영문 대소문자, 숫자, 한글로만 입력해주세요.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOTIFICATION_INTERNAL_SERVER_ERROR</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">FIREBASE 서버 오류</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ALREADY_EXISTS_APPLY_USER_POLICY</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이미 등록된 수혜 정책입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_POLICY_TYPE_ENUM_VALUE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">policyType 값이 올바르지 않은 값입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EXPIRED_TOKEN</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">토큰이 만료되었습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UNSUPPORTED_TOKEN</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">지원하지 않는 토큰입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_CITY_ENUM_VALUE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">city 값이 올바르지 않은 값입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_TOKEN</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">토큰을 찾을 수 없습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_SUPPORT_POLICY_TYPE_ENUM_VALUE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">supportPolicyType 값이 올바르지 않은 값입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_EDUCATION_ENUM_VALUE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">education 값이 올바르지 않은 값입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>INVALID_USER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">임시 회원가입된 유저입니다. 추가 정보를 입력해주세요.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_MONEY_VALUE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">money 를 추출할 수 없습니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_FOUND_PROVIDER_TYPE_ENUM_VALUE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">providerType 값이 올바르지 않은 값입니다.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DUPLICATE_EMAIL_PROVIDER</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">중복된 이메일과 소셜 타입입니다.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="USER-API"><a class="link" href="#USER-API">User API</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="user-signup"><a class="link" href="#user-signup">회원가입</a></h3>
+<h3 id="user-signup">회원가입</h3>
 <div class="sect3">
-<h4 id="_http_request"><a class="link" href="#_http_request">HTTP Request</a></h4>
+<h4 id="_http_request">HTTP Request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /user/signup HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /user/signup HTTP/1.1
 Content-Type: application/json
 Content-Length: 230
 Host: localhost:8080
@@ -718,7 +465,7 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect3">
-<h4 id="_request_fields"><a class="link" href="#_request_fields">Request Fields</a></h4>
+<h4 id="_request_fields">Request Fields</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -787,10 +534,10 @@ Host: localhost:8080
 </table>
 </div>
 <div class="sect3">
-<h4 id="_http_response"><a class="link" href="#_http_response">HTTP Response</a></h4>
+<h4 id="_http_response">HTTP Response</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
 Content-Length: 215
 
@@ -808,7 +555,7 @@ Content-Length: 215
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_fields"><a class="link" href="#_response_fields">Response Fields</a></h4>
+<h4 id="_response_fields">Response Fields</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -872,16 +619,11 @@ Content-Length: 215
 </div>
 </div>
 </div>
-</div>
-</div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-06-11 15:10:35 +0900
+Last updated 2024-06-07 18:59:07 +0900
 </div>
 </div>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
 </body>
 </html>

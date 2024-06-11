@@ -8,6 +8,15 @@ endif::[]
 :toc: left
 :toclevels: 2
 :sectlinks:
+:docinfo: shared-head
+
+[[common]]
+== 공통 사항
+
+=== Common Response
+
+include::{snippets}/common/custom-response-fields.adoc[]
+include::{snippets}/common/custom-response-fields-errorCode.adoc[]
 
 [[USER-API]]
 == User API

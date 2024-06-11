@@ -155,9 +155,9 @@ asciidoctor {
     inputs.dir snippetsDir
     configurations 'asciidoctorExt'
 
-    sources { // 특정 파일만 html로 만든다.
-        include("**/index.adoc")
-    }
+//    sources { // 특정 파일만 html로 만든다.
+//        include("**/index.adoc")
+//    }
     baseDirFollowsSourceFile() // 다른 adoc 파일을 include 할 때 경로를 baseDir로 맞춘다.
     dependsOn test
 }
@@ -170,6 +170,6 @@ task copyDocument(type: Copy) {
 bootJar {
     dependsOn copyDocument
 //    from("${asciidoctor.outputDir}") {
-//        into 'static/docs'
+//        into 'src/main/resources/static/docs'
 //    }
 }

@@ -16,6 +16,8 @@ import org.springframework.restdocs.payload.JsonFieldType;
 
 import java.util.Set;
 
+import static com.cmc.zenefitserver.docs.utils.DocumentLinkGenerator.DocUrl.*;
+import static com.cmc.zenefitserver.docs.utils.DocumentLinkGenerator.generateLinkCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -82,11 +84,11 @@ class UserControllerDocsTest extends RestDocsSupport {
                                 requestFields(
                                         fieldWithPath("userId").type(JsonFieldType.STRING).description("유저 ID"),
                                         fieldWithPath("age").type(JsonFieldType.NUMBER).description("나이"),
-                                        fieldWithPath("areaCode").type(JsonFieldType.STRING).description("시/도"),
-                                        fieldWithPath("cityCode").type(JsonFieldType.STRING).description("시/구"),
+                                        fieldWithPath("areaCode").type(JsonFieldType.STRING).description(generateLinkCode(AREA_CODE)),
+                                        fieldWithPath("cityCode").type(JsonFieldType.STRING).description(generateLinkCode(CITY_CODE)),
                                         fieldWithPath("lastYearIncome").type(JsonFieldType.NUMBER).description("작년 소득"),
-                                        fieldWithPath("educationType").type(JsonFieldType.STRING).description("학력"),
-                                        fieldWithPath("jobs").type(JsonFieldType.ARRAY).description("직업"),
+                                        fieldWithPath("educationType").type(JsonFieldType.STRING).description(generateLinkCode(EDUCATION_TYPE)),
+                                        fieldWithPath("jobs").type(JsonFieldType.ARRAY).description(generateLinkCode(JOB_TYPE)),
                                         fieldWithPath("marketingStatus").type(JsonFieldType.BOOLEAN).description("마켓팅 동의 여부")
                                 ),
                                 responseFields(

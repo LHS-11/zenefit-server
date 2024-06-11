@@ -1,12 +1,13 @@
 package com.cmc.zenefitserver.global.error;
 
+import com.cmc.zenefitserver.global.common.EnumType;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 import static org.springframework.http.HttpStatus.*;
 
 @Getter
-public enum ErrorCode {
+public enum ErrorCode implements EnumType {
 
     /**
      * AUTH 관련 오류
@@ -79,5 +80,15 @@ public enum ErrorCode {
         this.code = code;
         this.message = message;
         this.status = status;
+    }
+
+    @Override
+    public String getId() {
+        return this.name();
+    }
+
+    @Override
+    public String getText() {
+        return this.message;
     }
 }
