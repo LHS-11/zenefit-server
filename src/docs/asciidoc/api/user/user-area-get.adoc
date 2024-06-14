@@ -1,0 +1,9 @@
+[[user-area-get]]
+=== 시/도 조회
+
+==== HTTP Request
+include::{snippets}/user-area-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-area-get/http-response.adoc[]
+include::{snippets}/user-area-get/response-fields.adoc[]

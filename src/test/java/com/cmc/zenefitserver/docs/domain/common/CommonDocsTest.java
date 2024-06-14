@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.snippet.Attributes.attributes;
@@ -41,6 +43,7 @@ public class CommonDocsTest extends RestDocsSupport {
         ResultActions result = this.mockMvc.perform(
                 get("/docs")
                         .accept(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Access Token")
         );
 
         MvcResult mvcResult = result.andReturn();
@@ -50,6 +53,7 @@ public class CommonDocsTest extends RestDocsSupport {
         result.andExpect(status().isOk())
                 .andDo(document(
                         "common",
+                        requestHeaders(headerWithName("Authorization").description("API 인증 Access Token")),
                         customResponseFields("custom-response", null,
                                 attributes(key("title").value("공통응답")),
                                 subsectionWithPath("result").description("데이터"),

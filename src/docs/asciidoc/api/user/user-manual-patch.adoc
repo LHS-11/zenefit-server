@@ -1,0 +1,12 @@
+[[user-manual-patch]]
+=== 메뉴얼 상태 업데이트
+
+// ==== Request Header
+// include::{snippets}/user-manual-patch/request-headers.adoc[]
+
+==== HTTP Request
+include::{snippets}/user-manual-patch/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-manual-patch/http-response.adoc[]
+include::{snippets}/user-manual-patch/response-fields.adoc[]

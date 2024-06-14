@@ -1,0 +1,12 @@
+[[user-notification-get]]
+=== 알람 수신 여부 조회
+
+// ==== Request Header
+// include::{snippets}/user-notification-get/request-headers.adoc[]
+
+==== HTTP Request
+include::{snippets}/user-notification-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-notification-get/http-response.adoc[]
+include::{snippets}/user-notification-get/response-fields.adoc[]

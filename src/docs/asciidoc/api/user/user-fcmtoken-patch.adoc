@@ -1,0 +1,12 @@
+[[user-fcmtoken-patch]]
+=== fcm 토큰 업데이트
+
+// ==== Request Header
+// include::{snippets}/user-social-get/request-headers.adoc[]
+
+==== HTTP Request
+include::{snippets}/user-fcmtoken-patch/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-fcmtoken-patch/http-response.adoc[]
+include::{snippets}/user-fcmtoken-patch/response-fields.adoc[]

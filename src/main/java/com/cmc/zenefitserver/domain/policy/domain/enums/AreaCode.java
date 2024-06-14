@@ -165,6 +165,13 @@ public enum AreaCode implements EnumType {
                 .orElseThrow(() -> new BusinessException(NOT_FOUND_AREA_ENUM_VALUE));
     }
 
+    public static List<String> getAreaCodeNameList(){
+        return Arrays.stream(AreaCode.values())
+                .filter(areaCode -> !areaCode.getCode().equals("003001"))
+                .map(areaCode -> areaCode.getName())
+                .collect(Collectors.toList());
+    }
+
     @Override
     public String getId() {
         return this.name();

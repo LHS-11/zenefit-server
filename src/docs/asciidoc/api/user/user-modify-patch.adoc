@@ -1,0 +1,13 @@
+[[user-modify-patch]]
+=== 회원 정보 수정
+
+// ==== Request Header
+// include::{snippets}/user-modify-patch/request-headers.adoc[]
+
+==== HTTP Request
+include::{snippets}/user-modify-patch/http-request.adoc[]
+include::{snippets}/user-modify-patch/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-modify-patch/http-response.adoc[]
+include::{snippets}/user-modify-patch/response-fields.adoc[]

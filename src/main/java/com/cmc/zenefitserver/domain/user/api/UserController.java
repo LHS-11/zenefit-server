@@ -107,14 +107,14 @@ public class UserController {
     }
 
     @GetMapping("/notification")
-    @Operation(summary = "알람 수신 여부 업데이트 API", description = "유저의 알림 수신 여부를 조회합니다..")
+    @Operation(summary = "알람 수신 여부 조회 API", description = "유저의 알림 수신 여부를 조회합니다..")
     public CommonResponse<UserAlarmStatusResponseDto> getAlarmStatus(@AuthUser User user) {
-        log.info("알림 수신 여부 업데이트 API, user = {}", user.getUserId());
+        log.info("알림 수신 여부 조회 API, user = {}", user.getUserId());
         return CommonResponse.success(userService.getAlarm(user));
     }
 
     @GetMapping("/manual")
-    @Operation(summary = "메뉴얼 상태 조회 API", description = "유저의 알림 수신 여부를 업데이트 합니다.")
+    @Operation(summary = "메뉴얼 상태 조회 API", description = "유저의 알림 수신 여부를 조회 합니다.")
     public CommonResponse<UserManualStatusResponseDto> getManualStatus(@AuthUser User user) {
         return CommonResponse.success(UserManualStatusResponseDto.builder().manualStatus(user.isManualStatus()).build());
     }
@@ -132,13 +132,6 @@ public class UserController {
         PrivacyInfoResponseDto result = userService.getPrivacyInfo(user);
         return CommonResponse.success(result);
     }
-
-//    @GetMapping("/privacy/url")
-//    @Operation(summary = "이용약관 URL 조회 API", description = "이용약관 URL을 조회합니다.")
-//    public CommonResponse<String> getPrivacy(@AuthUser User user, @RequestParam PrivacyType privacyType) {
-//        String result = userService.getPrivacyInfoUrl(user, privacyType);
-//        return CommonResponse.success(result);
-//    }
 
     @DeleteMapping
     public CommonResponse<String> delete(@AuthUser User user) {

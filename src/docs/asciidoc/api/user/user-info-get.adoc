@@ -1,0 +1,12 @@
+[[user-info-get]]
+=== 개인 유저 정보 조회
+
+// ==== Request Header
+// include::{snippets}/user-info-get/request-headers.adoc[]
+
+==== HTTP Request
+include::{snippets}/user-info-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-info-get/http-response.adoc[]
+include::{snippets}/user-info-get/response-fields.adoc[]

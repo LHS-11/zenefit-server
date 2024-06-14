@@ -1,0 +1,10 @@
+[[user-signup-patch]]
+=== 회원가입
+
+==== HTTP Request
+include::{snippets}/user-signup-patch/http-request.adoc[]
+include::{snippets}/user-signup-patch/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-signup-patch/http-response.adoc[]
+include::{snippets}/user-signup-patch/response-fields.adoc[]

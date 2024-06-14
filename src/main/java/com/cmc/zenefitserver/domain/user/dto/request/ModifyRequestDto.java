@@ -5,6 +5,7 @@ import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
 import com.cmc.zenefitserver.domain.user.domain.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -44,4 +45,16 @@ public class ModifyRequestDto {
 
     @ApiModelProperty(notes = "유저 상세 정보",example = "중소기업, 군인, 저소득층 ")
     private UserDetail userDetail;
+
+    @Builder
+    private ModifyRequestDto(String nickname, Integer age, AreaCode areaCode, CityCode cityCode, Double lastYearIncome, EducationType educationType, Set<JobType> jobs, UserDetail userDetail) {
+        this.nickname = nickname;
+        this.age = age;
+        this.areaCode = areaCode;
+        this.cityCode = cityCode;
+        this.lastYearIncome = lastYearIncome;
+        this.educationType = educationType;
+        this.jobs = jobs;
+        this.userDetail = userDetail;
+    }
 }
