@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.docs.utils;
 
+import com.cmc.zenefitserver.domain.user.domain.Gender;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +20,11 @@ public interface DocumentLinkGenerator {
         AREA_CODE("areaCode", "시/도 코드"),
         CITY_CODE("cityCode", "시/구 코드"),
         EDUCATION_TYPE("educationType", "학력 코드"),
-        JOB_TYPE("jobType", "직업 코드");
+        JOB_TYPE("jobType", "직업 코드"),
+        GENDER("gender", "성별"),
+        PROVIDER("providerType", "소셜 로그인 제공처"),
+        CHARACTER("character", "유저 캐릭터"),
+        SUPPORT_POLICY_TYPE("supportPolicyType", "지원 정책 유형");
 
         private final String pageId;
         @Getter

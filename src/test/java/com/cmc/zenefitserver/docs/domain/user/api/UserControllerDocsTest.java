@@ -175,7 +175,7 @@ class UserControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("educationType").type(JsonFieldType.STRING).description(generateLinkCode(EDUCATION_TYPE)),
                                 fieldWithPath("jobs").type(JsonFieldType.ARRAY).description(generateLinkCode(JOB_TYPE)),
                                 fieldWithPath("userDetail").type(JsonFieldType.OBJECT).description("유저 상세 정보"),
-                                fieldWithPath("userDetail.gender").type(JsonFieldType.STRING).description("성별"),
+                                fieldWithPath("userDetail.gender").type(JsonFieldType.STRING).description(generateLinkCode(GENDER)),
                                 fieldWithPath("userDetail.smallBusiness").type(JsonFieldType.BOOLEAN).description("중소기업 여부"),
                                 fieldWithPath("userDetail.soldier").type(JsonFieldType.BOOLEAN).description("군인 여부"),
                                 fieldWithPath("userDetail.lowIncome").type(JsonFieldType.BOOLEAN).description("저소득층 여부"),
@@ -193,15 +193,15 @@ class UserControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("result.nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
                                 fieldWithPath("result.age").type(JsonFieldType.NUMBER).description("나이"),
                                 fieldWithPath("result.address").type(JsonFieldType.OBJECT).description("주소"),
-                                fieldWithPath("result.address.areaCode").type(JsonFieldType.STRING).description("시/도"),
-                                fieldWithPath("result.address.cityCode").type(JsonFieldType.STRING).description("시/구"),
+                                fieldWithPath("result.address.areaCode").type(JsonFieldType.STRING).description(generateLinkCode(AREA_CODE)),
+                                fieldWithPath("result.address.cityCode").type(JsonFieldType.STRING).description(generateLinkCode(CITY_CODE)),
                                 fieldWithPath("result.lastYearIncome").type(JsonFieldType.NUMBER).description("작년 소득"),
-                                fieldWithPath("result.educationType").type(JsonFieldType.STRING).description("학력 코드"),
+                                fieldWithPath("result.educationType").type(JsonFieldType.STRING).description(generateLinkCode(EDUCATION_TYPE)),
                                 fieldWithPath("result.jobs").type(JsonFieldType.ARRAY).description("직업 코드"),
                                 fieldWithPath("result.policyCnt").type(JsonFieldType.NUMBER).description("가지고 있는 정책 수 => 삭제 검토"),
                                 fieldWithPath("result.userDetail").type(JsonFieldType.OBJECT).description("유저 상세 정보"),
                                 fieldWithPath("result.userDetail.id").type(JsonFieldType.NULL).description("유저 id => response DTO 검토"),
-                                fieldWithPath("result.userDetail.gender").type(JsonFieldType.STRING).description("성별"),
+                                fieldWithPath("result.userDetail.gender").type(JsonFieldType.STRING).description(generateLinkCode(GENDER)),
                                 fieldWithPath("result.userDetail.smallBusiness").type(JsonFieldType.BOOLEAN).description("중소기업 여부"),
                                 fieldWithPath("result.userDetail.soldier").type(JsonFieldType.BOOLEAN).description("군인 여부"),
                                 fieldWithPath("result.userDetail.lowIncome").type(JsonFieldType.BOOLEAN).description("저소득층 여부"),
@@ -211,7 +211,7 @@ class UserControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("result.fcmToken").type(JsonFieldType.STRING).description("fcm 토큰"),
                                 fieldWithPath("result.pushNotificationStatus").type(JsonFieldType.BOOLEAN).description("푸시 알림 여부"),
                                 fieldWithPath("result.appNotificationStatus").type(JsonFieldType.BOOLEAN).description("앱 내부 알림 여부 => 삭제 검토"),
-                                fieldWithPath("result.provider").type(JsonFieldType.STRING).description("소셜 로그인 제공처"),
+                                fieldWithPath("result.provider").type(JsonFieldType.STRING).description(generateLinkCode(PROVIDER)),
                                 fieldWithPath("result.benefit").type(JsonFieldType.NUMBER).description("정책을 통한 얻은 이득 => 삭제 검토"),
                                 fieldWithPath("result.termsOfServiceStatus").type(JsonFieldType.BOOLEAN).description("마켓팅 동의 날짜"),
                                 fieldWithPath("result.privacyStatus").type(JsonFieldType.BOOLEAN).description("개인정보처리방침 동의 여부"),
@@ -245,7 +245,7 @@ class UserControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공여부"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
                                 fieldWithPath("result").type(JsonFieldType.ARRAY).description("응답 결과"),
-                                fieldWithPath("result[].").type(JsonFieldType.ARRAY).description("시/도 이름")
+                                fieldWithPath("result[].").type(JsonFieldType.ARRAY).description(generateLinkCode(AREA_CODE))
                         )
                 ));
     }
@@ -273,7 +273,7 @@ class UserControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("isSuccess").type(JsonFieldType.BOOLEAN).description("성공여부"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
                                 fieldWithPath("result").type(JsonFieldType.ARRAY).description("응답 결과"),
-                                fieldWithPath("result[].").type(JsonFieldType.ARRAY).description("시/군/구 이름")
+                                fieldWithPath("result[].").type(JsonFieldType.ARRAY).description(generateLinkCode(CITY_CODE))
                         )
                 ));
     }
@@ -305,7 +305,7 @@ class UserControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
                                 fieldWithPath("result").type(JsonFieldType.OBJECT).description("응답 결과"),
                                 fieldWithPath("result.email").type(JsonFieldType.STRING).description("소셜 로그인 이메일"),
-                                fieldWithPath("result.provider").type(JsonFieldType.STRING).description("소셜 로그인 타입")
+                                fieldWithPath("result.provider").type(JsonFieldType.STRING).description(generateLinkCode(PROVIDER))
                         )
                 ));
 
@@ -337,18 +337,18 @@ class UserControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("result").type(JsonFieldType.OBJECT).description("응답 결과"),
                                 fieldWithPath("result.nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
                                 fieldWithPath("result.age").type(JsonFieldType.NUMBER).description("유저 나이"),
-                                fieldWithPath("result.area").type(JsonFieldType.STRING).description("유저 지역"),
-                                fieldWithPath("result.city").type(JsonFieldType.STRING).description("유저 소속 지역"),
+                                fieldWithPath("result.area").type(JsonFieldType.STRING).description(generateLinkCode(AREA_CODE)),
+                                fieldWithPath("result.city").type(JsonFieldType.STRING).description(generateLinkCode(CITY_CODE)),
                                 fieldWithPath("result.lastYearIncome").type(JsonFieldType.NUMBER).description("유저 작년 소득"),
-                                fieldWithPath("result.educationType").type(JsonFieldType.STRING).description("유저 학력"),
-                                fieldWithPath("result.jobs").type(JsonFieldType.ARRAY).description("유저 직업"),
-                                fieldWithPath("result.gender").type(JsonFieldType.STRING).description("유저 기타 정보 성별"),
-                                fieldWithPath("result.smallBusiness").type(JsonFieldType.BOOLEAN).description("유저 기타 정보 중소기업 여부"),
-                                fieldWithPath("result.soldier").type(JsonFieldType.BOOLEAN).description("유저 기타 정보 군인 여부"),
-                                fieldWithPath("result.lowIncome").type(JsonFieldType.BOOLEAN).description("유저 기타 정보 저소득층 여부"),
-                                fieldWithPath("result.disabled").type(JsonFieldType.BOOLEAN).description("유저 기타 정보 장애인 여부"),
-                                fieldWithPath("result.localTalent").type(JsonFieldType.BOOLEAN).description("유저 기타 정보 지역인재 여부"),
-                                fieldWithPath("result.farmer").type(JsonFieldType.BOOLEAN).description("유저 기타 정보 농부 여부")
+                                fieldWithPath("result.educationType").type(JsonFieldType.STRING).description(generateLinkCode(EDUCATION_TYPE)),
+                                fieldWithPath("result.jobs").type(JsonFieldType.ARRAY).description(generateLinkCode(JOB_TYPE)),
+                                fieldWithPath("result.gender").type(JsonFieldType.STRING).description(generateLinkCode(GENDER)),
+                                fieldWithPath("result.smallBusiness").type(JsonFieldType.BOOLEAN).description("중소기업 여부"),
+                                fieldWithPath("result.soldier").type(JsonFieldType.BOOLEAN).description("군인 여부"),
+                                fieldWithPath("result.lowIncome").type(JsonFieldType.BOOLEAN).description("저소득층 여부"),
+                                fieldWithPath("result.disabled").type(JsonFieldType.BOOLEAN).description("장애인 여부"),
+                                fieldWithPath("result.localTalent").type(JsonFieldType.BOOLEAN).description("지역인재 여부"),
+                                fieldWithPath("result.farmer").type(JsonFieldType.BOOLEAN).description("농업 종사자 여부")
                         )
                 ));
 
@@ -390,14 +390,14 @@ class UserControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("result.recommendPolicy[].policyId").type(JsonFieldType.NUMBER).description("정책 ID"),
                                 fieldWithPath("result.recommendPolicy[].policyName").type(JsonFieldType.STRING).description("정책 이름"),
                                 fieldWithPath("result.recommendPolicy[].policyLogo").type(JsonFieldType.STRING).description("정책 로고"),
-                                fieldWithPath("result.recommendPolicy[].supportPolicyType").type(JsonFieldType.STRING).description("지원 정책 유형"),
+                                fieldWithPath("result.recommendPolicy[].supportPolicyType").type(JsonFieldType.STRING).description(generateLinkCode(SUPPORT_POLICY_TYPE)),
                                 fieldWithPath("result.recommendPolicy[].supportPolicyTypeName").type(JsonFieldType.STRING).description("지원 정책 유형 이름"),
                                 fieldWithPath("result.recommendPolicy[].dueDate").type(JsonFieldType.NUMBER).description("디데이"),
                                 fieldWithPath("result.endDatePolicy").type(JsonFieldType.ARRAY).description("신청 마감일 기준으로 한 정책"),
                                 fieldWithPath("result.endDatePolicy[].policyId").type(JsonFieldType.NUMBER).description("정책 ID"),
                                 fieldWithPath("result.endDatePolicy[].policyName").type(JsonFieldType.STRING).description("정책 이름"),
                                 fieldWithPath("result.endDatePolicy[].policyLogo").type(JsonFieldType.STRING).description("정책 로고"),
-                                fieldWithPath("result.endDatePolicy[].supportPolicyType").type(JsonFieldType.STRING).description("지원 정책 유형"),
+                                fieldWithPath("result.endDatePolicy[].supportPolicyType").type(JsonFieldType.STRING).description(generateLinkCode(SUPPORT_POLICY_TYPE)),
                                 fieldWithPath("result.endDatePolicy[].supportPolicyTypeName").type(JsonFieldType.STRING).description("지원 정책 유형 이름"),
                                 fieldWithPath("result.endDatePolicy[].dueDate").type(JsonFieldType.NUMBER).description("디데이")
                         )

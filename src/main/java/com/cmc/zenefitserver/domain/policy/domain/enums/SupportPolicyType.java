@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
+import com.cmc.zenefitserver.global.common.EnumType;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.Getter;
 
@@ -8,7 +9,7 @@ import java.util.Arrays;
 import static com.cmc.zenefitserver.global.error.ErrorCode.NOT_FOUND_SUPPORT_POLICY_TYPE_ENUM_VALUE;
 
 @Getter
-public enum SupportPolicyType {
+public enum SupportPolicyType implements EnumType {
 
     MONEY("현금", "MONEY", "1"),
     LOANS("대출", "LOANS", "2"),
@@ -43,5 +44,15 @@ public enum SupportPolicyType {
                 .filter(s -> s.order.equals(order))
                 .findFirst()
                 .orElseThrow(() -> new BusinessException(NOT_FOUND_SUPPORT_POLICY_TYPE_ENUM_VALUE));
+    }
+
+    @Override
+    public String getId() {
+        return this.name();
+    }
+
+    @Override
+    public String getText() {
+        return this.description;
     }
 }

@@ -79,6 +79,22 @@ public class CommonDocsTest extends RestDocsSupport {
                         customResponseFields("custom-response", beneathPath("result.jobTypes").withSubsectionId("jobType"),
                                 attributes(key("title").value("직업 코드")),
                                 enumConvertFieldDescriptor(docs.getJobTypes())
+                        ),
+                        customResponseFields("custom-response", beneathPath("result.genders").withSubsectionId("gender"),
+                                attributes(key("title").value("성별")),
+                                enumConvertFieldDescriptor(docs.getGenders())
+                        ),
+                        customResponseFields("custom-response", beneathPath("result.providerTypes").withSubsectionId("providerType"),
+                                attributes(key("title").value("소셜 로그인 제공처")),
+                                enumConvertFieldDescriptor(docs.getProviderTypes())
+                        ),
+                        customResponseFields("custom-response", beneathPath("result.characters").withSubsectionId("character"),
+                                attributes(key("title").value("유저 캐릭터")),
+                                enumConvertFieldDescriptor(docs.getCharacters())
+                        ),
+                        customResponseFields("custom-response", beneathPath("result.supportPolicyTypes").withSubsectionId("supportPolicyType"),
+                                attributes(key("title").value("지원 정책 유형")),
+                                enumConvertFieldDescriptor(docs.getSupportPolicyTypes())
                         )
                 ));
     }

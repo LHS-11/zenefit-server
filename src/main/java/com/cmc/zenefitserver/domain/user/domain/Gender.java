@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
+import com.cmc.zenefitserver.global.common.EnumType;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -9,7 +10,7 @@ import lombok.Getter;
 import java.util.Arrays;
 
 @Getter
-public enum Gender {
+public enum Gender implements EnumType {
     MALE("남성", "m", "character/m"),
     FEMALE("여성", "f", "character/f");
 
@@ -41,5 +42,15 @@ public enum Gender {
     @JsonValue
     public String toString() {
         return description;
+    }
+
+    @Override
+    public String getId() {
+        return this.name();
+    }
+
+    @Override
+    public String getText() {
+        return this.description;
     }
 }

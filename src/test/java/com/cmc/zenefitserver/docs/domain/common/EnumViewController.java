@@ -2,8 +2,12 @@ package com.cmc.zenefitserver.docs.domain.common;
 
 import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
 import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
+import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
+import com.cmc.zenefitserver.domain.user.domain.Character;
 import com.cmc.zenefitserver.domain.user.domain.EducationType;
+import com.cmc.zenefitserver.domain.user.domain.Gender;
 import com.cmc.zenefitserver.domain.user.domain.JobType;
+import com.cmc.zenefitserver.global.auth.ProviderType;
 import com.cmc.zenefitserver.global.common.CommonResponse;
 import com.cmc.zenefitserver.global.common.EnumType;
 import com.cmc.zenefitserver.global.error.ErrorCode;
@@ -25,6 +29,10 @@ public class EnumViewController {
         Map<String, String> cityCodes = getDocs(CityCode.values());
         Map<String, String> educationTypes = getDocs(EducationType.values());
         Map<String, String> jobTypes = getDocs(JobType.values());
+        Map<String, String> genders = getDocs(Gender.values());
+        Map<String, String> providerTypes = getDocs(ProviderType.values());
+        Map<String, String> characters = getDocs(Character.values());
+        Map<String, String> supportPolicyTypes = getDocs(SupportPolicyType.values());
 
         return CommonResponse.success(
                 Docs.testBuilder()
@@ -33,6 +41,10 @@ public class EnumViewController {
                         .cityCodes(cityCodes)
                         .educationTypes(educationTypes)
                         .jobTypes(jobTypes)
+                        .genders(genders)
+                        .providerTypes(providerTypes)
+                        .characters(characters)
+                        .supportPolicyTypes(supportPolicyTypes)
                         .build()
         );
     }
