@@ -36,8 +36,10 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -420,6 +422,7 @@ class UserControllerDocsTest extends RestDocsSupport {
                 .andExpect(status().isOk())
                 .andDo(document("user-fcmtoken-patch",
                         preprocessResponse(prettyPrint()),
+                        requestParameters(parameterWithName("fcmToken").description("FCM 토큰")),
                         requestHeaders(headerWithName("Authorization").description("API 인증 Access Token")),
                         responseFields(
                                 fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답코드"),
@@ -446,6 +449,7 @@ class UserControllerDocsTest extends RestDocsSupport {
                 .andExpect(status().isOk())
                 .andDo(document("user-notification-patch",
                         preprocessResponse(prettyPrint()),
+                        requestParameters(parameterWithName("pushNotificationStatus").description("알림 상태 (true 또는 false)")),
                         requestHeaders(headerWithName("Authorization").description("API 인증 Access Token")),
                         responseFields(
                                 fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답코드"),

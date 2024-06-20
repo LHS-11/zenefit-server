@@ -6,6 +6,7 @@
 
 ==== HTTP Request
 include::{snippets}/user-notification-patch/http-request.adoc[]
+include::{snippets}/user-notification-patch/request-parameters.adoc[]
 
 ==== HTTP Response
 include::{snippets}/user-notification-patch/http-response.adoc[]

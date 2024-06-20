@@ -6,6 +6,8 @@
 
 ==== HTTP Request
 include::{snippets}/user-fcmtoken-patch/http-request.adoc[]
+==== HTTP Request
+include::{snippets}/user-fcmtoken-patch/request-parameters.adoc[]
 
 ==== HTTP Response
 include::{snippets}/user-fcmtoken-patch/http-response.adoc[]
