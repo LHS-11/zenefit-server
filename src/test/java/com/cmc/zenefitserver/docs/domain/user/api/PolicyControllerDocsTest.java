@@ -80,12 +80,12 @@ public class PolicyControllerDocsTest extends RestDocsSupport {
                         requestParameters(
                                 parameterWithName("page").description("조회할 페이지 번호").optional(),
                                 parameterWithName("size").description("페이지당 레코드 수").optional(),
-                                parameterWithName("sortField").description("정렬할 필드").optional(),
+                                parameterWithName("sortField").description("정렬할 필드 (applySttDate 또는 applyEndDate)").optional(),
                                 parameterWithName("sortOrder").description("정렬 순서 (asc 또는 desc)").optional()
                         ),
                         requestFields(
-                                fieldWithPath("supportPolicyType").type(JsonFieldType.STRING).description("지원 정책 유형"),
-                                fieldWithPath("policyType").type(JsonFieldType.STRING).description("정책 유형")
+                                fieldWithPath("supportPolicyType").type(JsonFieldType.STRING).description(generateLinkCode(SUPPORT_POLICY_TYPE)),
+                                fieldWithPath("policyType").type(JsonFieldType.STRING).description(generateLinkCode(POLICY_TYPE))
                         ),
                         responseFields(
                                 fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답코드"),
@@ -96,9 +96,9 @@ public class PolicyControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("result.content[].policyName").type(JsonFieldType.STRING).description("정책 이름"),
                                 fieldWithPath("result.content[].policyLogo").type(JsonFieldType.STRING).description("정책 로고"),
                                 fieldWithPath("result.content[].policyIntroduction").type(JsonFieldType.STRING).description("정책 소개"),
-                                fieldWithPath("result.content[].areaCode").type(JsonFieldType.STRING).description("정책 시/도"),
-                                fieldWithPath("result.content[].cityCode").type(JsonFieldType.STRING).description("정책 시/구"),
-                                fieldWithPath("result.content[].policyDateType").type(JsonFieldType.STRING).description("정책 날짜 유형"),
+                                fieldWithPath("result.content[].areaCode").type(JsonFieldType.STRING).description(generateLinkCode(AREA_CODE)),
+                                fieldWithPath("result.content[].cityCode").type(JsonFieldType.STRING).description(generateLinkCode(CITY_CODE)),
+                                fieldWithPath("result.content[].policyDateType").type(JsonFieldType.STRING).description(generateLinkCode(POLICY_DATE_TYPE)),
                                 fieldWithPath("result.content[].policyDateTypeDescription").type(JsonFieldType.STRING).description("정책 날짜 설명"),
                                 fieldWithPath("result.content[].policyApplyDenialReason").type(JsonFieldType.STRING).description("정책 불가 사유"),
                                 fieldWithPath("result.content[].applyStatus").type(JsonFieldType.BOOLEAN).description("신청 가능 상태"),
@@ -106,7 +106,7 @@ public class PolicyControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("result.content[].benefitPeriod").type(JsonFieldType.STRING).description("수혜 금액 기간"),
                                 fieldWithPath("result.content[].applyFlag").type(JsonFieldType.BOOLEAN).description("수혜(신청) 정책 여부"),
                                 fieldWithPath("result.content[].interestFlag").type(JsonFieldType.BOOLEAN).description("관심 정책 여부"),
-                                fieldWithPath("result.content[].policyMethodType").type(JsonFieldType.STRING).description("정책 신청 방법"),
+                                fieldWithPath("result.content[].policyMethodType").type(JsonFieldType.STRING).description(generateLinkCode(POLICY_METHOD_TYPE)),
                                 fieldWithPath("result.content[].policyMethodTypeDescription").type(JsonFieldType.STRING).description("정책 신청 방법 설명"),
                                 fieldWithPath("result.content[].policyUrl").type(JsonFieldType.STRING).description("정책 신청 URL"),
                                 fieldWithPath("result.pageable").type(JsonFieldType.OBJECT).description("페이징 정보"),
@@ -174,8 +174,8 @@ public class PolicyControllerDocsTest extends RestDocsSupport {
                         ),
                         requestFields(
                                 fieldWithPath("keyword").type(JsonFieldType.STRING).description("키워드"),
-                                fieldWithPath("supportPolicyType").type(JsonFieldType.STRING).description("지원 정책 유형"),
-                                fieldWithPath("policyType").type(JsonFieldType.STRING).description("정책 유형")
+                                fieldWithPath("supportPolicyType").type(JsonFieldType.STRING).description(generateLinkCode(SUPPORT_POLICY_TYPE)),
+                                fieldWithPath("policyType").type(JsonFieldType.STRING).description(generateLinkCode(POLICY_TYPE))
                         ),
                         responseFields(
                                 fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답코드"),
@@ -186,9 +186,9 @@ public class PolicyControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("result.policyListInfoResponseDto.content[].policyName").type(JsonFieldType.STRING).description("정책 이름"),
                                 fieldWithPath("result.policyListInfoResponseDto.content[].policyLogo").type(JsonFieldType.STRING).description("정책 로고"),
                                 fieldWithPath("result.policyListInfoResponseDto.content[].policyIntroduction").type(JsonFieldType.STRING).description("정책 소개"),
-                                fieldWithPath("result.policyListInfoResponseDto.content[].areaCode").type(JsonFieldType.STRING).description("정책 시/도"),
-                                fieldWithPath("result.policyListInfoResponseDto.content[].cityCode").type(JsonFieldType.STRING).description("정책 시/구"),
-                                fieldWithPath("result.policyListInfoResponseDto.content[].policyDateType").type(JsonFieldType.STRING).description("정책 날짜 유형"),
+                                fieldWithPath("result.policyListInfoResponseDto.content[].areaCode").type(JsonFieldType.STRING).description(generateLinkCode(AREA_CODE)),
+                                fieldWithPath("result.policyListInfoResponseDto.content[].cityCode").type(JsonFieldType.STRING).description(generateLinkCode(CITY_CODE)),
+                                fieldWithPath("result.policyListInfoResponseDto.content[].policyDateType").type(JsonFieldType.STRING).description(generateLinkCode(POLICY_DATE_TYPE)),
                                 fieldWithPath("result.policyListInfoResponseDto.content[].policyDateTypeDescription").type(JsonFieldType.STRING).description("정책 날짜 설명"),
                                 fieldWithPath("result.policyListInfoResponseDto.content[].policyApplyDenialReason").type(JsonFieldType.STRING).description("정책 불가 사유"),
                                 fieldWithPath("result.policyListInfoResponseDto.content[].applyStatus").type(JsonFieldType.BOOLEAN).description("신청 가능 상태"),
@@ -196,7 +196,7 @@ public class PolicyControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("result.policyListInfoResponseDto.content[].benefitPeriod").type(JsonFieldType.STRING).description("수혜 금액 기간"),
                                 fieldWithPath("result.policyListInfoResponseDto.content[].applyFlag").type(JsonFieldType.BOOLEAN).description("수혜(신청) 정책 여부"),
                                 fieldWithPath("result.policyListInfoResponseDto.content[].interestFlag").type(JsonFieldType.BOOLEAN).description("관심 정책 여부"),
-                                fieldWithPath("result.policyListInfoResponseDto.content[].policyMethodType").type(JsonFieldType.STRING).description("정책 신청 방법"),
+                                fieldWithPath("result.policyListInfoResponseDto.content[].policyMethodType").type(JsonFieldType.STRING).description(generateLinkCode(POLICY_METHOD_TYPE)),
                                 fieldWithPath("result.policyListInfoResponseDto.content[].policyMethodTypeDescription").type(JsonFieldType.STRING).description("정책 신청 방법 설명"),
                                 fieldWithPath("result.policyListInfoResponseDto.content[].policyUrl").type(JsonFieldType.STRING).description("정책 신청 URL"),
                                 fieldWithPath("result.policyListInfoResponseDto.pageable").type(JsonFieldType.OBJECT).description("페이징 정보"),
@@ -259,7 +259,7 @@ public class PolicyControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("result.policyApplyDocument").type(JsonFieldType.STRING).description("신청 서류"),
                                 fieldWithPath("result.policyApplyMethod").type(JsonFieldType.STRING).description("신청 방법"),
                                 fieldWithPath("result.policyApplyDate").type(JsonFieldType.STRING).description("신청 기간"),
-                                fieldWithPath("result.policyDateType").type(JsonFieldType.STRING).description("신청 기간 타입"),
+                                fieldWithPath("result.policyDateType").type(JsonFieldType.STRING).description(generateLinkCode(POLICY_DATE_TYPE)),
                                 fieldWithPath("result.policyDateTypeDescription").type(JsonFieldType.STRING).description("신청 기간 타입 설명"),
                                 fieldWithPath("result.applicationSite").type(JsonFieldType.STRING).description("신청 URL"),
                                 fieldWithPath("result.referenceSite").type(JsonFieldType.STRING).description("참고 URL"),
@@ -267,7 +267,7 @@ public class PolicyControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("result.benefitPeriod").type(JsonFieldType.STRING).description("수혜 금액 기간"),
                                 fieldWithPath("result.applyFlag").type(JsonFieldType.BOOLEAN).description("수혜(신청) 정책 여부"),
                                 fieldWithPath("result.interestFlag").type(JsonFieldType.BOOLEAN).description("관심 정책 여부"),
-                                fieldWithPath("result.policyMethodType").type(JsonFieldType.STRING).description("정책 신청 방법"),
+                                fieldWithPath("result.policyMethodType").type(JsonFieldType.STRING).description(generateLinkCode(POLICY_METHOD_TYPE)),
                                 fieldWithPath("result.policyMethodTypeDescription").type(JsonFieldType.STRING).description("정책 신청 방법 설명")
                         )
                 ));
@@ -379,15 +379,15 @@ public class PolicyControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("result.policyInfos[].policyId").type(JsonFieldType.NUMBER).description("정책 ID"),
                                 fieldWithPath("result.policyInfos[].policyName").type(JsonFieldType.STRING).description("정책 이름"),
                                 fieldWithPath("result.policyInfos[].policyLogo").type(JsonFieldType.STRING).description("정책 지역 로고"),
-                                fieldWithPath("result.policyInfos[].policyAreaCode").type(JsonFieldType.STRING).description("정책 시/도 이름"),
-                                fieldWithPath("result.policyInfos[].policyCityCode").type(JsonFieldType.STRING).description("정책 시/구 이름"),
+                                fieldWithPath("result.policyInfos[].policyAreaCode").type(JsonFieldType.STRING).description(generateLinkCode(AREA_CODE)),
+                                fieldWithPath("result.policyInfos[].policyCityCode").type(JsonFieldType.STRING).description(generateLinkCode(CITY_CODE)),
                                 fieldWithPath("result.policyInfos[].policyIntroduction").type(JsonFieldType.STRING).description("정책 소개"),
                                 fieldWithPath("result.policyInfos[].supportTypePolicyCnt").type(JsonFieldType.NUMBER).description("지원 정책 별 정책 수"),
                                 fieldWithPath("result.policyInfos[].applyFlag").type(JsonFieldType.BOOLEAN).description("수혜(신청) 정책 여부"),
                                 fieldWithPath("result.policyInfos[].interestFlag").type(JsonFieldType.BOOLEAN).description("관심 정책 여부"),
                                 fieldWithPath("result.policyInfos[].benefit").type(JsonFieldType.NUMBER).description("정책 수혜금액"),
                                 fieldWithPath("result.policyInfos[].policyDateType").type(JsonFieldType.STRING).description("정책 기간 타입"),
-                                fieldWithPath("result.policyInfos[].policyMethodType").type(JsonFieldType.STRING).description("정책 신청 방법"),
+                                fieldWithPath("result.policyInfos[].policyMethodType").type(JsonFieldType.STRING).description(generateLinkCode(POLICY_METHOD_TYPE)),
                                 fieldWithPath("result.policyInfos[].policyMethodTypeDescription").type(JsonFieldType.STRING).description("정책 신청 방법 설명")
                         )
                 ));

@@ -24,7 +24,10 @@ public interface DocumentLinkGenerator {
         GENDER("gender", "성별"),
         PROVIDER("providerType", "소셜 로그인 제공처"),
         CHARACTER("character", "유저 캐릭터"),
-        SUPPORT_POLICY_TYPE("supportPolicyType", "지원 정책 유형");
+        SUPPORT_POLICY_TYPE("supportPolicyType", "지원 정책 유형"),
+        POLICY_DATE_TYPE("policyDateType", "정책 신청 기간 타입"),
+        POLICY_METHOD_TYPE("policyMethodType", "정책 신청 방법"),
+        POLICY_TYPE("policyType", "정책 분야");
 
         private final String pageId;
         @Getter

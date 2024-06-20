@@ -1,11 +1,12 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
 
+import com.cmc.zenefitserver.global.common.EnumType;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import lombok.Getter;
 
 @Getter
-public enum PolicyDateType {
+public enum PolicyDateType implements EnumType {
 
     CONSTANT("상시"),
     UNDECIDED("미정"),
@@ -16,6 +17,16 @@ public enum PolicyDateType {
 
     PolicyDateType(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String getId() {
+        return name();
+    }
+
+    @Override
+    public String getText() {
+        return description;
     }
 
 //    public PolicyDateType findPolicyTypeByDescription(String description){

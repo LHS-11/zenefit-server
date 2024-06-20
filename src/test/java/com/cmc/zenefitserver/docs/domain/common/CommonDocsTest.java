@@ -95,6 +95,18 @@ public class CommonDocsTest extends RestDocsSupport {
                         customResponseFields("custom-response", beneathPath("result.supportPolicyTypes").withSubsectionId("supportPolicyType"),
                                 attributes(key("title").value("지원 정책 유형")),
                                 enumConvertFieldDescriptor(docs.getSupportPolicyTypes())
+                        ),
+                        customResponseFields("custom-response", beneathPath("result.policyDateTypes").withSubsectionId("policyDateType"),
+                                attributes(key("title").value("정책 신청 기간 타입")),
+                                enumConvertFieldDescriptor(docs.getPolicyDateTypes())
+                        ),
+                        customResponseFields("custom-response", beneathPath("result.policyMethodTypes").withSubsectionId("policyMethodType"),
+                                attributes(key("title").value("정책 신청 방법")),
+                                enumConvertFieldDescriptor(docs.getPolicyMethodTypes())
+                        ),
+                        customResponseFields("custom-response", beneathPath("result.policyTypes").withSubsectionId("policyType"),
+                                attributes(key("title").value("정책 분야")),
+                                enumConvertFieldDescriptor(docs.getPolicyTypes())
                         )
                 ));
     }

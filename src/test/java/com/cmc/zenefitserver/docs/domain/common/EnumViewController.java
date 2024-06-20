@@ -1,8 +1,6 @@
 package com.cmc.zenefitserver.docs.domain.common;
 
-import com.cmc.zenefitserver.domain.policy.domain.enums.AreaCode;
-import com.cmc.zenefitserver.domain.policy.domain.enums.CityCode;
-import com.cmc.zenefitserver.domain.policy.domain.enums.SupportPolicyType;
+import com.cmc.zenefitserver.domain.policy.domain.enums.*;
 import com.cmc.zenefitserver.domain.user.domain.Character;
 import com.cmc.zenefitserver.domain.user.domain.EducationType;
 import com.cmc.zenefitserver.domain.user.domain.Gender;
@@ -33,6 +31,9 @@ public class EnumViewController {
         Map<String, String> providerTypes = getDocs(ProviderType.values());
         Map<String, String> characters = getDocs(Character.values());
         Map<String, String> supportPolicyTypes = getDocs(SupportPolicyType.values());
+        Map<String, String> policyDateTypes = getDocs(PolicyDateType.values());
+        Map<String, String> policyMethodTypes = getDocs(PolicyMethodType.values());
+        Map<String, String> policyTypes = getDocs(PolicyCode.values());
 
         return CommonResponse.success(
                 Docs.testBuilder()
@@ -45,6 +46,9 @@ public class EnumViewController {
                         .providerTypes(providerTypes)
                         .characters(characters)
                         .supportPolicyTypes(supportPolicyTypes)
+                        .policyDateTypes(policyDateTypes)
+                        .policyMethodTypes(policyMethodTypes)
+                        .policyTypes(policyTypes)
                         .build()
         );
     }
