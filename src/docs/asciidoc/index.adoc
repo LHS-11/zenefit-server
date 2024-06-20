@@ -40,8 +40,15 @@ include::api/user/user-manual-patch.adoc[]
 include::api/user/user-manual-get.adoc[]
 include::api/user/user-privacy-get.adoc[]
 
-// [[Policy-API]]
-// == Policy API
+[[Policy-API]]
+== Policy API
+include::api/policy/policy-get.adoc[]
+include::api/policy/polices-post.adoc[]
+include::api/policy/policy-search-post.adoc[]
+include::api/policy/policy-calendar-get.adoc[]
+include::api/policy/policy-calendar-date-get.adoc[]
+include::api/policy/policy-recommend-get.adoc[]
+include::api/policy/policy-recommend-count-get.adoc[]
 
 // include::api/product/product.adoc[]
 

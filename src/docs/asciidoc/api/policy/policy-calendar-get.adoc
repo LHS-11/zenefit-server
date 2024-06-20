@@ -1,0 +1,10 @@
+[[policy-calendar-get]]
+=== 특정 달에 따른 관심 정책 리스트 조회 API
+
+==== HTTP Request
+include::{snippets}/policy-calendar-get/http-request.adoc[]
+include::{snippets}/policy-calendar-get/request-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/policy-calendar-get/http-response.adoc[]
+include::{snippets}/policy-calendar-get/response-fields.adoc[]

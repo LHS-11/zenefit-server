@@ -1,0 +1,9 @@
+[[policy-recommend-count-get]]
+=== 지원할 수 있는 정책의 수 조회 API
+
+==== HTTP Request
+include::{snippets}/policy-recommend-count-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/policy-recommend-count-get/http-response.adoc[]
+include::{snippets}/policy-recommend-count-get/response-fields.adoc[]
