@@ -1,0 +1,10 @@
+[[user-policy-apply-delete]]
+=== 수혜(신청) 정책 삭제 API
+
+==== HTTP Request
+include::{snippets}/user-policy-apply-delete/http-request.adoc[]
+include::{snippets}/user-policy-apply-delete/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-policy-apply-delete/http-response.adoc[]
+include::{snippets}/user-policy-apply-delete/response-fields.adoc[]

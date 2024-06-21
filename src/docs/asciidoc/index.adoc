@@ -50,6 +50,18 @@ include::api/policy/policy-calendar-date-get.adoc[]
 include::api/policy/policy-recommend-get.adoc[]
 include::api/policy/policy-recommend-count-get.adoc[]
 
-// include::api/product/product.adoc[]
+[[USER-POLICY-API]]
+== User-Policy API
+include::api/userpolicy/user-policy-interest-get.adoc[]
+include::api/userpolicy/user-policy-interest-post.adoc[]
+include::api/userpolicy/user-policy-interest-delete.adoc[]
+include::api/userpolicy/user-policy-interest-all-delete.adoc[]
+include::api/userpolicy/user-policy-interest-size-get.adoc[]
+include::api/userpolicy/user-policy-apply-get.adoc[]
+include::api/userpolicy/user-policy-apply-post.adoc[]
+include::api/userpolicy/user-policy-apply-delete.adoc[]
+include::api/userpolicy/user-policy-apply-all-delete.adoc[]
+include::api/userpolicy/user-policy-apply-size-get.adoc[]
+
 
 

@@ -1,0 +1,9 @@
+[[user-policy-interest-all-delete]]
+=== 총 관심 정책 삭제 API
+
+==== HTTP Request
+include::{snippets}/user-policy-interest-all-delete/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-policy-interest-all-delete/http-response.adoc[]
+include::{snippets}/user-policy-interest-all-delete/response-fields.adoc[]

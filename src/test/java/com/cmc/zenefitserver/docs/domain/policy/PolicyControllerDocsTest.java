@@ -1,4 +1,4 @@
-package com.cmc.zenefitserver.docs.domain.user.api;
+package com.cmc.zenefitserver.docs.domain.policy;
 
 import com.cmc.zenefitserver.docs.RestDocsSupport;
 import com.cmc.zenefitserver.domain.policy.api.PolicyController;

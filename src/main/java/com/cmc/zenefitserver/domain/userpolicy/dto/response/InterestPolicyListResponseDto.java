@@ -1,6 +1,7 @@
 package com.cmc.zenefitserver.domain.userpolicy.dto.response;
 
 import com.cmc.zenefitserver.domain.policy.domain.Policy;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -29,6 +30,7 @@ public class InterestPolicyListResponseDto {
     private String policyLogo;
 
     @ApiModelProperty(notes = "정책 신청 마감일", example = "2023-12-30")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate applyEndDate;
 
     @Builder
