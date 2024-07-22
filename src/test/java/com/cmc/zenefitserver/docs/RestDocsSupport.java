@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.docs;
 
+import com.cmc.zenefitserver.global.error.GlobalExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,10 +17,13 @@ public abstract class RestDocsSupport {
     protected MockMvc mockMvc;
     protected ObjectMapper objectMapper = new ObjectMapper();
 
+    protected GlobalExceptionHandler exceptionHandler = new GlobalExceptionHandler();
+
     @BeforeEach
     void setUp(RestDocumentationContextProvider provider){
         this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
                 .apply(documentationConfiguration(provider))
+                .setControllerAdvice(exceptionHandler)
                 .build();
     }
 

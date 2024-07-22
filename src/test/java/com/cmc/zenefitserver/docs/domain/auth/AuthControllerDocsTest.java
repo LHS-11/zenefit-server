@@ -96,7 +96,7 @@ class AuthControllerDocsTest extends RestDocsSupport {
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
-                .andExpect(status().isUnauthorized())
+                .andExpect(status().isInternalServerError())
                 .andDo(document("auth-login-new-user",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -130,7 +130,7 @@ class AuthControllerDocsTest extends RestDocsSupport {
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andDo(print())
-                .andExpect(status().isUnauthorized())
+                .andExpect(status().isInternalServerError())
                 .andDo(document("auth-login-temporary-user",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),

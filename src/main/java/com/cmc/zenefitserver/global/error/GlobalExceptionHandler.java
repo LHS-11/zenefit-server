@@ -5,6 +5,7 @@ import com.cmc.zenefitserver.global.annotation.AuthUser;
 import com.cmc.zenefitserver.global.common.CommonResponse;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import com.cmc.zenefitserver.global.error.exception.ControllerException;
+import com.cmc.zenefitserver.global.error.exception.NoAuthException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,12 @@ public class GlobalExceptionHandler {
         getExceptionStackTrace(e, user, request);
         ErrorCode errorCode = e.getErrorCode();
         return new ResponseEntity<>(CommonResponse.failure(errorCode.getCode(), errorCode.getMessage(), e.getData()), errorCode.getStatus());
+    }
+
+    @ExceptionHandler(value = NoAuthException.class)
+    public ResponseEntity handleNoAuthException(NoAuthException e, HttpServletRequest request) {
+        getExceptionStackTrace(e, null, request);
+        return new ResponseEntity<>(CommonResponse.failure(500, e.getMessage(), e.getData()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = ControllerException.class)

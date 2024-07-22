@@ -13,6 +13,7 @@ import com.cmc.zenefitserver.global.common.request.AuthRequestDto;
 import com.cmc.zenefitserver.global.common.request.TokenRequestDto;
 import com.cmc.zenefitserver.global.common.response.TokenResponseDto;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
+import com.cmc.zenefitserver.global.error.exception.NoAuthException;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -49,7 +50,18 @@ public class AuthService {
     private final JwtService jwtService;
     private final EntityManager em;
 
-    @Transactional(noRollbackFor = BusinessException.class)
+    public TokenResponseDto login(AuthRequestDto authRequestDto) {
+        ProviderType providerType = authRequestDto.getProviderType();
+        if(providerType == ProviderType.KAKAO){
+            return kakaoLogin(authRequestDto);
+        }
+        if (providerType == ProviderType.APPLE){
+            return appleLogin(authRequestDto);
+        }
+        return null;
+    }
+
+    @Transactional(noRollbackFor = NoAuthException.class)
     public TokenResponseDto kakaoLogin(AuthRequestDto authRequestDto) {
 
         KakaoAccount kakaoAccount = kakaoLoginService.getInfo(authRequestDto.getToken()).getKakaoAccount();
@@ -57,7 +69,7 @@ public class AuthService {
         return jwtToken;
     }
 
-    @Transactional(noRollbackFor = BusinessException.class)
+    @Transactional(noRollbackFor = NoAuthException.class)
     public TokenResponseDto appleLogin(AuthRequestDto authRequestDto) {
         String token = authRequestDto.getToken().replaceAll("–", "--");
         JsonParser parser = new JsonParser();
@@ -125,7 +137,7 @@ public class AuthService {
         User findUser = null;
         try {
             findUser = userRepository.findByEmailAndProvider(email, providerType)
-                    .orElseThrow(() -> new BusinessException(NOT_FOUND_USER, new HashMap<>()));
+                    .orElseThrow(() -> new NoAuthException(NOT_FOUND_USER, new HashMap<>()));
 
         } catch (BusinessException exception) {
 
@@ -152,7 +164,7 @@ public class AuthService {
 
         // 2. 이미 임시 회원가입이 되어 있을 경우, INVALID_USER 2005 예외 처리
         if (!findUser.isUserRegistrationValid()) {
-            throw new BusinessException(INVALID_USER, Map.of("userId", findUser.getUserId().toString()));
+            throw new NoAuthException(INVALID_USER, Map.of("userId", findUser.getUserId().toString()));
         }
 
         // 3. 이메일로 회원 조회시 있으면 로그인 하고 자체 JWT 만들어서 Access Token 과 Refresh Token 반환

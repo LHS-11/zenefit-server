@@ -32,15 +32,7 @@ public class AuthController {
             throw new ControllerException(bindingResult);
         }
 
-        ProviderType providerType = authRequestDto.getProviderType();
-
-        TokenResponseDto result=null;
-        if(providerType==ProviderType.KAKAO){
-            result = authService.kakaoLogin(authRequestDto);
-        }
-        if(providerType==ProviderType.APPLE){
-            result = authService.appleLogin(authRequestDto);
-        }
+        TokenResponseDto result = authService.login(authRequestDto);
         log.info("==========================login end=======================");
         return CommonResponse.success(result);
     }
