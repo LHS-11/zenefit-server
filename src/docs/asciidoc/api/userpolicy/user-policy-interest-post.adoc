@@ -1,0 +1,10 @@
+[[user-policy-interest-post]]
+=== 관심 정책 저장 API
+
+==== HTTP Request
+include::{snippets}/user-policy-interest-post/http-request.adoc[]
+include::{snippets}/user-policy-interest-post/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-policy-interest-post/http-response.adoc[]
+include::{snippets}/user-policy-interest-post/response-fields.adoc[]

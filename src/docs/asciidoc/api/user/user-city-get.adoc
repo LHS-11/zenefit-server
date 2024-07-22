@@ -1,0 +1,9 @@
+[[user-city-get]]
+=== 시/군/구 조회
+
+==== HTTP Request
+include::{snippets}/user-city-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-city-get/http-response.adoc[]
+include::{snippets}/user-city-get/response-fields.adoc[]

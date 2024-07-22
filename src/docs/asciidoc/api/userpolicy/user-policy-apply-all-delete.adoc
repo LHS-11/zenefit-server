@@ -1,0 +1,9 @@
+[[user-policy-apply-size-get]]
+=== 총 수혜(신청) 정책의 크기 조회 API
+
+==== HTTP Request
+include::{snippets}/user-policy-apply-size-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-policy-apply-size-get/http-response.adoc[]
+include::{snippets}/user-policy-apply-size-get/response-fields.adoc[]

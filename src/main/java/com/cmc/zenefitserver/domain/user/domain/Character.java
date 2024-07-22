@@ -1,12 +1,13 @@
 package com.cmc.zenefitserver.domain.user.domain;
 
+import com.cmc.zenefitserver.global.common.EnumType;
 import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
 
 @Getter
-public enum Character {
+public enum Character implements EnumType {
 
     NO("노관심", "혜택을 잘 챙겨서 친구들을 앞서봐요!", 100, sumPolicyCount -> sumPolicyCount >= 0 && sumPolicyCount <= 3),
     NEW("뉴비", "아직은 상위 60%지만 더 노력해봐요!", 60, sumPolicyCount -> sumPolicyCount >= 4 && sumPolicyCount <= 9),
@@ -31,5 +32,15 @@ public enum Character {
                 .filter(character -> character.expression.test(sumPolicyCount))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("정책의 총 갯수가 음수 값이 올 수 없습니다."));
+    }
+
+    @Override
+    public String getId() {
+        return this.name();
+    }
+
+    @Override
+    public String getText() {
+        return this.name;
     }
 }

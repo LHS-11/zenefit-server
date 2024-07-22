@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ApiModel(description = "유저 메뉴얼 조회 API response")
+@ApiModel(description = "유저 알람 수신 여부 조회 API response")
 public class UserAlarmStatusResponseDto {
 
-    @ApiModelProperty(notes = "메뉴얼 상태",example = "true")
+    @ApiModelProperty(notes = "유저 알람 수신 여부",example = "true")
     private boolean alarmStatus;
 
     @Builder

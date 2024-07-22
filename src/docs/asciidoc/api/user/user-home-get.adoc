@@ -1,0 +1,12 @@
+[[user-home-get]]
+=== 홈 정보 조회
+
+// ==== Request Header
+// include::{snippets}/user-social-get/request-headers.adoc[]
+
+==== HTTP Request
+include::{snippets}/user-home-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-home-get/http-response.adoc[]
+include::{snippets}/user-home-get/response-fields.adoc[]

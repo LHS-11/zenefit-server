@@ -1,0 +1,9 @@
+ifndef::snippets[]
+:snippets: ../../../../build/generated-snippets
+endif::[]
+= API Document
+:doctype: book
+:icons: font
+
+[[educationType]]
+include::{snippets}/common/custom-response-fields-educationType.adoc[]

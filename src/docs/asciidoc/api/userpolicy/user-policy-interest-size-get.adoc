@@ -1,0 +1,9 @@
+[[user-policy-interest-size-get]]
+=== 총 관심 정책의 크기 조회 API
+
+==== HTTP Request
+include::{snippets}/user-policy-interest-size-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-policy-interest-size-get/http-response.adoc[]
+include::{snippets}/user-policy-interest-size-get/response-fields.adoc[]

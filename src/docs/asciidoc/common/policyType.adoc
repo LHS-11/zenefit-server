@@ -1,0 +1,9 @@
+ifndef::snippets[]
+:snippets: ../../../../build/generated-snippets
+endif::[]
+= API Document
+:doctype: book
+:icons: font
+
+[[policyType]]
+include::{snippets}/common/custom-response-fields-policyType.adoc[]

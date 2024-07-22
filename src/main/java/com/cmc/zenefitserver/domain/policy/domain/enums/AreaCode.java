@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
+import com.cmc.zenefitserver.global.common.EnumType;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import static com.cmc.zenefitserver.domain.policy.domain.enums.CityCode.*;
 import static com.cmc.zenefitserver.global.error.ErrorCode.NOT_FOUND_AREA_ENUM_VALUE;
 
 @Getter
-public enum AreaCode {
+public enum AreaCode implements EnumType {
 
     CENTRAL_GOVERNMENT("003001", "중앙부처", new ArrayList<>()),
 
@@ -156,7 +157,7 @@ public enum AreaCode {
                 .orElseThrow(() -> new BusinessException(NOT_FOUND_AREA_ENUM_VALUE));
     }
 
-    public static String findName(String areaCode){
+    public static String findName(String areaCode) {
         return Arrays.stream(AreaCode.values())
                 .filter(code -> code.name().equals(areaCode))
                 .findFirst()
@@ -164,4 +165,20 @@ public enum AreaCode {
                 .orElseThrow(() -> new BusinessException(NOT_FOUND_AREA_ENUM_VALUE));
     }
 
+    public static List<String> getAreaCodeNameList(){
+        return Arrays.stream(AreaCode.values())
+                .filter(areaCode -> !areaCode.getCode().equals("003001"))
+                .map(areaCode -> areaCode.getName())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getId() {
+        return this.name();
+    }
+
+    @Override
+    public String getText() {
+        return this.name;
+    }
 }

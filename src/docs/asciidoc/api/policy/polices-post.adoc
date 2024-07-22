@@ -1,0 +1,11 @@
+[[polices-post]]
+=== 정책 목록 조회 API
+
+==== HTTP Request
+include::{snippets}/policy-search-post/http-request.adoc[]
+include::{snippets}/policy-search-post/request-parameters.adoc[]
+include::{snippets}/policy-search-post/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/policy-search-post/http-response.adoc[]
+include::{snippets}/policy-search-post/response-fields.adoc[]

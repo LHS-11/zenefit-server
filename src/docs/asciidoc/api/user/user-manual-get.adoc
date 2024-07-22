@@ -1,0 +1,12 @@
+[[user-manual-get]]
+=== 메뉴얼 상태 조회
+
+// ==== Request Header
+// include::{snippets}/user-manual-get/request-headers.adoc[]
+
+==== HTTP Request
+include::{snippets}/user-manual-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-manual-get/http-response.adoc[]
+include::{snippets}/user-manual-get/response-fields.adoc[]

@@ -1,0 +1,9 @@
+[[policy-recommend-get]]
+=== 지원 정책 유형에 따른 추천 정책 API
+
+==== HTTP Request
+include::{snippets}/policy-recommend-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/policy-recommend-get/http-response.adoc[]
+include::{snippets}/policy-recommend-get/response-fields.adoc[]

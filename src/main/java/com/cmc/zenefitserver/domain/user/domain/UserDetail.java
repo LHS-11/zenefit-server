@@ -60,7 +60,7 @@ public class UserDetail extends BaseEntity {
     }
 
     @Builder
-    public UserDetail(User user, Gender gender, boolean smallBusiness, boolean soldier, boolean lowIncome, boolean disabled, boolean localTalent, boolean farmer) {
+    private UserDetail(User user, Gender gender, boolean smallBusiness, boolean soldier, boolean lowIncome, boolean disabled, boolean localTalent, boolean farmer) {
         this.user = user;
         this.gender = gender;
         this.smallBusiness = smallBusiness;

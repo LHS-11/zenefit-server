@@ -52,7 +52,8 @@ public class SignUpRequestDto {
     private boolean marketingStatus;
 
     @Builder
-    public SignUpRequestDto(int age, AreaCode areaCode, CityCode cityCode, Double lastYearIncome, EducationType educationType, Set<JobType> jobs, boolean marketingStatus) {
+    public SignUpRequestDto(String userId, int age, AreaCode areaCode, CityCode cityCode, Double lastYearIncome, EducationType educationType, Set<JobType> jobs, boolean marketingStatus) {
+        this.userId = userId;
         this.age = age;
         this.areaCode = areaCode;
         this.cityCode = cityCode;

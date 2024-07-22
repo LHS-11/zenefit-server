@@ -1,0 +1,67 @@
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+= Zenefit REST API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:docinfo: shared-head
+
+[[common]]
+== 공통 사항
+
+=== Common Response
+
+include::{snippets}/common/custom-response-fields.adoc[]
+include::{snippets}/common/custom-response-fields-errorCode.adoc[]
+
+==== Request Header
+===== HTTP Request 에 Authorization 이 존재하면 AccessToken 이 필요한 API 입니다.
+include::{snippets}/common/request-headers.adoc[]
+
+
+[[USER-API]]
+== User API
+
+include::api/user/user-signup-patch.adoc[]
+include::api/user/user-modify-patch.adoc[]
+include::api/user/user-area-get.adoc[]
+include::api/user/user-city-get.adoc[]
+include::api/user/user-social-get.adoc[]
+include::api/user/user-info-get.adoc[]
+include::api/user/user-home-get.adoc[]
+include::api/user/user-fcmtoken-patch.adoc[]
+include::api/user/user-notification-patch.adoc[]
+include::api/user/user-notification-get.adoc[]
+include::api/user/user-manual-patch.adoc[]
+include::api/user/user-manual-get.adoc[]
+include::api/user/user-privacy-get.adoc[]
+
+[[Policy-API]]
+== Policy API
+include::api/policy/policy-get.adoc[]
+include::api/policy/polices-post.adoc[]
+include::api/policy/policy-search-post.adoc[]
+include::api/policy/policy-calendar-get.adoc[]
+include::api/policy/policy-calendar-date-get.adoc[]
+include::api/policy/policy-recommend-get.adoc[]
+include::api/policy/policy-recommend-count-get.adoc[]
+
+[[USER-POLICY-API]]
+== User-Policy API
+include::api/userpolicy/user-policy-interest-get.adoc[]
+include::api/userpolicy/user-policy-interest-post.adoc[]
+include::api/userpolicy/user-policy-interest-delete.adoc[]
+include::api/userpolicy/user-policy-interest-all-delete.adoc[]
+include::api/userpolicy/user-policy-interest-size-get.adoc[]
+include::api/userpolicy/user-policy-apply-get.adoc[]
+include::api/userpolicy/user-policy-apply-post.adoc[]
+include::api/userpolicy/user-policy-apply-delete.adoc[]
+include::api/userpolicy/user-policy-apply-all-delete.adoc[]
+include::api/userpolicy/user-policy-apply-size-get.adoc[]
+
+
+

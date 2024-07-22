@@ -1,0 +1,10 @@
+[[user-policy-apply-post]]
+=== 수혜 정책 저장 API
+
+==== HTTP Request
+include::{snippets}/user-policy-apply-post/http-request.adoc[]
+include::{snippets}/user-policy-apply-post/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-policy-apply-post/http-response.adoc[]
+include::{snippets}/user-policy-apply-post/response-fields.adoc[]

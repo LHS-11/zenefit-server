@@ -1,0 +1,9 @@
+[[user-policy-apply-all-delete]]
+=== 총 수혜(신청) 정책 크기 조회 API
+
+==== HTTP Request
+include::{snippets}/user-policy-apply-all-delete/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-policy-apply-all-delete/http-response.adoc[]
+include::{snippets}/user-policy-apply-all-delete/response-fields.adoc[]

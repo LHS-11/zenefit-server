@@ -1,13 +1,15 @@
 package com.cmc.zenefitserver.domain.policy.domain.enums;
 
+import com.cmc.zenefitserver.global.common.EnumType;
 import com.cmc.zenefitserver.global.error.ErrorCode;
 import com.cmc.zenefitserver.global.error.exception.BusinessException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
+
 import java.util.Arrays;
 
 @Getter
-public enum PolicyCode {
+public enum PolicyCode implements EnumType {
 
     JOB("023010", "일자리 분야"),
     RESIDENCE("023020", "주거 분야"),
@@ -24,7 +26,7 @@ public enum PolicyCode {
         this.name = name;
     }
 
-    public static PolicyCode findPolicyCode(String code){
+    public static PolicyCode findPolicyCode(String code) {
         return Arrays.stream(PolicyCode.values())
                 .filter(p -> p.code.equals(code))
                 .findFirst()
@@ -32,12 +34,21 @@ public enum PolicyCode {
     }
 
     @JsonCreator
-    public static PolicyCode fromString(String value){
+    public static PolicyCode fromString(String value) {
         return Arrays.stream(PolicyCode.values())
                 .filter(p -> p.name().equals(value))
                 .findFirst()
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_POLICY_TYPE_ENUM_VALUE));
     }
 
+    @Override
+    public String getId() {
+        return name();
+    }
+
+    @Override
+    public String getText() {
+        return name;
+    }
 }
 

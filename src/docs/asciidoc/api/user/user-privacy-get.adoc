@@ -1,0 +1,12 @@
+[[user-privacy-get]]
+=== 이용약관 조회
+
+// ==== Request Header
+// include::{snippets}/user-privacy-get/request-headers.adoc[]
+
+==== HTTP Request
+include::{snippets}/user-privacy-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-privacy-get/http-response.adoc[]
+include::{snippets}/user-privacy-get/response-fields.adoc[]

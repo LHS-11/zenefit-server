@@ -1,5 +1,6 @@
 package com.cmc.zenefitserver.domain.user.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -13,21 +14,24 @@ import java.time.LocalDate;
 public class PrivacyInfoResponseDto {
 
     @ApiModelProperty(notes = "이용약관 날짜",example = "true")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate termsOfServiceDate;
 
     @ApiModelProperty(notes = "개인정보처리방침 날짜",example = "true")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate privacyDate;
 
     @ApiModelProperty(notes = "마켓팅 동의 날짜",example = "true")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate marketingDate;
 
-    @ApiModelProperty(notes = "이용약관 날짜",example = "true")
+    @ApiModelProperty(notes = "이용약관 url",example = "true")
     private String termsOfServiceUrl;
 
-    @ApiModelProperty(notes = "개인정보처리방침 날짜",example = "true")
+    @ApiModelProperty(notes = "개인정보처리방침 url",example = "true")
     private String privacyUrl;
 
-    @ApiModelProperty(notes = "마켓팅 동의 날짜",example = "true")
+    @ApiModelProperty(notes = "마켓팅 동의 url",example = "true")
     private String marketingUrl;
 
     @Builder

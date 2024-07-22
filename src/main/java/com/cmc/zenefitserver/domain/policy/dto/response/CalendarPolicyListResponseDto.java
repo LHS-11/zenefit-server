@@ -2,6 +2,7 @@ package com.cmc.zenefitserver.domain.policy.dto.response;
 
 import com.cmc.zenefitserver.domain.policy.domain.enums.DenialReasonType;
 import com.cmc.zenefitserver.domain.policy.domain.enums.PolicyMethodType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -30,9 +31,11 @@ public class CalendarPolicyListResponseDto {
     private String policyAgencyLogo;
 
     @ApiModelProperty(notes = "정책 신청 시작일", example = "2023-06-15")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate applySttDate;
 
     @ApiModelProperty(notes = "정책 신청 종료일", example = "2023-06-15")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate applyEndDate;
 
     @ApiModelProperty(notes = "정책 불가 사유", example = "신청 기간이 아니에요, ~조건이 맞지 않습니다.")

@@ -1,0 +1,10 @@
+[[policy-get]]
+=== 정책 상세 조회 API
+
+==== HTTP Request
+include::{snippets}/policy-get/http-request.adoc[]
+include::{snippets}/policy-get/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/policy-get/http-response.adoc[]
+include::{snippets}/policy-get/response-fields.adoc[]

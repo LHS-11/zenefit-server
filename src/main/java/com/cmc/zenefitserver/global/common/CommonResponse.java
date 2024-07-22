@@ -7,11 +7,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * API 응답 공통 형식입니다
  */
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @ApiModel(value = "기본 응답")
 public class CommonResponse<T> {

@@ -1,0 +1,14 @@
+[[user-notification-patch]]
+=== 알람 수신 여부 업데이트
+
+// ==== Request Header
+// include::{snippets}/user-notification-patch/request-headers.adoc[]
+
+==== HTTP Request
+include::{snippets}/user-notification-patch/http-request.adoc[]
+include::{snippets}/user-notification-patch/request-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-notification-patch/http-response.adoc[]
+include::{snippets}/user-notification-patch/response-fields.adoc[]
+

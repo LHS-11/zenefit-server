@@ -1,0 +1,12 @@
+[[user-social-get]]
+=== 소셜 로그인 정보 조회
+
+// ==== Request Header
+// include::{snippets}/user-social-get/request-headers.adoc[]
+
+==== HTTP Request
+include::{snippets}/user-social-get/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/user-social-get/http-response.adoc[]
+include::{snippets}/user-social-get/response-fields.adoc[]
